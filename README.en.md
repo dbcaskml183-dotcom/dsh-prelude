@@ -1,57 +1,19 @@
 # Prelude
 
-**Write clearer requests, right inside DSH.**
+A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing requirement, and compare the rewrite with your draft before applying it.
 
-[简体中文](README.md) · [Getting started](docs/quickstart.md) · [Installation](docs/installation.md)
+[Download 0.4.21](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [Installation (中文)](docs/installation.md) · [简体中文](README.md)
 
-Prelude is a prompt assistant embedded in DeepSeek Harness. Explore prompting methods, choose additional requirements, compare a rewritten draft, and decide what to use—without leaving the conversation editor.
+![Prelude method library showing a method card and the actions to use, insert, or copy its guidance](docs/assets/method-library.png)
 
-## What it does
+## Get started
 
-- **90 method cards:** recognizable terms, plain-language explanations, stages, domains, sources, and reusable snippets. The current library is primarily in Chinese.
-- **Optional AI analysis:** suggestions grounded in the current draft, including the possibility that nothing needs adding.
-- **User-selected guidance:** choose methods for a rewrite; recommendations are not silently applied.
-- **Draft comparison:** inspect differences, edit the candidate, optionally review it, and explicitly apply it to the composer.
-- **Personal library:** save snippets, favorite methods, and manage imports, exports, and recovery in settings.
-- **Adjustable panel:** move and resize it, select a host-configured model, and choose which sections open by default.
+Write a request in DSH and open **Prelude**. Browse 90 method cards (primarily in Chinese), or ask Prelude to suggest additions. Insert a snippet directly, or select methods for a full rewrite. Compare and edit the candidate before applying it to the composer. You decide when to send.
 
-Applying a draft does not send it. Undo is available when the draft and host state still permit it; subsequent edits are not silently overwritten.
+For example, a request to convert CSV to JSON can specify a sample input and its expected output. This gives the recipient a concrete way to check the script.
 
-## Quick start
+Browsing methods is local. Analysis, rewriting, and optional review use the model provider configured in DSH and may incur charges. Conversation excerpts and text attachments are included only when selected.
 
-1. Write a request in DSH and open **Prelude**.
-2. Browse methods or analyze the prompt. Select useful additions if needed.
-3. Generate a rewrite and compare it with the original.
-4. Apply, copy, edit, or keep the original. Send it yourself when ready.
+**Tested on Windows desktop** with a Windows launcher or browser connected to DSH 0.2.1-rc.2 in WSL2. Linux and native macOS also passed installation, startup, and an authenticated plugin status check on that host version.
 
-A clear prompt may need no changes. A successful review is not a guarantee of better model output.
-
-## Install
-
-Version **0.4.21** is a preview. Download the supplied package from GitHub Releases.
-
-**Tested on Windows desktop** with both the desktop launcher and a browser, using DSH 0.2.1-rc.2 running in WSL2.
-
-On Linux and native macOS, we also verified plugin installation, startup, and an authenticated response on the same DSH version. For the native Windows backend and other versions, see the [compatibility results](docs/installation.md#支持环境).
-
-The public project is named `dsh-prelude`; the installation package remains `dsh-prompt-coach` for compatibility. Use the supplied [package](release/dsh-prompt-coach-0.4.21.tgz), not an unverified npm package with the same name.
-
-```sh
-dsh plugin --profile web add /absolute/path/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
-dsh --profile web --dump-config
-```
-
-Run these commands in the Linux/WSL environment hosting DSH. Back up your profile and plugin state first, then normally reload the same profile and refresh the browser. See [installation and recovery](docs/installation.md) for details in Chinese.
-
-## Models and data
-
-Local method browsing does not call a model. AI features use a model already configured in DSH and may incur provider charges. Follow the conversation model or select a fixed one; compatibility depends on the host adapter and provider.
-
-Only the current draft is used by default. Conversation excerpts and readable text attachments require explicit selection. Prelude does not automatically scan your conversations, local folders, or second brain. Extra model review is off by default.
-
-
-## More
-
-[Usage](docs/quickstart.md) · [Privacy](docs/privacy.md) · [Compatibility](docs/compatibility.md) · [Contributing](CONTRIBUTING.md) · [Verification](VERIFICATION.md) · [Sources](docs/method-sources.md)
-
-[MIT License](LICENSE). Independent community project; not affiliated with or endorsed by DeepSeek.
+[Compatibility results (中文)](docs/installation.md#支持环境) · [Usage (中文)](docs/quickstart.md) · [Report an issue](https://github.com/dbcaskml183-dotcom/dsh-prelude/issues/new/choose) · [MIT License](LICENSE)

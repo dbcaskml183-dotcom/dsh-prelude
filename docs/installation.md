@@ -16,7 +16,7 @@
 
 ## 首次安装
 
-使用仓库中的 `release/dsh-prompt-coach-0.4.21.tgz`。正式发布后，应从已核对的官方项目 Release 下载同名文件。当前没有 npm 发布，不使用 `npm install dsh-prelude` 或来源不明的同名包替代。
+下载 [dsh-prompt-coach-0.4.21.tgz](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz)。包名沿用旧名，以兼容已有配置和个人库。
 
 先保存当前 profile 的配置、依赖清单/锁文件，以及已有插件程序。其他插件有本地修改时，保存其快照，避免 profile 依赖重算影响本地版本。
 

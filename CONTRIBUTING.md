@@ -14,13 +14,11 @@
 npm ci --ignore-scripts
 npm run lint
 npm run build
-npm pack --ignore-scripts --pack-destination release
-node tools/manifest.mjs --release --write
 npm test
 npm run verify
 ```
 
-完整测试会比对安装包，因此修改运行文件后须先同步上面的安装包；这不会上传或发布。
+完整测试会比对安装包。验证当前发行版可直接运行上述命令；制作新候选包时，按下方打包步骤在独立工作目录执行。
 
 完整宿主验证需要 DSH 0.2.1-rc.2。自动测试不替代真实浏览器与模型使用；具体范围见 [验证说明](VERIFICATION.md)。
 
@@ -34,11 +32,13 @@ npm run verify
 
 ## 打包
 
-发布前按变更管理版本，在仓库根执行：
+在干净的 Linux / WSL 工作副本中安装开发依赖后，使用 GNU tar 按 package.json 的发行文件清单打包。在仓库根目录执行：
 
 ```sh
 npm run build
-npm pack --ignore-scripts --pack-destination release
+node -p "['package.json', ...require('./package.json').files].join('\n')" |
+  tar --create --gzip --file="release/$(node -p "const p=require('./package.json'); p.name+'-'+p.version").tgz" \
+      --transform='s,^,package/,' --files-from=-
 node tools/manifest.mjs --release --write
 node tools/source-manifest.mjs --write
 node tools/manifest.mjs --release

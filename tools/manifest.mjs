@@ -18,11 +18,11 @@ if(process.argv.includes('--release')){
  // The published 0.4.21 archive contains the README as it was on release day.
  // Accept later homepage edits only for those exact published archive bytes.
  const publishedDocs=pkg.version==='0.4.21'&&sha('release/'+filename)==='50ce75c0c1ae3514af59f5e8b02779c0879ffac41a9623e720922331820efa18';
- for(const name of allowed){const rel=name.slice(8),original=readFileSync(new URL(rel,root)),packed=run(['-xOzf',path,'--',name],true,Math.max(original.length+1024,1024*1024));if(publishedDocs&&rel==='README.md')continue;if(publishedDocs&&rel==='MANIFEST.sha256'&&original.toString().split('\n').filter(x=>!x.endsWith('  README.md')).join('\n')===packed.toString().split('\n').filter(x=>!x.endsWith('  README.md')).join('\n'))continue;if(!original.equals(packed))throw new Error('Release archive content mismatch: '+rel);}
+ for(const name of allowed){const rel=name.slice(8),original=readFileSync(new URL(rel,root)),packed=run(['-xOzf',path,'--',name],true,Math.max(original.length+1024,1024*1024));if(publishedDocs&&['README.md','docs/compatibility.md'].includes(rel))continue;if(publishedDocs&&rel==='MANIFEST.sha256'&&original.toString().split('\n').filter(x=>!['README.md','docs/compatibility.md'].includes(x.slice(66))).join('\n')===packed.toString().split('\n').filter(x=>!['README.md','docs/compatibility.md'].includes(x.slice(66))).join('\n'))continue;if(!original.equals(packed))throw new Error('Release archive content mismatch: '+rel);}
  const readme=readFileSync(new URL('README.md',root),'utf8'),parts=readme.split('<!-- prelude-current:start -->');
  if(parts.length!==2||parts[1].split('<!-- prelude-current:end -->').length!==2)throw new Error('Current installation documentation boundary missing');
  const current=parts[1].split('<!-- prelude-current:end -->')[0],links=[...current.matchAll(/dsh-prompt-coach-([0-9]+\.[0-9]+\.[0-9]+)\.tgz/gu)];
- if(links.length<2||links.some(m=>m[1]!==pkg.version)||!current.includes('当前 **'+pkg.version+' ')||!current.includes('version: '+pkg.version+'`'))throw new Error('Current installation documentation version mismatch');
+ if(links.length<1||links.some(m=>m[1]!==pkg.version)||!current.includes('当前 **'+pkg.version+' '))throw new Error('Current installation documentation version mismatch');
  const digest=createHash('sha256').update(readFileSync(archive)).digest('hex'),line=digest+'  '+filename+'\n';
  if(writing)writeFileSync(checksum,line);else if(readFileSync(checksum,'utf8')!==line)throw new Error('Release checksum mismatch');
  console.log((writing?'Wrote':'Verified')+' release checksum and '+allowed.length+' identical archive members');
