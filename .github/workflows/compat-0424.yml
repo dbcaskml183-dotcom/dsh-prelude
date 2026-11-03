@@ -1,0 +1,49 @@
+name: Prelude 0.4.24 official host compatibility
+on:
+  push:
+    branches: [compat-0424]
+permissions:
+  contents: read
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        rc: [2, 3, 4, 5]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    env:
+      npm_config_registry: https://registry.npmjs.org
+      HOST_RC: ${{ matrix.rc }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - name: Install clean official host
+        run: npm install -g pnpm@10.34.9 @deepseek-ai/dsh@0.2.1-rc.${{ matrix.rc }}
+      - name: Published baseline on rc2
+        if: matrix.rc == 2
+        env:
+          DSH_HOME: ${{ runner.temp }}/baseline-dsh
+          PLUGIN_VERSION: 0.4.23
+        run: |
+          dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
+          python3 .github/compat-probe.py
+      - name: Install candidate without compatibility override
+        env:
+          DSH_HOME: ${{ runner.temp }}/candidate-dsh
+        run: dsh plugin --profile web add "$PWD/release/dsh-prompt-coach-0.4.24.tgz" --ignore-scripts
+      - name: Native storage tests
+        run: node --test test/catalog-ledger.test.mjs
+      - name: Install test browser
+        if: matrix.rc == 5 && matrix.os == 'ubuntu-latest'
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Boot, authenticated read-write and restart
+        env:
+          DSH_HOME: ${{ runner.temp }}/candidate-dsh
+          BROWSER: ${{ matrix.rc == 5 && matrix.os == 'ubuntu-latest' && '1' || '0' }}
+        run: python3 .github/compat-probe.py

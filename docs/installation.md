@@ -19,7 +19,7 @@
 ## 从 npm 安装
 
 ```sh
-dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach@0.4.24 --ignore-scripts
 ```
 
 若下载镜像尚未同步，可在命令前加 `npm_config_registry=https://registry.npmjs.org`。下面保留 Release 文件安装方式。
@@ -31,17 +31,17 @@ Prelude 的安装包名为 `dsh-prompt-coach`，沿用旧名以兼容已有配�
 **直接从 Release 安装。** 在运行 DSH 的 Linux / WSL 终端执行：
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz --ignore-scripts
 ```
 
 0.4.21 的直链安装已在干净 WSL2 rc.2 上验证；0.4.22 已通过独立打包安装及登录后的状态核验。
 
-**使用已下载的文件。** 也可以先[下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
+**使用已下载的文件。** 也可以先[下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
 
 例如文件保存在 Windows 的 `D:\Downloads`，WSL 路径通常为：
 
 ```sh
-dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.23.tgz --ignore-scripts
+dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.24.tgz --ignore-scripts
 ```
 
 以上假设使用 `web` profile；如实际 profile 不同，使用自己的名称。执行 CLI 应与运行宿主是同一版本。官方命令维护 bundle 和依赖，不重复手工添加 `prompt-coach` entry。
@@ -50,7 +50,7 @@ dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.23.tgz --igno
 
 ## 亲眼确认安装成功
 
-1. 设置中出现 **Prelude**，版本为 **0.4.22**。
+1. 设置中出现 **Prelude**，版本为 **0.4.24**。
 2. 输入区打开 Prelude，搜索“验收标准”，预览并插入一条补句。
 3. 确认原草稿仍在，并且没有自动发送。
 
