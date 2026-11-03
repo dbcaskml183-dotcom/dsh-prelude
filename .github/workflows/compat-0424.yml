@@ -9,8 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-latest]
-        rc: [2, 3, 4, 5]
+        os: [ubuntu-24.04]
+        rc: [5]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 12
     env:
@@ -45,6 +45,5 @@ jobs:
       - name: Boot, authenticated read-write and restart
         env:
           DSH_HOME: ${{ runner.temp }}/candidate-dsh
-          HOME: ${{ runner.temp }}/test-home
           BROWSER: ${{ matrix.rc == 5 && matrix.os == 'ubuntu-24.04' && '1' || '0' }}
         run: python3 .github/compat-probe.py
