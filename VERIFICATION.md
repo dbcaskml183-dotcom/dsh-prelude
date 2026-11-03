@@ -1,3 +1,22 @@
+# 0.4.24 安装兼容验证
+
+本版针对 npm 发布声明，不改动分析、改写、审校、方法库或个人库业务代码。
+
+- 官方干净 DSH rc.2–rc.5，Linux / macOS：默认安装、启动、鉴权响应、合成收藏写入、正常重启后读回通过。未使用版本豁免。
+- 对照已发布的 0.4.23：官方 rc.2 Linux / macOS 同样能实际启动和保存。独立 Node import 报错不等同于 DSH 加载失败。
+- 本地 WSL 官方 rc.5、自动化 Chromium：完成初始引导，选择合成工作区，输入 CSV 转换需求，打开 Prelude，搜索验收标准，插入补句；原文保留、未发送、无页面异常。
+- Linux / macOS 原生存储测试通过；现有功能测试与 lint 通过。
+- npm 上的 0.4.23 与 GitHub 原发行附件逐字节一致。
+- 本轮无付费模型调用。原生 Windows 仍不支持；macOS 人工交互及手机真机未在本轮验收。
+
+[官方宿主运行记录](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41591435614) · [最终包跨平台检查](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41594173084) · [最终包 rc.5 浏览器操作通过](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41594676308)
+
+最终包跨平台运行中，Linux rc.5 的浏览器库受临时 HOME 设置影响无法导入；其余七项通过。随后只修正测试环境，使用同一安装包补跑 rc.5，完成页面操作、保存和重启复核。临时兼容探针保留在 compat-0424 分支，不加入日常构建流程。
+
+下方保留旧版本记录，不代表本轮全部重跑。
+
+---
+
 # Prelude 验证记录
 
 ## 0.4.22

@@ -2,7 +2,7 @@
 
 A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing requirement, and compare the rewrite with your draft before applying it.
 
-[Download 0.4.23](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+[Download 0.4.24](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
 [Browse all 90 method cards (中文)](docs/catalog.md), including when each method applies, when to skip it, example scenarios, and sources.
 
@@ -16,13 +16,13 @@ The addition explains how to verify the script while preserving both original co
 
 ## Install in DSH
 
-For the tested Linux/WSL2 setup with DSH 0.2.1-rc.2 and the `web` profile, run this in the host terminal. Back up an existing profile before adding plugins.
+On Linux/WSL2 or macOS with DSH 0.2.1-rc.2 through rc.5 and Node 24+, run this in the host terminal using the `web` profile. Back up an existing profile before adding plugins.
 
 ```sh
-dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach@0.4.24 --ignore-scripts
 ```
 
-Reload the same profile and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)
+Save drafts, wait for tasks to finish, restart DSH through your usual launcher, and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)
 
 ## Try it in the DSH composer
 
@@ -38,6 +38,6 @@ Save phrases you use often in your personal library for next time.
 
 Browsing methods is local. Analysis, rewriting, and optional review use the model provider configured in DSH and may incur charges. Conversation excerpts and text attachments are included only when selected.
 
-**Tested on Windows desktop** with a Windows launcher or browser connected to DSH 0.2.1-rc.2 in WSL2. Linux and native macOS also passed installation, startup, and an authenticated plugin status check on that host version.
+**Tested on Windows desktop** with a Windows launcher or browser connected to DSH 0.2.1-rc.2 in WSL2. Linux and native macOS passed clean-host installation, startup, favorite writes and restart persistence checks on rc.2 through rc.5.
 
 [Compatibility results](docs/installation.en.md#tested-environments) · [Usage (中文)](docs/quickstart.md) · [Report an issue](https://github.com/dbcaskml183-dotcom/dsh-prelude/issues/new/choose) · [MIT License](LICENSE)

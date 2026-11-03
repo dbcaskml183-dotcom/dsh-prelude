@@ -2654,7 +2654,7 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.23",
+  version: "0.4.24",
   description: "Prelude \u2014 DeepSeek Harness (DSH) \u63D0\u793A\u8BCD\u4F18\u5316\u4E0E\u6539\u5199\u52A9\u624B\uFF0C\u63D0\u4F9B\u65B9\u6CD5\u5361\u3001\u5C40\u90E8\u8865\u53E5\u548C\u539F\u7A3F\u5BF9\u7167\u3002",
   type: "module",
   main: "./index.mjs",
@@ -2665,7 +2665,7 @@ var package_default = {
   },
   license: "MIT",
   engines: {
-    dsh: "0.2.1-rc.2",
+    dsh: ">=0.2.1-rc.2 <=0.2.1-rc.5",
     node: ">=24"
   },
   dsh: {
@@ -2720,12 +2720,13 @@ var package_default = {
     "docs/method-sources.md"
   ],
   peerDependencies: {
-    "@deepseek-ai/dsh-home-paths": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5",
     "@deepseek-ai/schemastery": "3.18.5"
   },
   displayName: "Prelude",
   os: [
-    "linux"
+    "linux",
+    "darwin"
   ],
   keywords: [
     "dsh",

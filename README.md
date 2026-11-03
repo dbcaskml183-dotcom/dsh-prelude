@@ -10,7 +10,7 @@
 90 张方法卡可按阶段、领域和关键词查找。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.23 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.24 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
 
 ## 先看看方法卡
@@ -61,13 +61,13 @@
 
 ## 安装到 DSH
 
-已在 Linux / WSL2 的 DSH 0.2.1-rc.2、`web` 配置实测。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
+支持 Linux / WSL2、macOS，DSH 0.2.1-rc.2 至 rc.5，Node 24 及以上。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
 
 ```sh
-dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach@0.4.24 --ignore-scripts
 ```
 
-重新加载同一个 profile，刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
+保存草稿、等任务结束后，按原启动方式正常重启 DSH，再刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
 
 ## 第一次打开 Prelude
 
@@ -89,7 +89,7 @@ dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
 
 ## 支持环境
 
-**Windows 桌面端已实测**：通过 Windows 桌面启动器或浏览器使用 Prelude，DSH 0.2.1-rc.2 运行在 WSL2 中。Linux 和原生 macOS 上也已验证同版宿主的安装、启动与插件响应。[各平台与 DSH 版本实测](docs/installation.md#支持环境)
+**Windows 桌面端已实测**：通过 Windows 桌面启动器或浏览器使用 Prelude，DSH 0.2.1-rc.2 运行在 WSL2 中。Linux 和原生 macOS 的 rc.2–rc.5 已通过干净宿主安装、启动及数据保存检查。[各平台与 DSH 版本实测](docs/installation.md#支持环境)
 
 [使用指南](docs/quickstart.md) · [报告问题](https://github.com/dbcaskml183-dotcom/dsh-prelude/issues/new/choose) · [开发与贡献](CONTRIBUTING.md) · [安全问题](SECURITY.md) · [MIT 许可证](LICENSE)
 
