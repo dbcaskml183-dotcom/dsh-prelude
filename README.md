@@ -60,9 +60,9 @@ Prelude 是嵌入 **DeepSeek Harness（DSH）** 输入区的提示词辅助插�
 <!-- prelude-current:start -->
 ## 安装
 
-当前 **0.4.21 预览版**。使用下方 TGZ 安装包，本项目不通过 npm 分发。
+当前 **0.4.21 预览版**。从 GitHub Releases 下载下方安装包。
 
-**已验证目标：Linux / WSL2 上的 DSH 0.2.1-rc.2、Node.js 24，现代 Chromium 浏览器。** Windows 浏览器可以连接 WSL 宿主；原生 Windows/macOS 宿主及其他 DSH 版本不在当前支持范围内。
+已在 Linux / WSL2 的 DSH 0.2.1-rc.2 上实用验证。在 macOS 原生 rc.2 上已验证安装、启动与插件响应。Windows 桌面可连接 WSL 宿主。其他组合见[兼容性实测](docs/installation.md#支持环境)。
 
 安装包：[dsh-prompt-coach-0.4.21.tgz](release/dsh-prompt-coach-0.4.21.tgz)。公开仓库名是 `dsh-prelude`，内部安装包名保留 `dsh-prompt-coach`，用于兼容原有配置与个人库。不要安装来源未确认的 npm 同名包。
 

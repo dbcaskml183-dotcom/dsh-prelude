@@ -4,9 +4,14 @@
 
 ## 支持环境
 
-- Linux / WSL2 中的 DSH **0.2.1-rc.2**，Node.js **24**。
-- Windows Chrome/Edge 可以连接 WSL 内的 DSH；这不等于支持 Windows 原生 Node 宿主。
-- DSH rc.3 或其他版本、macOS 宿主尚不在支持范围。不要为安装插件更改现有宿主版本。
+| 0.4.21 安装环境 | 实测结果 |
+|---|---|
+| Linux / WSL2 · DSH rc.2 · Node 24 | 可用。Windows 浏览器和桌面启动器可连接 WSL 宿主。 |
+| macOS 原生 · rc.2 · Node 24 | 在干净宿主安装、启动成功，登录后的插件状态接口返回 0.4.21，账本测试通过。尚未验证 macOS 桌面交互和真实模型回合。 |
+| Linux 与 macOS · rc.3、rc.4、rc.5 | 0.4.21 清单指定 rc.2，默认安装被拒。在一次性测试机上为该版本启用宿主的精确版本豁免后，六种组合均通过安装、启动和登录后的插件状态检查。 |
+| Windows 原生 Node 24 | 账本目录同步实际返回 EPERM。0.4.21 不支持原生 Windows 数据写入，Windows 用户可使用 WSL2。 |
+
+[正常安装测试](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41567949491) · [其他 RC 的隔离启动测试](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41568664094)
 
 ## 首次安装
 

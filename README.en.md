@@ -28,9 +28,9 @@ A clear prompt may need no changes. A successful review is not a guarantee of be
 
 ## Install
 
-Version **0.4.21** is a preview. Install the supplied TGZ package; this project is not distributed through npm.
+Version **0.4.21** is a preview. Download the supplied package from GitHub Releases.
 
-Supported target: **DSH 0.2.1-rc.2 on Linux / WSL2, Node.js 24, and modern Chromium**. Native Windows/macOS hosts and other DSH versions are not currently supported. Windows browsers can connect to a WSL host.
+Tested on DSH 0.2.1-rc.2 on Linux / WSL2. Native macOS rc.2 also passed installation, startup and an authenticated plugin status check. Windows browsers can connect to WSL. See the [compatibility results](docs/installation.md#支持环境).
 
 The public project is named `dsh-prelude`; the installation package remains `dsh-prompt-coach` for compatibility. Use the supplied [package](release/dsh-prompt-coach-0.4.21.tgz), not an unverified npm package with the same name.
 
