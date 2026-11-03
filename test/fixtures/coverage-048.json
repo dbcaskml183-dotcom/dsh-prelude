@@ -1,0 +1,814 @@
+{
+  "rounds": [
+    {
+      "id": "R21",
+      "methodId": "reproduce",
+      "draft": "【合成测试 R21】\n订单页面点击保存后闪退，请排查这个故障。先记录原始症状与触发条件，建立能观察该故障的最小反馈入口，再据此排查。",
+      "previousRepeat": true
+    },
+    {
+      "id": "R22",
+      "methodId": "regression",
+      "draft": "【合成测试 R22】\n登录故障已经修复，请检查这次修改是否可靠：重跑原故障或目标行为，并做与影响范围相称的回归；通过后无新疑点就收口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "R23",
+      "methodId": "cohesion",
+      "draft": "【合成测试 R23】\n请设计订单模块和支付模块之间的代码结构：按职责组织模块，明确接口和依赖方向，减少修改的连锁影响；具体结构以当前需求为依据。",
+      "previousRepeat": false
+    },
+    {
+      "id": "R24",
+      "methodId": "first-principles",
+      "draft": "【合成测试 R24】\n校园活动报名系统的选型前提不清，请重新思考方案：先区分目标、已知事实、硬约束和可质疑的假设，再说明哪些假设真正决定选型方案。",
+      "previousRepeat": true
+    },
+    {
+      "id": "R25",
+      "methodId": "second-order",
+      "draft": "【合成测试 R25】\n请按二阶思维评估默认开启消息提醒的长期影响：先检查直接结果，再考虑随后可能引发的连锁影响、反馈和延迟；区分有证据的后果与待验证的推测，优先说明会改变决策的风险和观察信号，避免无限推演。",
+      "previousRepeat": false
+    },
+    {
+      "id": "R26",
+      "methodId": "evidence",
+      "draft": "【合成测试 R26】\n请调查桌面软件自动更新方案是否可行，并汇报依据。将关键结论区分为实测、引用、推断和未取证，并给出能核对的来源或验证入口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "R27",
+      "methodId": "tradeoffs",
+      "draft": "【合成测试 R27】\n请比较本地部署与云端部署这两条路线（如有必要也把维持现状纳入比较），说明各自的主要代价、后续影响，以及在什么条件下推荐会改变；没有依据不要编造评分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "R28",
+      "methodId": "citations",
+      "draft": "【合成测试 R28】\n请根据下列给定论文材料撰写技术说明。\n材料A：合成测量中方案甲用时12毫秒，方案乙用时15毫秒。\n材料B：合成复核只测了单机条件。\n\n撰写时，关键说法要对应可核实的来源与定位；对较长材料，先找相关短原文再作判断，并核对支持与反对证据。材料或证据有缺口时请明示，不补造引用或实测结果。",
+      "previousRepeat": true
+    },
+    {
+      "id": "R29",
+      "methodId": "handoff",
+      "draft": "【合成测试 R29】\n接下来由另一位同事接手开发工作。请准备项目交接说明，涵盖当前目标与最新更正、约束、产物版本、已测与未测范围、失败反例及下一步；关键要求和证据保留原始入口，不只转述上一位的摘要。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C31",
+      "methodId": "reproduce",
+      "draft": "【合成续测 C031】\n订单页面点击保存后闪退，\n请排查这个故障。\n先保存原症状与触发条件，\n建立能观察该故障的最小反馈入口，\n再据此排查。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C32",
+      "methodId": "regression",
+      "draft": "【合成续测 C032】\n登录故障已经修复，\n请检查这次修改是否可靠：先重跑原来的登录故障或目标行为，\n再按影响范围做必要的回归检查；\n如果通过且没有新的疑点，\n就可以收口。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C33",
+      "methodId": "cohesion",
+      "draft": "【合成续测 C033】\n请设计订单模块和支付模块之间的代码结构：按职责组织模块，\n明确接口和依赖方向，\n减少修改的连锁影响；\n必要结构以当前需求为依据。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C35",
+      "methodId": "second-order",
+      "draft": "【合成续测 C035】\n请评估默认开启消息提醒的长期影响。\n分析时，\n先检查直接结果，\n再考虑随后可能引发的连锁影响、反馈和延迟；\n区分有证据的后果与待验证的推测，\n优先说明会改变决策的风险和观察信号，\n避免无限推演。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C36",
+      "methodId": "evidence",
+      "draft": "【合成续测 C036】\n请调查桌面软件自动更新方案是否可行，\n并汇报判断依据。\n关键结论请区分实测、引用、推断和未取证，\n并给出可核对的来源或验证入口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C37",
+      "methodId": "tradeoffs",
+      "draft": "【合成续测 C037】\n请比较本地部署与云端部署这两条路线；\n如适用，\n也可将维持现状纳入比较。\n请说明各自的主要代价、后续影响，\n以及什么条件会改变推荐；\n没有依据不要编造评分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C38",
+      "methodId": "citations",
+      "draft": "【合成续测 C038】\n请根据给定论文材料撰写技术说明。\n材料A：合成测量中方案甲用时12毫秒，\n方案乙用时15毫秒。\n材料B：合成复核只测了单机条件。\n\n写作时，\n关键说法需对应可核实的来源与定位；\n材料较长时，\n先找到相关短原文再判断，\n并核对支持与反对该说法的证据。\n依据不足处明示缺口，\n不补造引用或实测结果。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C39",
+      "methodId": "handoff",
+      "draft": "【合成续测 C039】\n接下来由另一位同事接手开发工作，\n请准备项目交接说明。\n说明需涵盖当前目标及最新更正、约束、产物版本、已测与未测范围、失败反例和下一步；\n关键要求和证据保留原始入口，\n不只转述上一位的摘要。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C40",
+      "methodId": "acceptance",
+      "draft": "【合成续测 C040】\n请实现一个用于登记借书和归还时间的小工具。\n请明确可核对的完成标准；\n收尾时逐项说明证据和仍未验证的部分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C41",
+      "methodId": "reproduce",
+      "draft": "【合成续测 C041】\n订单页面点击保存后闪退，请排查这个故障。排查时先保存原症状与触发条件，建立能观察该故障的最小反馈入口，再据此排查。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C42",
+      "methodId": "regression",
+      "draft": "【合成续测 C042】\n登录故障已经修复，请回归验证这次修改是否可靠：重跑原故障或目标行为，并按影响范围做相称的回归；通过后若无新疑点就收口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C43",
+      "methodId": "cohesion",
+      "draft": "【合成续测 C043】\n请设计订单模块和支付模块之间的代码结构：按职责组织模块，明确接口和依赖方向，并按当前需求确定必要结构，以减少修改的连锁影响。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C45",
+      "methodId": "second-order",
+      "draft": "【合成续测 C045】\n请评估默认开启消息提醒的长期影响。分析时先看直接结果，再看随后可能引发的连锁影响、反馈和延迟；区分有证据的后果与待验证的推测，优先说明会改变决策的风险和观察信号，避免无限推演。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C46",
+      "methodId": "evidence",
+      "draft": "【合成续测 C046】\n请调查桌面软件自动更新方案是否可行，并汇报依据。请将关键结论区分为实测、引用、推断和未取证，并给出可核对的来源或验证入口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C47",
+      "methodId": "tradeoffs",
+      "draft": "【合成续测 C047】\n请比较本地部署与云端部署这两条路线：说明各自的主要代价、后续影响，以及哪些条件会改变推荐；如有必要，也可把维持现状纳入比较。没有依据时不要编造评分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C48",
+      "methodId": "citations",
+      "draft": "【合成续测 C048】\n请根据给定论文材料撰写技术说明，纳入以下材料要点：\n- 材料A：合成测量中方案甲用时12毫秒，方案乙用时15毫秒。\n- 材料B：合成复核只测了单机条件。\n关键说法对应可核实的来源与定位；材料较长时，先找相关短原文再判断，并核对支持与反对证据。缺口明示，不补造引用或实测结果。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C49",
+      "methodId": "handoff",
+      "draft": "【合成续测 C049】\n接下来由另一位同事接手开发工作，请准备项目交接说明：交接当前目标和最新更正、约束、产物版本、已测与未测范围、失败反例及下一步；关键要求和证据保留原始入口，不只转述上一位的摘要。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C50",
+      "methodId": "acceptance",
+      "draft": "【合成续测 C050】\n请实现一个用于登记借书和归还时间的小工具。请明确可核对的完成标准；收尾时逐项说明证据和仍未验证的部分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C51",
+      "methodId": "reproduce",
+      "draft": "【合成续测 C051】\n测试订单页一点击保存就崩溃，请调查原因。先保存原症状与触发条件，建立能观察该故障的最小反馈入口，再据此排查。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C52",
+      "methodId": "regression",
+      "draft": "【合成续测 C052】\n登录页故障已修复。请重跑原故障或目标行为，并做与影响范围相称的回归验证，检查这次补丁有没有把其他地方带坏；通过且无新疑点即可收口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C53",
+      "methodId": "cohesion",
+      "draft": "【合成续测 C053】\n请提出订单与支付程序模块的结构设计：按职责划分模块，明确接口和依赖方向，减少修改的连锁影响；结构以满足当前需求为依据。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C54",
+      "methodId": "first-principles",
+      "draft": "【合成续测 C054】\n活动报名系统的技术路线涉及很多未经证实的前提，请从事实出发重新思考。先区分目标、已知事实、硬约束和可质疑的假设，再说明哪些假设真正决定方案。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C55",
+      "methodId": "second-order",
+      "draft": "【合成续测 C055】\n如果把消息提醒设为默认开启，未来可能产生哪些直接结果，以及随后引发的连锁影响、反馈和延迟？请区分有证据的后果与待验证的推测，优先说明会改变决策的风险和可观察信号，避免无限推演。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C56",
+      "methodId": "evidence",
+      "draft": "【合成续测 C056】请调查桌面应用自动升级能否落地，并说明结论凭什么成立：将关键结论区分为实测、引用、推断和未取证，并给出可核对的来源或验证入口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C57",
+      "methodId": "tradeoffs",
+      "draft": "【合成续测 C057】\n请比较“本机运行”和“云端运行”两条路线的主要取舍：各自的主要代价、后续影响，以及在什么条件下会改变推荐。必要时可将维持现状作为对照；没有依据不要编造评分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C59",
+      "methodId": "handoff",
+      "draft": "【合成续测 C059】\n请给接下来负责开发的同事写一份接手说明，交接当前目标和最新更正、约束、产物版本、已测与未测范围、失败反例及下一步；关键要求和证据保留原始入口，不只转述上一位的摘要。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C60",
+      "methodId": "acceptance",
+      "draft": "【合成续测 C060】\n做一个小工具，用于登记借书时间和归还时间。请明确可核对的完成标准；收尾时逐项说明证据和仍未验证的部分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C61",
+      "methodId": "reproduce",
+      "draft": "【合成续测 C061】\n测试订单页点击“保存”即崩溃，请调查原因。请先记录原始症状与触发条件，建立能观察该故障的最小反馈入口，再据此排查。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C62",
+      "methodId": "regression",
+      "draft": "【合成续测 C062】登录页故障已修复。请重跑原故障或目标行为，并做与影响范围相称的回归，检查这次补丁有没有把其他地方带坏；通过后如无新疑点就收口。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C63",
+      "methodId": "cohesion",
+      "draft": "【合成续测 C063】\n请针对订单和支付的程序模块提出结构设计：按职责组织模块，明确接口和依赖方向，减少修改的连锁影响；必要结构以当前需求为依据。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C65",
+      "methodId": "second-order",
+      "draft": "【合成续测 C065】\n请分析：把消息提醒设为默认开启后，未来会产生哪些连带后果？先说明直接结果，再追踪随后可能引发的连锁影响、反馈和延迟；区分有证据的后果与待验证的推测，优先指出会改变决策的风险和可观察信号，避免无限推演。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C66",
+      "methodId": "evidence",
+      "draft": "【合成续测 C066】\n请调查桌面应用自动升级能否落地，并说明结论凭什么成立。请将关键结论区分为实测、引用、推断和未取证，并给出能核对的来源或验证入口。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C67",
+      "methodId": "tradeoffs",
+      "draft": "【合成续测 C067】\n请比较本机运行和云端运行这两条路线各有什么取舍：说明各自的主要代价、后续影响，以及什么条件会改变推荐；没有依据不要编造评分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C69",
+      "methodId": "handoff",
+      "draft": "【合成续测 C069】\n请根据当前项目已有信息，给接下来负责开发的同事写一份接手说明，交代清楚：\n1. 当前目标与最新更正；\n2. 约束；\n3. 产物版本；\n4. 已测与未测范围；\n5. 失败反例；\n6. 下一步。\n\n关键要求和证据请保留原始入口，不只转述上一位的摘要。缺失的信息请明确标为待补，不要编造。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C70",
+      "methodId": "acceptance",
+      "draft": "【合成续测 C070】\n做一个小工具，用于登记借书时间和归还时间。请明确可核对的完成标准；收尾时逐项说明对应证据，并列出仍未验证的部分。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C71",
+      "methodId": "reproduce",
+      "draft": "【合成续测 C071】\n测试订单页一点击保存就崩溃。请先记录原始症状与触发条件，建立能观察该故障的最小反馈入口，再据此调查崩溃原因。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C72",
+      "methodId": "regression",
+      "draft": "【合成续测 C072】\n登录页故障已修复。请先重跑原故障或目标行为，确认修复有效；再按这次补丁的影响范围做相称的回归检查，确认没有把其他地方带坏。若通过且无新疑点就结束验证。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C73",
+      "methodId": "cohesion",
+      "draft": "【合成续测 C073】\n如何组织订单和支付的程序模块？请提出结构设计：按职责划分模块，明确接口和依赖方向，减少修改的连锁影响；必要结构以当前需求为依据。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C74",
+      "methodId": "first-principles",
+      "draft": "【合成续测 C074】\n活动报名系统的技术路线包含不少未经证实的前提。请从事实出发重新思考：先区分目标、已知事实、硬约束和可质疑的假设，再说明哪些假设真正决定方案。",
+      "previousRepeat": false
+    },
+    {
+      "id": "C75",
+      "methodId": "second-order",
+      "draft": "【合成续测 C075】\n把消息提醒设为默认开启，未来可能有哪些直接结果和连带后果？请检查随后可能引发的连锁影响、反馈与延迟；区分有证据的后果和待验证的推测，优先说明会改变决策的风险及可观察信号，避免无限推演。",
+      "previousRepeat": true
+    },
+    {
+      "id": "C76",
+      "methodId": "evidence",
+      "draft": "【合成续测 C076】\n请调查桌面应用自动升级能否落地，并说明结论凭什么成立。关键结论需区分为实测、引用、推断和未取证，并给出能核对的来源或验证入口。",
+      "previousRepeat": false
+    }
+  ],
+  "controls": [
+    {
+      "control": 1,
+      "methodId": "reproduce",
+      "form": "verbatim",
+      "initial": [],
+      "closed": [],
+      "reset": [],
+      "formatted": [
+        "reproduce"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 2,
+      "methodId": "reproduce",
+      "form": "paraphrase",
+      "initial": [
+        "reproduce",
+        "regression"
+      ],
+      "closed": [
+        "reproduce",
+        "regression"
+      ],
+      "reset": [
+        "reproduce",
+        "regression"
+      ],
+      "formatted": [
+        "reproduce",
+        "regression"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 3,
+      "methodId": "regression",
+      "form": "verbatim",
+      "initial": [
+        "reproduce"
+      ],
+      "closed": [
+        "reproduce"
+      ],
+      "reset": [
+        "reproduce"
+      ],
+      "formatted": [
+        "reproduce",
+        "regression"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 4,
+      "methodId": "regression",
+      "form": "paraphrase",
+      "initial": [
+        "reproduce",
+        "regression"
+      ],
+      "closed": [
+        "reproduce",
+        "regression"
+      ],
+      "reset": [
+        "reproduce",
+        "regression"
+      ],
+      "formatted": [
+        "reproduce",
+        "regression"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 5,
+      "methodId": "cohesion",
+      "form": "verbatim",
+      "initial": [],
+      "closed": [],
+      "reset": [],
+      "formatted": [
+        "second-order",
+        "regression",
+        "cohesion"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 6,
+      "methodId": "cohesion",
+      "form": "paraphrase",
+      "initial": [
+        "cohesion",
+        "contracts"
+      ],
+      "closed": [
+        "cohesion",
+        "contracts"
+      ],
+      "reset": [
+        "cohesion",
+        "contracts"
+      ],
+      "formatted": [
+        "cohesion",
+        "contracts"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 7,
+      "methodId": "first-principles",
+      "form": "verbatim",
+      "initial": [],
+      "closed": [],
+      "reset": [],
+      "formatted": [
+        "first-principles",
+        "falsify"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 8,
+      "methodId": "first-principles",
+      "form": "paraphrase",
+      "initial": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "closed": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "reset": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "formatted": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 9,
+      "methodId": "second-order",
+      "form": "verbatim",
+      "initial": [],
+      "closed": [],
+      "reset": [],
+      "formatted": [
+        "second-order",
+        "adversarial",
+        "evidence"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 10,
+      "methodId": "second-order",
+      "form": "paraphrase",
+      "initial": [
+        "second-order"
+      ],
+      "closed": [
+        "second-order"
+      ],
+      "reset": [
+        "second-order"
+      ],
+      "formatted": [
+        "second-order"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 11,
+      "methodId": "evidence",
+      "form": "verbatim",
+      "initial": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "closed": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "reset": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "formatted": [
+        "assumption-check",
+        "primary-sources",
+        "citations"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 12,
+      "methodId": "evidence",
+      "form": "paraphrase",
+      "initial": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "closed": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "reset": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "formatted": [
+        "assumption-check",
+        "primary-sources",
+        "regression"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 13,
+      "methodId": "tradeoffs",
+      "form": "verbatim",
+      "initial": [],
+      "closed": [],
+      "reset": [],
+      "formatted": [
+        "second-order",
+        "assumption-check"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 14,
+      "methodId": "tradeoffs",
+      "form": "paraphrase",
+      "initial": [],
+      "closed": [],
+      "reset": [],
+      "formatted": [],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 15,
+      "methodId": "citations",
+      "form": "verbatim",
+      "initial": [
+        "primary-sources",
+        "evidence"
+      ],
+      "closed": [
+        "primary-sources",
+        "evidence"
+      ],
+      "reset": [
+        "primary-sources",
+        "evidence"
+      ],
+      "formatted": [
+        "layered-summary",
+        "primary-sources",
+        "citations"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 16,
+      "methodId": "citations",
+      "form": "paraphrase",
+      "initial": [
+        "primary-sources",
+        "citations",
+        "evidence"
+      ],
+      "closed": [
+        "primary-sources",
+        "citations",
+        "evidence"
+      ],
+      "reset": [
+        "primary-sources",
+        "citations",
+        "evidence"
+      ],
+      "formatted": [
+        "primary-sources",
+        "citations",
+        "evidence"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 17,
+      "methodId": "handoff",
+      "form": "verbatim",
+      "initial": [
+        "ponytail",
+        "acceptance"
+      ],
+      "closed": [
+        "ponytail",
+        "acceptance"
+      ],
+      "reset": [
+        "ponytail",
+        "acceptance"
+      ],
+      "formatted": [
+        "reproduce",
+        "ponytail",
+        "acceptance"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 18,
+      "methodId": "handoff",
+      "form": "paraphrase",
+      "initial": [
+        "reproduce",
+        "ponytail",
+        "handoff"
+      ],
+      "closed": [
+        "reproduce",
+        "ponytail",
+        "handoff"
+      ],
+      "reset": [
+        "reproduce",
+        "ponytail",
+        "handoff"
+      ],
+      "formatted": [
+        "reproduce",
+        "ponytail",
+        "handoff"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    },
+    {
+      "control": 19,
+      "methodId": "acceptance",
+      "form": "verbatim",
+      "initial": [
+        "ponytail",
+        "regression"
+      ],
+      "closed": [
+        "ponytail",
+        "regression"
+      ],
+      "reset": [
+        "ponytail",
+        "regression"
+      ],
+      "formatted": [
+        "ponytail",
+        "regression",
+        "evidence"
+      ],
+      "returned": {
+        "initial": false,
+        "afterCloseOpen": false,
+        "afterReset": false,
+        "afterFormat": false
+      }
+    },
+    {
+      "control": 20,
+      "methodId": "acceptance",
+      "form": "paraphrase",
+      "initial": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "closed": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "reset": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "formatted": [
+        "ponytail",
+        "regression",
+        "acceptance"
+      ],
+      "returned": {
+        "initial": true,
+        "afterCloseOpen": true,
+        "afterReset": true,
+        "afterFormat": true
+      }
+    }
+  ],
+  "sameDraft049": {
+    "actualCandidate": "插件已更新，请继续对“C:\\Users\\demo-user\\Desktop\\DSH-Prelude\\01-当前交付\\dsh-prelude-0.4.9\\”做全方位、多角度、穿透式检查，认真细致且严谨地确认是否还有不合格或有问题的地方；对本次更新涉及或可能影响的目标行为与范围做回归验证，以相关目标行为正常、原有问题未复现、相关功能未受影响且无新疑点为通过标准，若通过且无新疑点即可收口。若发现问题，可以列成有等级的问题清单；有的话依旧落成一份 .md 文档放到“C:\\Users\\demo-user\\Desktop\\DSH-Prelude\\02-审查报告”里；收尾时逐项说明检查或回归的证据以及仍未验证的部分。",
+    "counterfactual": "插件已更新，请继续对“C:\\Users\\demo-user\\Desktop\\DSH-Prelude\\01-当前交付\\dsh-prelude-0.4.9\\”做全方位、多角度、穿透式检查，认真细致且严谨地确认是否还有不合格或有问题的地方；对本次更新涉及或可能影响的目标行为与范围做回归验证，以相关目标行为正常、原有问题未复现、相关功能未受影响且无新疑点为验收标准，若通过且无新疑点即可收口。若发现问题，可以列成有等级的问题清单；有的话依旧落成一份 .md 文档放到“C:\\Users\\demo-user\\Desktop\\DSH-Prelude\\02-审查报告”里；收尾时逐项说明检查或回归的证据以及仍未验证的部分。"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name": "dsh-prompt-coach",
+  "version": "0.4.21",
+  "description": "Prelude：专业方法卡片与可控的提示词补充",
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "dsh": "0.2.1-rc.2",
+    "node": ">=24"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs && node tools/manifest.mjs --write",
+    "test": "node tools/test.mjs",
+    "lint": "eslint .",
+    "verify": "node tools/manifest.mjs",
+    "verify:source": "node tools/source-manifest.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.21.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/dsh-llm": "0.2.1-rc.2",
+    "eslint": "10.13.0"
+  },
+  "files": [
+    "index.mjs",
+    "client.js",
+    "methods.json",
+    "sources.json",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "MANIFEST.sha256",
+    "bundles.json",
+    "bin/storage-doctor.mjs",
+    "docs/compatibility.md",
+    "docs/operations.md",
+    "docs/architecture.md",
+    "CHANGELOG.md",
+    "docs/rewrite-workflow.md",
+    "guidance/rules.json"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/dsh-home-paths": "0.2.1-rc.2",
+    "@deepseek-ai/schemastery": "3.18.5"
+  },
+  "displayName": "Prelude",
+  "os": [
+    "linux"
+  ],
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "prompt-engineering",
+    "prompt-editor",
+    "prelude"
+  ]
+}

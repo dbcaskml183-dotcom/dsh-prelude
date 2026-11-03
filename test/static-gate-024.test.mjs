@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {ESLint} from 'eslint';
+test('static gate rejects the previous undefined cleanup identifier before release',async()=>{const eslint=new ESLint(),[result]=await eslint.lintText('export function cleanup(){contexts.clear();}',{filePath:'src/lint-canary.mjs'});assert.ok(result.messages.some(x=>x.ruleId==='no-undef'&&x.message.includes('contexts')));});

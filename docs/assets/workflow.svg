@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+<title id="title">Prelude 使用流程</title><desc id="desc">写下需求，按需分析或选择方法，对比候选，明确采用到输入框，最后由用户发送。功能流程示意，并非产品截图。</desc>
+<rect width="1200" height="360" rx="20" fill="#101113"/>
+<g font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+<text x="48" y="64" fill="#f4f4f5" font-size="30" font-weight="600">Prelude</text>
+<text x="48" y="99" fill="#b1b5bd" font-size="18">从原始需求，到你愿意采用的提示词</text>
+<g fill="#181a1e" stroke="#383c44"><rect x="48" y="139" width="246" height="126" rx="12"/><rect x="334" y="139" width="246" height="126" rx="12"/><rect x="620" y="139" width="246" height="126" rx="12"/><rect x="906" y="139" width="246" height="126" rx="12"/></g>
+<g fill="#f4f4f5" font-size="23" font-weight="600"><text x="70" y="184">写下需求</text><text x="356" y="184">选择补充</text><text x="642" y="184">对比候选</text><text x="928" y="184">明确采用</text></g>
+<g fill="#b1b5bd" font-size="17"><text x="70" y="224">目标、背景与已有要求</text><text x="356" y="224">按需分析或查找方法</text><text x="642" y="224">编辑、审校或保留原稿</text><text x="928" y="224">回到输入框，自行发送</text></g>
+<g stroke="#85a8eb" stroke-width="2" fill="none"><path d="M302 202h22m-7-6 7 6-7 6"/><path d="M588 202h22m-7-6 7 6-7 6"/><path d="M874 202h22m-7-6 7 6-7 6"/></g>
+<text x="48" y="315" fill="#b1b5bd" font-size="16">不必每次都选方法或改写；原稿清楚时，可以保持原样。</text>
+</g></svg>

@@ -1,0 +1,1346 @@
+[
+  {
+    "id": "H01-base",
+    "baseId": "H01",
+    "category": "coding",
+    "variant": "base",
+    "request": {
+      "draft": "为短信发送接口加入去重，服务重试不能重复扣费。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H01-wording",
+    "baseId": "H01",
+    "category": "coding",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：为短信发送接口加入去重，服务重试不能重复扣费。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H01-requirements",
+    "baseId": "H01",
+    "category": "coding",
+    "variant": "requirements",
+    "request": {
+      "draft": "为短信发送接口加入去重，服务重试不能重复扣费。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H01-no-questions",
+    "baseId": "H01",
+    "category": "coding",
+    "variant": "no-questions",
+    "request": {
+      "draft": "为短信发送接口加入去重，服务重试不能重复扣费。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H02-base",
+    "baseId": "H02",
+    "category": "coding",
+    "variant": "base",
+    "request": {
+      "draft": "重构购物车的优惠计算模块，外部返回结果保持一致。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H02-wording",
+    "baseId": "H02",
+    "category": "coding",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：重构购物车的优惠计算模块，外部返回结果保持一致。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H02-requirements",
+    "baseId": "H02",
+    "category": "coding",
+    "variant": "requirements",
+    "request": {
+      "draft": "重构购物车的优惠计算模块，外部返回结果保持一致。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H02-no-questions",
+    "baseId": "H02",
+    "category": "coding",
+    "variant": "no-questions",
+    "request": {
+      "draft": "重构购物车的优惠计算模块，外部返回结果保持一致。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H03-base",
+    "baseId": "H03",
+    "category": "coding",
+    "variant": "base",
+    "request": {
+      "draft": "为跨模块事件总线定义错误传播和取消行为。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H03-wording",
+    "baseId": "H03",
+    "category": "coding",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：为跨模块事件总线定义错误传播和取消行为。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H03-requirements",
+    "baseId": "H03",
+    "category": "coding",
+    "variant": "requirements",
+    "request": {
+      "draft": "为跨模块事件总线定义错误传播和取消行为。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H03-no-questions",
+    "baseId": "H03",
+    "category": "coding",
+    "variant": "no-questions",
+    "request": {
+      "draft": "为跨模块事件总线定义错误传播和取消行为。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H04-base",
+    "baseId": "H04",
+    "category": "coding",
+    "variant": "base",
+    "request": {
+      "draft": "实现配置文件往返转换，不能丢掉未知字段。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H04-wording",
+    "baseId": "H04",
+    "category": "coding",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：实现配置文件往返转换，不能丢掉未知字段。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H04-requirements",
+    "baseId": "H04",
+    "category": "coding",
+    "variant": "requirements",
+    "request": {
+      "draft": "实现配置文件往返转换，不能丢掉未知字段。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H04-no-questions",
+    "baseId": "H04",
+    "category": "coding",
+    "variant": "no-questions",
+    "request": {
+      "draft": "实现配置文件往返转换，不能丢掉未知字段。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H05-base",
+    "baseId": "H05",
+    "category": "coding",
+    "variant": "base",
+    "request": {
+      "draft": "Develop a local image catalogue with import and export.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H05-wording",
+    "baseId": "H05",
+    "category": "coding",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Develop a local image catalogue with import and export.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H05-requirements",
+    "baseId": "H05",
+    "category": "coding",
+    "variant": "requirements",
+    "request": {
+      "draft": "Develop a local image catalogue with import and export.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H05-no-questions",
+    "baseId": "H05",
+    "category": "coding",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Develop a local image catalogue with import and export. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H06-base",
+    "baseId": "H06",
+    "category": "coding",
+    "variant": "base",
+    "request": {
+      "draft": "Implement timeout handling for a payment gateway.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H06-wording",
+    "baseId": "H06",
+    "category": "coding",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Implement timeout handling for a payment gateway.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H06-requirements",
+    "baseId": "H06",
+    "category": "coding",
+    "variant": "requirements",
+    "request": {
+      "draft": "Implement timeout handling for a payment gateway.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H06-no-questions",
+    "baseId": "H06",
+    "category": "coding",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Implement timeout handling for a payment gateway. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H07-base",
+    "baseId": "H07",
+    "category": "debug",
+    "variant": "base",
+    "request": {
+      "draft": "程序隔几天就无法连接数据库，帮我调查原因。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H07-wording",
+    "baseId": "H07",
+    "category": "debug",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：程序隔几天就无法连接数据库，帮我调查原因。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H07-requirements",
+    "baseId": "H07",
+    "category": "debug",
+    "variant": "requirements",
+    "request": {
+      "draft": "程序隔几天就无法连接数据库，帮我调查原因。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H07-no-questions",
+    "baseId": "H07",
+    "category": "debug",
+    "variant": "no-questions",
+    "request": {
+      "draft": "程序隔几天就无法连接数据库，帮我调查原因。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H08-base",
+    "baseId": "H08",
+    "category": "debug",
+    "variant": "base",
+    "request": {
+      "draft": "页面偶尔空白但请求仍返回200，查清失败入口。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H08-wording",
+    "baseId": "H08",
+    "category": "debug",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：页面偶尔空白但请求仍返回200，查清失败入口。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H08-requirements",
+    "baseId": "H08",
+    "category": "debug",
+    "variant": "requirements",
+    "request": {
+      "draft": "页面偶尔空白但请求仍返回200，查清失败入口。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H08-no-questions",
+    "baseId": "H08",
+    "category": "debug",
+    "variant": "no-questions",
+    "request": {
+      "draft": "页面偶尔空白但请求仍返回200，查清失败入口。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H09-base",
+    "baseId": "H09",
+    "category": "debug",
+    "variant": "base",
+    "request": {
+      "draft": "更新后插件被跳过，需要核对版本和模块身份。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H09-wording",
+    "baseId": "H09",
+    "category": "debug",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：更新后插件被跳过，需要核对版本和模块身份。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H09-requirements",
+    "baseId": "H09",
+    "category": "debug",
+    "variant": "requirements",
+    "request": {
+      "draft": "更新后插件被跳过，需要核对版本和模块身份。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H09-no-questions",
+    "baseId": "H09",
+    "category": "debug",
+    "variant": "no-questions",
+    "request": {
+      "draft": "更新后插件被跳过，需要核对版本和模块身份。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H10-base",
+    "baseId": "H10",
+    "category": "debug",
+    "variant": "base",
+    "request": {
+      "draft": "Investigate why cancelling a job still writes output.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H10-wording",
+    "baseId": "H10",
+    "category": "debug",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Investigate why cancelling a job still writes output.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H10-requirements",
+    "baseId": "H10",
+    "category": "debug",
+    "variant": "requirements",
+    "request": {
+      "draft": "Investigate why cancelling a job still writes output.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H10-no-questions",
+    "baseId": "H10",
+    "category": "debug",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Investigate why cancelling a job still writes output. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H11-base",
+    "baseId": "H11",
+    "category": "debug",
+    "variant": "base",
+    "request": {
+      "draft": "A worker crashes only after many retries; find the cause.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H11-wording",
+    "baseId": "H11",
+    "category": "debug",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: A worker crashes only after many retries; find the cause.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H11-requirements",
+    "baseId": "H11",
+    "category": "debug",
+    "variant": "requirements",
+    "request": {
+      "draft": "A worker crashes only after many retries; find the cause.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H11-no-questions",
+    "baseId": "H11",
+    "category": "debug",
+    "variant": "no-questions",
+    "request": {
+      "draft": "A worker crashes only after many retries; find the cause. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H12-base",
+    "baseId": "H12",
+    "category": "debug",
+    "variant": "base",
+    "request": {
+      "draft": "The cache returns inconsistent results after migration.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H12-wording",
+    "baseId": "H12",
+    "category": "debug",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: The cache returns inconsistent results after migration.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H12-requirements",
+    "baseId": "H12",
+    "category": "debug",
+    "variant": "requirements",
+    "request": {
+      "draft": "The cache returns inconsistent results after migration.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H12-no-questions",
+    "baseId": "H12",
+    "category": "debug",
+    "variant": "no-questions",
+    "request": {
+      "draft": "The cache returns inconsistent results after migration. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H13-base",
+    "baseId": "H13",
+    "category": "research",
+    "variant": "base",
+    "request": {
+      "draft": "分析两篇论文中对同一个实验的相反解释。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H13-wording",
+    "baseId": "H13",
+    "category": "research",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：分析两篇论文中对同一个实验的相反解释。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H13-requirements",
+    "baseId": "H13",
+    "category": "research",
+    "variant": "requirements",
+    "request": {
+      "draft": "分析两篇论文中对同一个实验的相反解释。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H13-no-questions",
+    "baseId": "H13",
+    "category": "research",
+    "variant": "no-questions",
+    "request": {
+      "draft": "分析两篇论文中对同一个实验的相反解释。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H14-base",
+    "baseId": "H14",
+    "category": "research",
+    "variant": "base",
+    "request": {
+      "draft": "整理技术交底书的结构，区分做过的与设想。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H14-wording",
+    "baseId": "H14",
+    "category": "research",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：整理技术交底书的结构，区分做过的与设想。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H14-requirements",
+    "baseId": "H14",
+    "category": "research",
+    "variant": "requirements",
+    "request": {
+      "draft": "整理技术交底书的结构，区分做过的与设想。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H14-no-questions",
+    "baseId": "H14",
+    "category": "research",
+    "variant": "no-questions",
+    "request": {
+      "draft": "整理技术交底书的结构，区分做过的与设想。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H15-base",
+    "baseId": "H15",
+    "category": "research",
+    "variant": "base",
+    "request": {
+      "draft": "核对长PDF中的单位、表格编号和缺页情况。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H15-wording",
+    "baseId": "H15",
+    "category": "research",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：核对长PDF中的单位、表格编号和缺页情况。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H15-requirements",
+    "baseId": "H15",
+    "category": "research",
+    "variant": "requirements",
+    "request": {
+      "draft": "核对长PDF中的单位、表格编号和缺页情况。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H15-no-questions",
+    "baseId": "H15",
+    "category": "research",
+    "variant": "no-questions",
+    "request": {
+      "draft": "核对长PDF中的单位、表格编号和缺页情况。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H16-base",
+    "baseId": "H16",
+    "category": "research",
+    "variant": "base",
+    "request": {
+      "draft": "Compare the original sources behind two conflicting claims.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H16-wording",
+    "baseId": "H16",
+    "category": "research",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Compare the original sources behind two conflicting claims.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H16-requirements",
+    "baseId": "H16",
+    "category": "research",
+    "variant": "requirements",
+    "request": {
+      "draft": "Compare the original sources behind two conflicting claims.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H16-no-questions",
+    "baseId": "H16",
+    "category": "research",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Compare the original sources behind two conflicting claims. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H17-base",
+    "baseId": "H17",
+    "category": "writing",
+    "variant": "base",
+    "request": {
+      "draft": "Revise only the conclusion paragraph and retain its qualifications.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H17-wording",
+    "baseId": "H17",
+    "category": "writing",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Revise only the conclusion paragraph and retain its qualifications.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H17-requirements",
+    "baseId": "H17",
+    "category": "writing",
+    "variant": "requirements",
+    "request": {
+      "draft": "Revise only the conclusion paragraph and retain its qualifications.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H17-no-questions",
+    "baseId": "H17",
+    "category": "writing",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Revise only the conclusion paragraph and retain its qualifications. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H18-base",
+    "baseId": "H18",
+    "category": "writing",
+    "variant": "base",
+    "request": {
+      "draft": "Prepare a readable explanation of this software design.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H18-wording",
+    "baseId": "H18",
+    "category": "writing",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Prepare a readable explanation of this software design.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H18-requirements",
+    "baseId": "H18",
+    "category": "writing",
+    "variant": "requirements",
+    "request": {
+      "draft": "Prepare a readable explanation of this software design.",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H18-no-questions",
+    "baseId": "H18",
+    "category": "writing",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Prepare a readable explanation of this software design. Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H19-base",
+    "baseId": "H19",
+    "category": "simple",
+    "variant": "base",
+    "request": {
+      "draft": "把这句话翻译成英文：今天风很大。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H19-wording",
+    "baseId": "H19",
+    "category": "simple",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：把这句话翻译成英文：今天风很大。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H19-requirements",
+    "baseId": "H19",
+    "category": "simple",
+    "variant": "requirements",
+    "request": {
+      "draft": "把这句话翻译成英文：今天风很大。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H19-no-questions",
+    "baseId": "H19",
+    "category": "simple",
+    "variant": "no-questions",
+    "request": {
+      "draft": "把这句话翻译成英文：今天风很大。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H20-base",
+    "baseId": "H20",
+    "category": "simple",
+    "variant": "base",
+    "request": {
+      "draft": "计算 18 × 9，只输出数字。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H20-wording",
+    "baseId": "H20",
+    "category": "simple",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：计算 18 × 9，只输出数字。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H20-requirements",
+    "baseId": "H20",
+    "category": "simple",
+    "variant": "requirements",
+    "request": {
+      "draft": "计算 18 × 9，只输出数字。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H20-no-questions",
+    "baseId": "H20",
+    "category": "simple",
+    "variant": "no-questions",
+    "request": {
+      "draft": "计算 18 × 9，只输出数字。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H21-base",
+    "baseId": "H21",
+    "category": "simple",
+    "variant": "base",
+    "request": {
+      "draft": "请原样复制下面的引文，不要加说明。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H21-wording",
+    "baseId": "H21",
+    "category": "simple",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：请原样复制下面的引文，不要加说明。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H21-requirements",
+    "baseId": "H21",
+    "category": "simple",
+    "variant": "requirements",
+    "request": {
+      "draft": "请原样复制下面的引文，不要加说明。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H21-no-questions",
+    "baseId": "H21",
+    "category": "simple",
+    "variant": "no-questions",
+    "request": {
+      "draft": "请原样复制下面的引文，不要加说明。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H22-base",
+    "baseId": "H22",
+    "category": "continuation",
+    "variant": "base",
+    "request": {
+      "draft": "继续，按刚才确认的方案推进。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H22-wording",
+    "baseId": "H22",
+    "category": "continuation",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：继续，按刚才确认的方案推进。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H22-requirements",
+    "baseId": "H22",
+    "category": "continuation",
+    "variant": "requirements",
+    "request": {
+      "draft": "继续，按刚才确认的方案推进。",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H22-no-questions",
+    "baseId": "H22",
+    "category": "continuation",
+    "variant": "no-questions",
+    "request": {
+      "draft": "继续，按刚才确认的方案推进。 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 0,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H23-base",
+    "baseId": "H23",
+    "category": "vague",
+    "variant": "base",
+    "request": {
+      "draft": "帮我补充完善",
+      "context": "",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H23-wording",
+    "baseId": "H23",
+    "category": "vague",
+    "variant": "wording",
+    "request": {
+      "draft": "请认真处理：帮我补充完善",
+      "context": "",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H23-requirements",
+    "baseId": "H23",
+    "category": "vague",
+    "variant": "requirements",
+    "request": {
+      "draft": "帮我补充完善",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H23-no-questions",
+    "baseId": "H23",
+    "category": "vague",
+    "variant": "no-questions",
+    "request": {
+      "draft": "帮我补充完善 不要问我问题。",
+      "context": "",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H24-base",
+    "baseId": "H24",
+    "category": "vague",
+    "variant": "base",
+    "request": {
+      "draft": "Improve this",
+      "context": "",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H24-wording",
+    "baseId": "H24",
+    "category": "vague",
+    "variant": "wording",
+    "request": {
+      "draft": "Please consider the task: Improve this",
+      "context": "",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H24-requirements",
+    "baseId": "H24",
+    "category": "vague",
+    "variant": "requirements",
+    "request": {
+      "draft": "Improve this",
+      "context": "本轮只读分析，不执行、不修改文件，不做MVP，不缩减范围。",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  },
+  {
+    "id": "H24-no-questions",
+    "baseId": "H24",
+    "category": "vague",
+    "variant": "no-questions",
+    "request": {
+      "draft": "Improve this Do not ask me questions.",
+      "context": "",
+      "materials": {
+        "attachmentCount": 1,
+        "referenceCount": 0
+      }
+    }
+  }
+]

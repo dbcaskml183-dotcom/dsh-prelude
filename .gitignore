@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+*.tgz
+!release/*.tgz
+*.log
+*.private.*
+.env*
+.DS_Store
+.work/
+artifacts/

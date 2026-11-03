@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "bundles": [
+    {
+      "id": "build",
+      "label": "开发落实",
+      "explanation": "对齐要求，再实现与验证",
+      "methodIds": [
+        "spec-alignment",
+        "cohesion",
+        "regression"
+      ]
+    },
+    {
+      "id": "debug",
+      "label": "故障定位",
+      "explanation": "复现现象，区分原因，再防回归",
+      "methodIds": [
+        "reproduce",
+        "falsify",
+        "regression"
+      ]
+    },
+    {
+      "id": "research",
+      "label": "资料综合",
+      "explanation": "检查覆盖，综合证据，保留来源",
+      "methodIds": [
+        "document-coverage",
+        "evidence-synthesis",
+        "citations"
+      ]
+    },
+    {
+      "id": "decision",
+      "label": "方案决策",
+      "explanation": "比较取舍，检查后果与可逆性",
+      "methodIds": [
+        "tradeoffs",
+        "second-order",
+        "reversibility"
+      ]
+    },
+    {
+      "id": "ui",
+      "label": "界面打磨",
+      "explanation": "沿用户步骤检查状态和可操作性",
+      "methodIds": [
+        "user-journey",
+        "ui-state-coverage",
+        "accessible-interaction"
+      ]
+    },
+    {
+      "id": "data",
+      "label": "数据分析",
+      "explanation": "先检查质量和粒度，再解释统计结果",
+      "methodIds": [
+        "data-profile",
+        "data-grain",
+        "statistical-interpretation"
+      ]
+    },
+    {
+      "id": "handoff",
+      "label": "长任务交接",
+      "explanation": "明确依赖、恢复点和接手信息",
+      "methodIds": [
+        "dependencies",
+        "checkpoint",
+        "handoff"
+      ]
+    },
+    {
+      "id": "writing",
+      "label": "论证写作",
+      "explanation": "检查论证、引用和修订边界",
+      "methodIds": [
+        "argument-map",
+        "citations",
+        "bounded-revision"
+      ]
+    }
+  ]
+}

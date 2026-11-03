@@ -1,0 +1,566 @@
+{
+  "observed_date": "2026-10-24",
+  "note": "仓库API许可证标记不替代导入前逐文件许可检查；固定源码头不代表本机已安装该头。",
+  "sources": [
+    {
+      "id": "local",
+      "name": "本机已适配的DSH方法与原创中文拟稿",
+      "url": null,
+      "license": "逐项保留原来源；本地新增表述单独标注",
+      "use": "优先复用现有Ponytail/排障/评审/交接/研究写作边界",
+      "admission": "卡片草案仍需内容验收"
+    },
+    {
+      "id": "ponytail",
+      "name": "DietrichGebert/ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "commit": "09c434ab73ca43761c5d8b0c5d341926c2fba710",
+      "license_api": "MIT",
+      "use": "最小完整实现、复用、负载与精简评审"
+    },
+    {
+      "id": "matt",
+      "name": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "commit": "5beb35b040e3de97e54fa9e386d7e42d15c295c2",
+      "license_api": "MIT",
+      "use": "关键追问、接口/深模块、TDD、原型、交接、说人话；不移植整条Tracker工作流"
+    },
+    {
+      "id": "superpowers",
+      "name": "obra/superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "license_api": "MIT",
+      "use": "排障、失败验证、评审、完成证据；不采用所有任务强制技能的引导"
+    },
+    {
+      "id": "openspec",
+      "name": "Fission-AI/OpenSpec",
+      "url": "https://github.com/Fission-AI/OpenSpec",
+      "commit": "56ef0ac1fd2270e88d276b40da9f23ec0f9c6e96",
+      "license_api": "MIT",
+      "use": "范围、需求和阶段产物；不安装其完整CLI/工作流"
+    },
+    {
+      "id": "guide",
+      "name": "dair-ai/Prompt-Engineering-Guide",
+      "url": "https://github.com/dair-ai/Prompt-Engineering-Guide",
+      "commit": "57673726396dd94acb23bdb1e67f27c78ee85a8e",
+      "license_api": "MIT",
+      "use": "目标、上下文、例子和输出结构的参考；文件引用和外部素材仍逐项审查"
+    },
+    {
+      "id": "scientific",
+      "name": "K-Dense-AI/scientific-agent-skills（原claude-scientific-skills路径）",
+      "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "requested_url": "https://github.com/K-Dense-AI/claude-scientific-skills",
+      "commit_observed_via_requested_url": "593377bb048752abb0152deab9fbb1083a6087df",
+      "license_api": "MIT",
+      "use": "先复用本机已选取的scientific-writing/critical-thinking；内容证据、结构和引用规范，不搬行业全库"
+    },
+    {
+      "id": "anthropic-tutorial",
+      "name": "Anthropic交互式提示工程教程",
+      "url": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+      "commit": "0d277542e927652da25b0014c9b346723af55881",
+      "license_api": null,
+      "use": "仅学习参考；明确许可前不复制/翻译入分发词库"
+    },
+    {
+      "id": "ui-reference",
+      "name": "rongxingda/dsh-prompt-enhance",
+      "url": "https://github.com/rongxingda/dsh-prompt-enhance",
+      "commit": "989770f59d421e0bceff43a69c168689d3d36e6d",
+      "license_observed": "Apache-2.0",
+      "use": "参考输入按钮、辅助调用与状态处理；不是可直接安装的完整补句教练"
+    },
+    {
+      "id": "docling",
+      "name": "Docling转换质量机制",
+      "url": "https://docling-project.github.io/docling/concepts/confidence_scores/",
+      "use": "借用页级识别质量与复查思路；不表示本机安装或使用Docling。"
+    },
+    {
+      "id": "anthropic-docx",
+      "name": "Anthropic DOCX关键步骤",
+      "url": "https://github.com/anthropics/skills/blob/dbd4588f9e1033efb41dad4bef2f7947c8993d44/skills/docx/SKILL.md",
+      "use": "阅读编辑保真、修订和最终渲染检查。文件声明Proprietary；不复制/翻译其技能文件，仅以原创中文表达通用检查方法。"
+    },
+    {
+      "id": "anthropic-grounding",
+      "name": "Anthropic长文证据定位",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+      "use": "原文依据和承认缺口；不能从Claude建议推断DeepSeek效果已验证。"
+    },
+    {
+      "id": "google",
+      "name": "Google提示设计",
+      "url": "https://ai.google.dev/gemini-api/docs/prompting-strategies",
+      "use": "适量输出样例及一致格式；不沿用所有任务始终加few-shot的绝对要求。"
+    },
+    {
+      "id": "huggingface",
+      "name": "Hugging Face提示工程",
+      "url": "https://huggingface.co/docs/transformers/tasks/prompting",
+      "use": "样例可能增加长度、延迟和带来不希望的模式；旧模型示例不当成新模型保证。"
+    },
+    {
+      "id": "bmad",
+      "name": "BMAD固定版本方法表",
+      "url": "https://github.com/bmad-code-org/BMAD-METHOD/blob/61e01f82644c4bb533750cfa0d6d61ab61d2cc9b/skills/bmad-advanced-elicitation/assets/methods.csv",
+      "use": "实查71条。只吸收形态分析、反向失败和强反方等思想，不导入全套工作流、不强制三来源或模拟专家投票。实际LICENSE正文为MIT，API的NOASSERTION不等于无许可。"
+    },
+    {
+      "id": "fastcheck",
+      "name": "fast-check性质测试",
+      "url": "https://fast-check.dev/docs/introduction/",
+      "use": "属性、不变量与缩小反例；不新增测试库依赖。"
+    },
+    {
+      "id": "hypothesis",
+      "name": "Hypothesis状态测试",
+      "url": "https://hypothesis.readthedocs.io/en/latest/stateful.html",
+      "use": "动作序列与每步不变量，用于增强已有边界卡，不单独加重复状态机卡。"
+    },
+    {
+      "id": "owasp",
+      "name": "OWASP提示注入防护",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+      "use": "区分指令与不可信资料；文字不是权限隔离机制。"
+    },
+    {
+      "id": "bipm",
+      "name": "BIPM国际单位制入口",
+      "url": "https://www.bipm.org/en/publications/si-brochure",
+      "use": "单位规范参考入口；未声称通读整本SI手册。数字/分母核对为本地原创检查设计，不称BIPM提示词。"
+    },
+    {
+      "id": "promptwizard",
+      "name": "Microsoft PromptWizard关键代码",
+      "url": "https://github.com/microsoft/PromptWizard/blob/a1d43f876ef4468b0549a3ceff8bd691b80cd667/promptwizard/glue/promptopt/techniques/critique_n_refine/core_logic.py",
+      "use": "阅读evaluate及get_best_prompt等实现，借用可核对样例反馈思想，不导入自动多轮优化框架。"
+    },
+    {
+      "id": "dspy",
+      "name": "DSPy MIPROv2",
+      "url": "https://github.com/stanfordnlp/dspy/blob/98830391be6fbf81523757271432bba1c6c4eb80/docs/docs/api/optimizers/MIPROv2.md",
+      "use": "候选指令与样例需由任务指标比较；不安装框架、不启动试验。"
+    },
+    {
+      "id": "langgpt",
+      "name": "LangGPT中文结构设计",
+      "url": "https://github.com/langgptai/LangGPT/blob/c8864d748e7cb8437427721eed756f6e578e6c9b/Docs/HowToWritestructuredPrompts.md",
+      "use": "保留模块清楚、语义一致的思想；不搬完整角色模板、不把每个任务变成长prompt。"
+    },
+    {
+      "id": "self-correction",
+      "name": "无外部反馈自我纠错的局限研究",
+      "url": "https://arxiv.org/abs/2310.01798",
+      "use": "论文研究其当时的模型和任务；不外推为所有当前模型必然失败。作为本轮不承诺多审几遍就可靠的理由。"
+    },
+    {
+      "id": "prompt-report",
+      "name": "The Prompt Report",
+      "url": "https://arxiv.org/abs/2406.06608",
+      "use": "术语体系和方法地图，非本机效果证明。"
+    },
+    {
+      "id": "promptsource",
+      "name": "BigScience PromptSource",
+      "url": "https://github.com/bigscience-workshop/promptsource",
+      "use": "主要是数据集输入到目标输出的模板；与用户需要的任务方法补句不同，不批量导入。"
+    },
+    {
+      "id": "research-google-prompt",
+      "name": "Google：提示设计策略",
+      "url": "https://ai.google.dev/gemini-api/docs/prompting-strategies",
+      "read_scope": "已定位输出格式、约束、任务拆分等章节",
+      "limit": "示例依赖模型，不能通用照搬采样参数",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-nist-eda",
+      "name": "NIST：探索性数据分析",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section1/eda11.htm",
+      "read_scope": "已读正文",
+      "limit": "数据分析方法，不是LLM效果试验",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-nist-outliers",
+      "name": "NIST：异常值检测",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm",
+      "read_scope": "已定位异常值标记、调查与稳健处理",
+      "limit": "异常不等于错误，不应自动删除",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-dbt",
+      "name": "dbt：语义模型与数据粒度",
+      "url": "https://docs.getdbt.com/best-practices/how-we-build-our-metrics/semantic-layer-3-build-semantic-models",
+      "read_scope": "已定位grain与实体关系",
+      "limit": "连接前后计数校验是本次工程化改编",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-dowhy",
+      "name": "DoWhy：因果估计反驳",
+      "url": "https://www.pywhy.org/dowhy/v0.14/user_guide/refuting_causal_estimates/index.html",
+      "read_scope": "已读相关正文",
+      "limit": "通过反驳测试仍不等于证明因果成立",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-greenbook",
+      "name": "英国财政部：Green Book 2026",
+      "url": "https://www.gov.uk/government/publications/the-green-book--2/the-green-book-2026",
+      "read_scope": "已读敏感性与switching values相关段落",
+      "limit": "不将英国公共政策规则冒充各领域统一法律",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-nist-doe",
+      "name": "NIST：选择实验设计",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri3.htm",
+      "read_scope": "已读目标、因素与设计目录",
+      "limit": "随机化、重复、交互作用按问题选择，不机械逐一改变变量",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-sklearn",
+      "name": "scikit-learn：常见陷阱与数据泄漏",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+      "read_scope": "已读数据泄漏章节",
+      "limit": "数据划分还须依时序、主体和任务具体判断",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-asa",
+      "name": "美国统计协会：统计显著性的解释",
+      "url": "https://www.amstat.org/news-listing/2021/10/08/editorial-calls-time-on-statistically-significant-in-research",
+      "read_scope": "已打开并定位显著性与解释相关段落",
+      "limit": "不宣称所有统计学家同意废除显著性检验",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-prisma",
+      "name": "PRISMA 2020 检查表",
+      "url": "https://www.prisma-statement.org/s/PRISMA_2020_checklist-ab3g.pdf",
+      "read_scope": "已定位纳排、资料来源、检索式与选择过程",
+      "limit": "这里只借鉴检索透明度，不声称普通调研已达系统综述标准",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-prisma-s",
+      "name": "PRISMA-S 检索报告",
+      "url": "https://www.prisma-statement.org/prisma-search",
+      "read_scope": "已读扩展介绍",
+      "limit": "不以条目数量代替实际检索质量",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-wipo",
+      "name": "WIPO专利撰写手册第二版",
+      "url": "https://www.wipo.int/edocs/pubdocs/en/wipo-pub-867-23-en-wipo-patent-drafting-manual.pdf",
+      "read_scope": "已读PDF印刷页99–100的说明书支持章节及相关示例",
+      "limit": "不是对中国具体申请的法律意见；不能保证新颖性或授权",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-epo",
+      "name": "EPO 2026：问题—解决方案方法",
+      "url": "https://www.epo.org/en/legal/guidelines-pct/2026/g_vii_5.html",
+      "read_scope": "已跟进旧页修订提示并读2026三阶段正文",
+      "limit": "EPO方法不是中国审查规则的替身",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-jsonschema",
+      "name": "JSON Schema：null",
+      "url": "https://json-schema.org/understanding-json-schema/reference/null",
+      "read_scope": "已读正文",
+      "limit": "null、字段缺失、false、0不能混用；schema也不保证事实真实",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-snomed",
+      "name": "SNOMED：带明确上下文的临床发现",
+      "url": "https://docs.snomed.org/implementation-guides/context-representation-implementation-guide/4-snomed-ct-and-context/4.1-clinical-findings-with-explicit-context",
+      "read_scope": "已定位存在/缺如/不确定、主体与时间语境",
+      "limit": "只借鉴结构化事实表达，不生成诊断或治疗规则",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-mqm",
+      "name": "MQM：翻译错误分类",
+      "url": "https://www.themqm.org/mqm-pillars/typology/",
+      "read_scope": "已读准确性、术语和漏增译相关段落",
+      "limit": "不是把完整MQM评分体系塞进每次翻译",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-ies",
+      "name": "IES：改进学习的教学指南",
+      "url": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1",
+      "read_scope": "已读主动提取、图文结合与自我判断建议",
+      "limit": "学习者与学科有差异，不承诺固定间隔或效果倍数",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-wai",
+      "name": "W3C WAI：初步无障碍检查",
+      "url": "https://www.w3.org/WAI/test-evaluate/preliminary/",
+      "read_scope": "已读范围、键盘、焦点、表单等清单",
+      "limit": "Easy Checks是初筛，不能据此宣称完整WCAG合规",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-ons",
+      "name": "英国国家统计局：图表中的不确定性",
+      "url": "https://service-manual.ons.gov.uk/data-visualisation/guidance/showing-uncertainty-in-charts",
+      "read_scope": "已读何时展示、何时不画及如何解释",
+      "limit": "不照搬机构全部图表样式偏好",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-aqua",
+      "name": "英国AQuA分析质量手册",
+      "url": "https://www.gov.uk/guidance/the-aqua-book",
+      "read_scope": "已定位假设登记、验证与确认",
+      "limit": "治理流程不应原样套到简单个人任务",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "research-nng",
+      "name": "NN/g：可用性十原则",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+      "read_scope": "已读状态、容错、识别优于回忆等段落",
+      "limit": "原则是检查视角，不是实际用户研究替代品",
+      "use": "参考方法，中文补句为本地原创改编；不代表原作者提示词或效果背书"
+    },
+    {
+      "id": "systems-thinking-uk",
+      "name": "英国政府：系统思维工具包",
+      "url": "https://www.gov.uk/government/publications/systems-thinking-for-civil-servants/toolkit",
+      "read_scope": "已读反馈、间接影响、非预期后果与监测段落",
+      "use": "关联后果与反馈的检查视角，非强制套用整套政策流程"
+    },
+    {
+      "id": "second-order-fs",
+      "name": "Farnam Street：Second-Order Thinking",
+      "url": "https://fs.blog/second-order-thinking/",
+      "read_scope": "已读直接后果、互动与时间相关段落",
+      "use": "方法解释来源，补句为本地改编，不构成效果承诺"
+    },
+    {
+      "id": "keyboard-apg",
+      "name": "W3C APG 键盘交互",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/",
+      "read_scope": "上一轮已取证：阅读焦点、Tab 顺序与可预测键盘行为相关段落",
+      "use": "保留 DSH 原生键盘导航；不默认用 Tab 自动插入整组提示。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "ui-stack",
+      "name": "Scott Hurff UI Stack",
+      "url": "https://www.scotthurff.com/posts/why-your-user-interface-is-awkward-youre-ignoring-the-ui-stack/",
+      "read_scope": "上一轮已取证：作者原文，阅读五种界面状态和过渡说明",
+      "use": "作为界面状态检查的启发；不是要求每个页面机械新增五套界面。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "adr-source",
+      "name": "ADR 维护者站点",
+      "url": "https://adr.github.io/",
+      "read_scope": "上一轮已取证：阅读 ADR 定义、背景、选择理由、权衡和后果的介绍",
+      "use": "只对值得追踪的决定做轻量记录，不为每次小改写架构文档。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "scxml",
+      "name": "W3C SCXML",
+      "url": "https://www.w3.org/TR/scxml/",
+      "read_scope": "上一轮已取证：阅读摘要及 event/cond 状态迁移示例；未通读规范全部细节",
+      "use": "状态、事件、守卫可明确行为；状态表不能代替真实运行验证。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "spec-kit",
+      "name": "GitHub Spec Kit",
+      "url": "https://github.com/github/spec-kit",
+      "read_scope": "上一轮已取证：阅读 README 的规范驱动、能力与使用入口；未安装工具或通读全部源码",
+      "use": "借鉴规范与实现对应关系，不把多阶段命令整套强塞给简单任务。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "ssot-source",
+      "name": "GitLab SSOT",
+      "url": "https://handbook.gitlab.com/handbook/communication/",
+      "read_scope": "上一轮已取证：定点阅读 single source of truth 的维护和引用说明；未通读整本手册",
+      "use": "每类事实有权威入口，其他位置引用；不等于所有职责塞进同一文件。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "git-bisect",
+      "name": "Git bisect 文档",
+      "url": "https://git-scm.com/docs/git-bisect",
+      "read_scope": "上一轮已取证：阅读 skip、不可测试提交及 bisect run 的相关段落；未执行命令",
+      "use": "不可测试与偶发故障会限制定位精度；不能保证每一步都准确减半。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "mece-source",
+      "name": "Barbara Minto 关于 MECE 的访谈",
+      "url": "https://www.mckinsey.com/alumni/news-and-events/global-news/alumni-news/barbara-minto-mece-i-invented-it-so-i-get-to-say-how-to-pronounce-it",
+      "read_scope": "上一轮已取证：阅读作者本人受访的 MECE 概念部分；未通读其书籍",
+      "use": "分类时减少重叠、检查遗漏；适用范围与分类维度需要先说明。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "structured-output",
+      "name": "OpenAI Structured Outputs",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "read_scope": "上一轮已取证：定位阅读 Handling user-generated input、Handling mistakes、Avoid JSON schema divergence",
+      "use": "结构约束与事实正确是两件事；资料不匹配时应允许缺失或空结果。",
+      "license": "仅参考方法概念，本机中文补句原创；不复制源码或长段落"
+    },
+    {
+      "id": "stepback-paper",
+      "name": "Step-Back 原论文",
+      "url": "https://arxiv.org/abs/2310.06117",
+      "read_scope": "只读摘要；未复现实验",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "analogy-paper",
+      "name": "Analogical Reasoners 原论文",
+      "url": "https://arxiv.org/abs/2310.01714",
+      "read_scope": "只读摘要；不把自生成类比当真实案例",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "journey-nng",
+      "name": "NN/g：Journey Mapping 101",
+      "url": "https://www.nngroup.com/articles/journey-mapping-101/",
+      "read_scope": "已读定义和组成部分；不复制图表",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "jtbd-institute",
+      "name": "Christensen Institute：JTBD",
+      "url": "https://www.christenseninstitute.org/theory/jobs-to-be-done/",
+      "read_scope": "已读定义、情境和功能/社会/情感维度",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "threat-owasp",
+      "name": "OWASP：Threat Modeling",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html",
+      "read_scope": "已读四问、信任边界和数据流相关章节",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "working-backwards",
+      "name": "Working Backwards 作者：PR/FAQ",
+      "url": "https://workingbackwards.com/resources/working-backwards-pr-faq/",
+      "read_scope": "已读产品构想、用户问题和FAQ章节；不复制模板",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "reversibility-amazon",
+      "name": "Amazon 2015 股东信：决策可逆性",
+      "url": "https://ir.aboutamazon.com/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF",
+      "read_scope": "已读PDF第5页Type1/Type2决策段落",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "opportunity-openstax",
+      "name": "OpenStax：机会成本",
+      "url": "https://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+      "read_scope": "已读机会成本章节",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "voi-nist",
+      "name": "NIST：信息价值与决策路径",
+      "url": "https://www.nist.gov/publications/value-information-and-decision-pathways-concepts-and-case-studies",
+      "read_scope": "已读作者与摘要，未通读论文",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "synthesis-cochrane",
+      "name": "Cochrane：综合分组与纳入标准",
+      "url": "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-03",
+      "read_scope": "已读分组与预先确定标准段落；通用资料综合是克制改编，并非系统综述认证",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "recursive-summary",
+      "name": "递归摘要原论文",
+      "url": "https://arxiv.org/abs/2308.15022",
+      "read_scope": "只读摘要；只借鉴分层汇总，不声称已实现自动记忆系统",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "toulmin-purdue",
+      "name": "Purdue OWL：Toulmin Argument",
+      "url": "https://owl.purdue.edu/owl/general_writing/academic_writing/historical_perspectives_on_argumentation/toulmin_argument.html",
+      "read_scope": "已读主张、证据、担保、限定与反驳定义；不复制原文或示例",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "worked-ies",
+      "name": "IES：范例与问题练习",
+      "url": "https://ies.ed.gov/ncee/wwc/Docs/PracticeGuide/20072004.pdf",
+      "read_scope": "已读建议2及渐隐相关段落；不宣称所有学习者普遍适用",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "fault-nasa",
+      "name": "NASA：Fault Tree Handbook",
+      "url": "https://s3vi.ndc.nasa.gov/ssri-kb/static/resources/Fault%20Tree%20Handbook_NASA.pdf",
+      "read_scope": "已读PDF第14、24、33页演绎与适用边界；未通读218页或做安全认证",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "typed-ts",
+      "name": "TypeScript：判别联合与穷尽检查",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+      "read_scope": "已读Discriminated unions及Exhaustiveness checking；类型不替代运行验证",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "feedback-meadows",
+      "name": "Donella Meadows：杠杆点与反馈延迟",
+      "url": "https://donellameadows.org/archives/leverage-points-places-to-intervene-in-a-system/",
+      "read_scope": "已读反馈、存量流量、延迟章节；不复制原文",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    },
+    {
+      "id": "eval-openai",
+      "name": "OpenAI Docs：Evaluation best practices",
+      "url": "https://developers.openai.com/api/docs/guides/evaluation-best-practices",
+      "read_scope": "已读测试设计及反模式；本机使用独立测试，不接入其Evals服务",
+      "use": "方法概念与适用边界核验，本机中文拟稿",
+      "license": "仅引用来源链接和方法概念，不复制第三方代码、模板或长段文字"
+    }
+  ],
+  "local_release_note": "仅收录本机原创中文补句及来源元数据；未打包或翻译整份上游教程。未明确许可的上游素材不导入。"
+}
