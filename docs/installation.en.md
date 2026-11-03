@@ -16,6 +16,14 @@ The table records 0.4.21 platform tests. Version 0.4.22 passed a fresh WSL2 rc.2
 
 [Installation checks](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41567949491) · [Other RC startup checks](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41568664094)
 
+## Install from npm
+
+```sh
+dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
+```
+
+If a registry mirror has not synced yet, prefix the command with `npm_config_registry=https://registry.npmjs.org`. The release archive is an alternative below.
+
 ## Install
 
 The display name is Prelude. The package keeps its earlier name, `dsh-prompt-coach`, for existing configurations and personal libraries.
@@ -25,12 +33,12 @@ Save your profile configuration, dependency manifest and lockfile first. Preserv
 Run in the Linux/WSL terminal hosting DSH:
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz --ignore-scripts
 ```
 
 The previous 0.4.21 release URL was tested in a fresh WSL2 rc.2 profile. Version 0.4.22 passed installation from its packaged archive and authenticated startup in WSL2 rc.2. The package includes built files, so installation scripts are unnecessary.
 
-Use your actual profile name instead of `web` when different. Use the same CLI version as the running host. For an offline copy, replace the URL with the downloaded file's absolute path. A Windows file at `D:\Downloads\dsh-prompt-coach-0.4.22.tgz` is normally `/mnt/d/Downloads/dsh-prompt-coach-0.4.22.tgz` inside WSL.
+Use your actual profile name instead of `web` when different. Use the same CLI version as the running host. For an offline copy, replace the URL with the downloaded file's absolute path. A Windows file at `D:\Downloads\dsh-prompt-coach-0.4.23.tgz` is normally `/mnt/d/Downloads/dsh-prompt-coach-0.4.23.tgz` inside WSL.
 
 ## Restart and check
 

@@ -2654,8 +2654,8 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.22",
-  description: "Prelude\uFF1A\u4E13\u4E1A\u65B9\u6CD5\u5361\u7247\u4E0E\u53EF\u63A7\u7684\u63D0\u793A\u8BCD\u8865\u5145",
+  version: "0.4.23",
+  description: "Prelude \u2014 DeepSeek Harness (DSH) \u63D0\u793A\u8BCD\u4F18\u5316\u4E0E\u6539\u5199\u52A9\u624B\uFF0C\u63D0\u4F9B\u65B9\u6CD5\u5361\u3001\u5C40\u90E8\u8865\u53E5\u548C\u539F\u7A3F\u5BF9\u7167\u3002",
   type: "module",
   main: "./index.mjs",
   exports: {
@@ -2715,7 +2715,9 @@ var package_default = {
     "README.en.md",
     "docs/installation.md",
     "docs/installation.en.md",
-    "docs/assets/method-library.jpg"
+    "docs/assets/method-library.jpg",
+    "docs/catalog.md",
+    "docs/method-sources.md"
   ],
   peerDependencies: {
     "@deepseek-ai/dsh-home-paths": "0.2.1-rc.2",

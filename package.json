@@ -1,7 +1,7 @@
 {
   "name": "dsh-prompt-coach",
-  "version": "0.4.22",
-  "description": "Prelude：专业方法卡片与可控的提示词补充",
+  "version": "0.4.23",
+  "description": "Prelude — DeepSeek Harness (DSH) 提示词优化与改写助手，提供方法卡、局部补句和原稿对照。",
   "type": "module",
   "main": "./index.mjs",
   "exports": {
@@ -61,7 +61,9 @@
     "README.en.md",
     "docs/installation.md",
     "docs/installation.en.md",
-    "docs/assets/method-library.jpg"
+    "docs/assets/method-library.jpg",
+    "docs/catalog.md",
+    "docs/method-sources.md"
   ],
   "peerDependencies": {
     "@deepseek-ai/dsh-home-paths": "0.2.1-rc.2",

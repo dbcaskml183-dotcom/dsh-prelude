@@ -2,7 +2,9 @@
 
 A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing requirement, and compare the rewrite with your draft before applying it.
 
-[Download 0.4.22](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+[Download 0.4.23](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+
+[Browse all 90 method cards (中文)](docs/catalog.md), including when each method applies, when to skip it, example scenarios, and sources.
 
 ## A rewrite in practice
 
@@ -17,7 +19,7 @@ The addition explains how to verify the script while preserving both original co
 For the tested Linux/WSL2 setup with DSH 0.2.1-rc.2 and the `web` profile, run this in the host terminal. Back up an existing profile before adding plugins.
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
 ```
 
 Reload the same profile and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)

@@ -10,8 +10,42 @@
 90 张方法卡可按阶段、领域和关键词查找。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.22 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.23 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.23/dsh-prompt-coach-0.4.23.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
+
+## 先看看方法卡
+
+安装前即可阅读[全部 90 张方法卡](docs/catalog.md)，每张包含适用条件、场景示例、补句和参考来源。
+
+### 验收标准
+
+把做完的标准变成可核对的结果。
+
+适合完成标准不明确、或准备交付的任务。简单事实问答通常无需增加验收流程。
+
+> 请明确可核对的完成标准；收尾时逐项说明证据和仍未验证的部分。
+
+[查看场景和来源](docs/catalog.md#method-acceptance)
+
+### 高内聚低耦合
+
+让相关逻辑放一起，让模块少互相牵连。
+
+适合模块边界混乱、一次修改牵动多处的情况。小脚本应按实际需要组织，避免为了分层而拆分。
+
+> 按职责组织模块，明确接口和依赖方向，减少修改的连锁影响；必要结构以当前需求为依据。
+
+[查看场景和来源](docs/catalog.md#method-cohesion)
+
+### 二阶思维 / Second-order Thinking
+
+别只看眼前收益，也检查后续的连锁影响和反馈。
+
+适合方案决策、功能设计和长期权衡。目标和做法明确的简单任务通常无需展开；推演应有依据并适时收束。
+
+> 检查方案的直接结果，以及随后可能引发的连锁影响、反馈和延迟；区分有证据的后果与待验证的推测，优先说明会改变决策的风险和观察信号，避免无限推演。
+
+[查看场景和来源](docs/catalog.md#method-second-order)
 
 ## 先看一次改写
 
@@ -30,7 +64,7 @@
 已在 Linux / WSL2 的 DSH 0.2.1-rc.2、`web` 配置实测。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach@0.4.23 --ignore-scripts
 ```
 
 重新加载同一个 profile，刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
