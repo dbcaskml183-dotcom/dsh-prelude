@@ -10,7 +10,7 @@
 90 张方法卡可按阶段、领域和关键词查找。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.21 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.22 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
 
 ## 先看一次改写
@@ -30,7 +30,7 @@
 已在 Linux / WSL2 的 DSH 0.2.1-rc.2、`web` 配置实测。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.22/dsh-prompt-coach-0.4.22.tgz --ignore-scripts
 ```
 
 重新加载同一个 profile，刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)

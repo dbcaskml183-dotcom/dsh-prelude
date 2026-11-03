@@ -2654,7 +2654,7 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.21",
+  version: "0.4.22",
   description: "Prelude\uFF1A\u4E13\u4E1A\u65B9\u6CD5\u5361\u7247\u4E0E\u53EF\u63A7\u7684\u63D0\u793A\u8BCD\u8865\u5145",
   type: "module",
   main: "./index.mjs",
@@ -2664,7 +2664,6 @@ var package_default = {
     "./package.json": "./package.json"
   },
   license: "MIT",
-  private: true,
   engines: {
     dsh: "0.2.1-rc.2",
     node: ">=24"
@@ -2712,7 +2711,11 @@ var package_default = {
     "docs/architecture.md",
     "CHANGELOG.md",
     "docs/rewrite-workflow.md",
-    "guidance/rules.json"
+    "guidance/rules.json",
+    "README.en.md",
+    "docs/installation.md",
+    "docs/installation.en.md",
+    "docs/assets/method-library.jpg"
   ],
   peerDependencies: {
     "@deepseek-ai/dsh-home-paths": "0.2.1-rc.2",
@@ -2728,7 +2731,19 @@ var package_default = {
     "prompt-engineering",
     "prompt-editor",
     "prelude"
-  ]
+  ],
+  repository: {
+    type: "git",
+    url: "git+https://github.com/dbcaskml183-dotcom/dsh-prelude.git"
+  },
+  homepage: "https://github.com/dbcaskml183-dotcom/dsh-prelude#readme",
+  bugs: {
+    url: "https://github.com/dbcaskml183-dotcom/dsh-prelude/issues"
+  },
+  publishConfig: {
+    registry: "https://registry.npmjs.org/",
+    access: "public"
+  }
 };
 
 // src/storage-status.jsx

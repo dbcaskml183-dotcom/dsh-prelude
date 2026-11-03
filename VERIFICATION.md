@@ -1,6 +1,10 @@
 # Prelude 验证记录
 
-## 当前公开版本 · 0.4.21
+## 0.4.22
+
+新增 npm 发布元数据及英文安装资料。已通过打包安装、WSL2 rc.2 启动与登录后的插件状态验证，自动测试通过。其他平台保留 0.4.21 历史证据。
+
+## 0.4.21
 
 [0.4.21 预览版](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/tag/v0.4.21) 已发布。本版增加了对常见 GitHub 令牌和 Authorization Bearer 请求头的检查。
 
