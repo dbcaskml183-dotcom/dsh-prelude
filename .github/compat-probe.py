@@ -37,6 +37,10 @@ def boot(check_saved=False):
                     page=browser.new_page(viewport={"width":1440,"height":1000})
                     errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
                     page.goto(m[0]);page.wait_for_timeout(4000)
+                    if page.get_by_role("button",name="Continue",exact=True).is_visible():
+                        page.get_by_role("button",name="Continue",exact=True).click()
+                    page.get_by_role("button",name="Choose workspace",exact=True).click()
+                    page.wait_for_timeout(1200)
                     print("UI visible:",page.locator("body").inner_text()[:5000])
                     print("UI buttons:",page.get_by_role("button").all_text_contents())
                     browser.close()
