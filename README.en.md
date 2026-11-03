@@ -2,7 +2,7 @@
 
 A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing requirement, and compare the rewrite with your draft before applying it.
 
-[Download 0.4.21](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [Installation (中文)](docs/installation.md) · [简体中文](README.md)
+[Download 0.4.21](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
 ## A rewrite in practice
 
@@ -20,7 +20,7 @@ For the tested Linux/WSL2 setup with DSH 0.2.1-rc.2 and the `web` profile, run t
 dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
 ```
 
-Reload the same profile and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments (中文)](docs/installation.md)
+Reload the same profile and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)
 
 ## Try it in the DSH composer
 
@@ -38,4 +38,4 @@ Browsing methods is local. Analysis, rewriting, and optional review use the mode
 
 **Tested on Windows desktop** with a Windows launcher or browser connected to DSH 0.2.1-rc.2 in WSL2. Linux and native macOS also passed installation, startup, and an authenticated plugin status check on that host version.
 
-[Compatibility results (中文)](docs/installation.md#支持环境) · [Usage (中文)](docs/quickstart.md) · [Report an issue](https://github.com/dbcaskml183-dotcom/dsh-prelude/issues/new/choose) · [MIT License](LICENSE)
+[Compatibility results](docs/installation.en.md#tested-environments) · [Usage (中文)](docs/quickstart.md) · [Report an issue](https://github.com/dbcaskml183-dotcom/dsh-prelude/issues/new/choose) · [MIT License](LICENSE)

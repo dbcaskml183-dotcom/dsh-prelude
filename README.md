@@ -1,6 +1,13 @@
 # Prelude
 
-Prelude 帮你找出需求里没说清的地方。在 DeepSeek Harness 的输入框里，你可以只补一句，也可以对照原稿修改整段，再决定发出哪一版。
+**DSH 提示词优化与改写助手**
+
+发现需求中的遗漏，选择需要补充的要求，再决定怎样修改。
+
+- **补一句** — 从方法卡中选择补充内容，插入当前草稿。
+- **改整段** — 生成候选稿，对照原稿查看和编辑，确认后采用。
+
+90 张方法卡可按阶段、领域和关键词查找。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
 当前 **0.4.21 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)

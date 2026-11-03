@@ -1,6 +1,6 @@
 # 安装、升级与恢复
 
-[返回首页](../README.md)
+[返回首页](../README.md) · [English](installation.en.md)
 
 ## 支持环境
 
@@ -36,7 +36,7 @@ dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.21.tgz --igno
 
 以上假设使用 `web` profile；如实际 profile 不同，使用自己的名称。执行 CLI 应与运行宿主是同一版本。官方命令维护 bundle 和依赖，不重复手工添加 `prompt-coach` entry。
 
-包已带构建产物，不需要启用安装脚本。正常重新加载同一个 profile，刷新浏览器。
+包已带构建产物，不需要启用安装脚本。保存草稿并等待运行任务结束，通过平时使用的启动器或服务管理器正常重启 DSH，再刷新浏览器。手动从终端启动的实例，正常停止后使用原命令、原 profile 和原环境重新启动。
 
 ## 亲眼确认安装成功
 
