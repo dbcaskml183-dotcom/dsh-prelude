@@ -30,7 +30,9 @@ A clear prompt may need no changes. A successful review is not a guarantee of be
 
 Version **0.4.21** is a preview. Download the supplied package from GitHub Releases.
 
-Tested on DSH 0.2.1-rc.2 on Linux / WSL2. Native macOS rc.2 also passed installation, startup and an authenticated plugin status check. Windows browsers can connect to WSL. See the [compatibility results](docs/installation.md#支持环境).
+**Tested on Windows desktop** with both the desktop launcher and a browser, using DSH 0.2.1-rc.2 running in WSL2.
+
+On Linux and native macOS, we also verified plugin installation, startup, and an authenticated response on the same DSH version. For the native Windows backend and other versions, see the [compatibility results](docs/installation.md#支持环境).
 
 The public project is named `dsh-prelude`; the installation package remains `dsh-prompt-coach` for compatibility. Use the supplied [package](release/dsh-prompt-coach-0.4.21.tgz), not an unverified npm package with the same name.
 
