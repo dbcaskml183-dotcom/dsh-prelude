@@ -6,11 +6,23 @@ A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing 
 
 ![Prelude method library showing a method card and the actions to use, insert, or copy its guidance](docs/assets/method-library.png)
 
-## Get started
+## A rewrite in practice
 
-Write a request in DSH and open **Prelude**. Browse 90 method cards (primarily in Chinese), or ask Prelude to suggest additions. Insert a snippet directly, or select methods for a full rewrite. Compare and edit the candidate before applying it to the composer. You decide when to send.
+**Draft:** “Convert CSV to JSON using the Python standard library. Keep the original file.”
 
-For example, a request to convert CSV to JSON can specify a sample input and its expected output. This gives the recipient a concrete way to check the script.
+**One possible rewrite with the acceptance criteria method:** “Convert CSV to JSON using the Python standard library. Keep the original file. Include a small CSV sample, the expected JSON, and the command I can run to check the result.”
+
+The addition explains how to verify the script while preserving both original constraints.
+
+## Try it in the DSH composer
+
+| What you want | What to do |
+| --- | --- |
+| Add one specific requirement | Browse the 90 method cards (primarily in Chinese) and insert a snippet at the cursor. |
+| Find a gap in your request | Analyze the draft, read the suggested additions, and choose what applies. |
+| Bring several requirements together | Select methods, generate a rewrite, and compare it with the original. Edit the candidate before applying it to the composer. You decide when to send. |
+
+Save phrases you use often in your personal library for next time.
 
 Browsing methods is local. Analysis, rewriting, and optional review use the model provider configured in DSH and may incur charges. Conversation excerpts and text attachments are included only when selected.
 
