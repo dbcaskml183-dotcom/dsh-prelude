@@ -1,12 +1,10 @@
 # Prelude
 
-DeepSeek Harness 的提示词写作助手。在输入框里挑选方法、补充要求，对照原稿查看改写，再决定采用哪一版。
+Prelude 帮你找出需求里没说清的地方。在 DeepSeek Harness 的输入框里，你可以只补一句，也可以对照原稿修改整段，再决定发出哪一版。
 
 <!-- prelude-current:start -->
 当前 **0.4.21 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
-
-![Prelude 方法库实拍：每张卡片说明适用场景，并提供用于本次改写、插入光标处和复制操作](docs/assets/method-library.png)
 
 ## 先看一次改写
 
@@ -20,6 +18,16 @@ DeepSeek Harness 的提示词写作助手。在输入框里挑选方法、补充
 
 这次只补了怎样验收。「只用标准库」和「保留原文件」仍是原来的要求。你可以只插入新增的那句话，也可以比较整稿后再采用。
 
+## 安装到 DSH
+
+已在 Linux / WSL2 的 DSH 0.2.1-rc.2、`web` 配置实测。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
+
+```sh
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
+```
+
+重新加载同一个 profile，刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
+
 ## 第一次打开 Prelude
 
 在 DSH 输入框写下需求，打开旁边的 **Prelude**，按你此刻想做的事选一条。
@@ -31,6 +39,8 @@ DeepSeek Harness 的提示词写作助手。在输入框里挑选方法、补充
 | 把几条要求整理成完整提示词 | 按需点 **用于本次改写** → **改写整稿**。对照原稿改好候选，再点 **采用到输入框**，由你发送。 |
 
 经常写同一句要求？可以把它存到 **我的补句**，下次直接插入。[查看使用指南](docs/quickstart.md)
+
+![Prelude 方法库实拍：每张卡片说明适用场景，并提供用于本次改写、插入光标处和复制操作](docs/assets/method-library.jpg)
 
 ## 模型与数据
 

@@ -16,16 +16,17 @@
 
 ## 首次安装
 
-下载 [dsh-prompt-coach-0.4.21.tgz](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz)。包名沿用旧名，以兼容已有配置和个人库。
+Prelude 的安装包名为 `dsh-prompt-coach`，沿用旧名以兼容已有配置和个人库。先保存现有 profile 的配置、依赖清单和锁文件；其他插件有本地修改时也要保存其程序副本。
 
-先保存当前 profile 的配置、依赖清单/锁文件，以及已有插件程序。其他插件有本地修改时，保存其快照，避免 profile 依赖重算影响本地版本。
-
-在运行 DSH 的 Linux/WSL 终端执行：
+**直接从 Release 安装。** 在运行 DSH 的 Linux / WSL 终端执行：
 
 ```sh
-dsh plugin --profile web add /absolute/path/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
-dsh --profile web --dump-config
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
 ```
+
+这条命令已在干净的 WSL2 宿主 rc.2 上验证，安装后宿主加载了 0.4.21，登录后的插件状态接口返回了该版本。
+
+**使用已下载的文件。** 也可以先[下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
 
 例如文件保存在 Windows 的 `D:\Downloads`，WSL 路径通常为：
 

@@ -4,8 +4,6 @@ A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing 
 
 [Download 0.4.21](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz) · [Installation (中文)](docs/installation.md) · [简体中文](README.md)
 
-![Prelude method library showing a method card and the actions to use, insert, or copy its guidance](docs/assets/method-library.png)
-
 ## A rewrite in practice
 
 **Draft:** “Convert CSV to JSON using the Python standard library. Keep the original file.”
@@ -13,6 +11,16 @@ A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing 
 **One possible rewrite with the acceptance criteria method:** “Convert CSV to JSON using the Python standard library. Keep the original file. Include a small CSV sample, the expected JSON, and the command I can run to check the result.”
 
 The addition explains how to verify the script while preserving both original constraints.
+
+## Install in DSH
+
+For the tested Linux/WSL2 setup with DSH 0.2.1-rc.2 and the `web` profile, run this in the host terminal. Back up an existing profile before adding plugins.
+
+```sh
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.21/dsh-prompt-coach-0.4.21.tgz --ignore-scripts
+```
+
+Reload the same profile and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments (中文)](docs/installation.md)
 
 ## Try it in the DSH composer
 
@@ -23,6 +31,8 @@ The addition explains how to verify the script while preserving both original co
 | Bring several requirements together | Select methods, generate a rewrite, and compare it with the original. Edit the candidate before applying it to the composer. You decide when to send. |
 
 Save phrases you use often in your personal library for next time.
+
+![Prelude method library showing a method card and the actions to use, insert, or copy its guidance](docs/assets/method-library.jpg)
 
 Browsing methods is local. Analysis, rewriting, and optional review use the model provider configured in DSH and may incur charges. Conversation excerpts and text attachments are included only when selected.
 
