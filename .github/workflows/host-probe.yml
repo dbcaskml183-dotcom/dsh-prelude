@@ -1,0 +1,58 @@
+name: Native DSH compatibility
+on: [push]
+permissions:
+  contents: read
+jobs:
+  host:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        rc: [2, 3, 4, 5]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - name: Native storage with synthetic data
+        shell: bash
+        run: node --test test/catalog-ledger.test.mjs
+        id: storage
+        continue-on-error: true
+      - name: Install host and profile package manager
+        shell: bash
+        run: npm install -g pnpm@10.34.9 @deepseek-ai/dsh@0.2.1-rc.${{ matrix.rc }}
+      - name: Install published plugin in a fresh profile
+        shell: bash
+        run: dsh plugin --profile web add "$PWD/release/dsh-prompt-coach-0.4.21.tgz" --ignore-scripts
+      - name: Boot and query authenticated plugin endpoint
+        shell: python
+        run: |
+          import http.cookiejar, json, os, pathlib, re, shutil, subprocess, tempfile, time, urllib.request
+          exe = shutil.which("dsh.cmd" if os.name == "nt" else "dsh")
+          with tempfile.TemporaryFile() as log:
+              p = subprocess.Popen([exe,"--profile","web","--host","127.0.0.1","--port","43917","--no-open"],stdout=log,stderr=log)
+              try:
+                  client = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+                  for _ in range(90):
+                      time.sleep(1)
+                      log.seek(0)
+                      lines = log.read().decode(errors="replace")
+                      match = re.search(r"http://127\.0\.0\.1:43917/\?token=[\w.=-]+",lines)
+                      if match:
+                          client.open(match[0],timeout=6).close()
+                          with client.open("http://127.0.0.1:43917/api/prompt-coach/v4/status",timeout=10) as r:
+                              data=json.load(r)
+                          assert data.get("version")=="0.4.21" and data.get("ok")
+                          print("Authenticated Prelude 0.4.21 endpoint verified")
+                          break
+                      if p.poll() is not None: raise RuntimeError("Host exited before issuing a login URL")
+                  else: raise RuntimeError("No usable local login URL before timeout")
+              finally:
+                  p.terminate()
+      - name: Check storage outcome
+        if: always()
+        shell: bash
+        run: test "${{ steps.storage.outcome }}" = success
