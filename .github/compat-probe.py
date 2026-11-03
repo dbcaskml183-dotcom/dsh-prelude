@@ -1,5 +1,6 @@
 import http.cookiejar, json, os, pathlib, re, shutil, subprocess, tempfile, time, urllib.request
 home=pathlib.Path(os.environ["DSH_HOME"])
+if os.environ.get("BROWSER")=="1": pathlib.Path.home().joinpath("prelude-test-workspace").mkdir(parents=True,exist_ok=True)
 version=os.environ.get("PLUGIN_VERSION","0.4.24")
 base="http://127.0.0.1:43917"
 def boot(check_saved=False):
@@ -37,12 +38,27 @@ def boot(check_saved=False):
                     page=browser.new_page(viewport={"width":1440,"height":1000})
                     errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
                     page.goto(m[0]);page.wait_for_timeout(4000)
-                    if page.get_by_role("button",name="Continue",exact=True).is_visible():
-                        page.get_by_role("button",name="Continue",exact=True).click()
+                    page.get_by_role("button",name="Continue",exact=True).wait_for(state="visible",timeout=15000)
+                    page.get_by_role("button",name="Continue",exact=True).click()
+                    page.get_by_role("button",name="Add API Key",exact=True).wait_for(state="visible",timeout=15000)
+                    page.keyboard.press("Escape")
                     page.get_by_role("button",name="Choose workspace",exact=True).click()
-                    page.wait_for_timeout(1200)
-                    print("UI visible:",page.locator("body").inner_text()[:5000])
-                    print("UI buttons:",page.get_by_role("button").all_text_contents())
+                    page.get_by_role("button",name="prelude-test-workspace",exact=True).dblclick()
+                    page.get_by_role("button",name="Open",exact=True).click()
+                    page.locator('[contenteditable="true"]').fill("用 Python 标准库把 CSV 转成 JSON，保留原文件。")
+                    page.get_by_role("button",name="Prelude",exact=True).click()
+                    page.wait_for_timeout(1000)
+                    page.get_by_role("button",name="方法库 · 90",exact=True).click()
+                    page.get_by_role("textbox",name="搜索方法",exact=True).fill("验收标准")
+                    card=page.locator('[data-method="acceptance"]')
+                    card.wait_for(state="visible")
+                    page.get_by_role("button",name="插入光标处：验收标准",exact=True).click()
+                    draft=page.locator('[contenteditable="true"]').inner_text()
+                    assert "用 Python 标准库把 CSV 转成 JSON，保留原文件。" in draft
+                    assert "请明确可核对的完成标准" in draft
+                    assert not errors,errors
+                    page.screenshot(path=str(home/"compat-ui.png"),full_page=True)
+                    print(json.dumps({"browserFlow":"open-search-insert","draftPreserved":True,"snippetInserted":True,"pageErrors":errors,"modelCalls":0},ensure_ascii=False))
                     browser.close()
         finally:
             p.terminate()

@@ -45,5 +45,6 @@ jobs:
       - name: Boot, authenticated read-write and restart
         env:
           DSH_HOME: ${{ runner.temp }}/candidate-dsh
+          HOME: ${{ runner.temp }}/test-home
           BROWSER: ${{ matrix.rc == 5 && matrix.os == 'ubuntu-24.04' && '1' || '0' }}
         run: python3 .github/compat-probe.py

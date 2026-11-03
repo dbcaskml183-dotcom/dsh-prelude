@@ -4,17 +4,16 @@
 
 ## Tested environments
 
-The table records 0.4.21 platform tests. Version 0.4.22 passed a fresh WSL2 rc.2 installation and authenticated startup check; other platforms were not rerun for 0.4.22.
+Version 0.4.24 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5 on Linux / WSL2 and macOS. Default installation needs no version override. Later host versions remain outside the declared range until tested.
 
 | Environment | Verified scope |
 | --- | --- |
-| Windows desktop connected to DSH 0.2.1-rc.2 in WSL2, Node 24 | Desktop launcher and browser use tested. |
-| Linux, DSH rc.2, Node 24 | Installation, startup, and authenticated plugin response tested. |
-| Native macOS, rc.2, Node 24 | Installation, startup, authenticated status, and ledger tests passed. Desktop interactions and real model calls have not been tested there. |
-| Linux and macOS, rc.3–rc.5 | Default installation is rejected by the rc.2 version declaration. Disposable tests using an explicit host version override passed installation, startup, and authenticated status checks. |
-| Native Windows Node 24 | Ledger directory synchronization returned EPERM. Use WSL2 for version 0.4.22. |
+| Windows desktop connected to DSH in WSL2 | Existing desktop launcher and browser interaction evidence; install inside WSL as on Linux. This is not native Windows Node support. |
+| Linux, DSH rc.2 / rc.3 / rc.4 / rc.5 | Clean official host installation, boot, authenticated status, favorite write and persistence after restart; native storage tests. |
+| macOS, DSH rc.2 / rc.3 / rc.4 / rc.5 | The same checks on GitHub macOS runners, not manual desktop interaction or real model validation. |
+| Native Windows Node | Unsupported: directory synchronization previously returned EPERM. Use WSL2. The package retains an explicit platform restriction. |
 
-[Installation checks](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41567949491) · [Other RC startup checks](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41568664094)
+This release does not change model calls or rewriting logic; paid model rounds were not rerun. [Compatibility evidence](compatibility.md#0424-发布验证)
 
 ## Install from npm
 
@@ -30,13 +29,13 @@ The display name is Prelude. The package keeps its earlier name, `dsh-prompt-coa
 
 Save your profile configuration, dependency manifest and lockfile first. Preserve copies of any locally modified plugins too.
 
-Run in the Linux/WSL terminal hosting DSH:
+Run in the Linux/WSL/macOS terminal hosting DSH:
 
 ```sh
 dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz --ignore-scripts
 ```
 
-The previous 0.4.21 release URL was tested in a fresh WSL2 rc.2 profile. Version 0.4.22 passed installation from its packaged archive and authenticated startup in WSL2 rc.2. The package includes built files, so installation scripts are unnecessary.
+The same packaged artifact is used for cross-platform verification and publication. The package includes built files, so installation scripts are unnecessary.
 
 Use your actual profile name instead of `web` when different. Use the same CLI version as the running host. For an offline copy, replace the URL with the downloaded file's absolute path. A Windows file at `D:\Downloads\dsh-prompt-coach-0.4.24.tgz` is normally `/mnt/d/Downloads/dsh-prompt-coach-0.4.24.tgz` inside WSL.
 
@@ -44,7 +43,7 @@ Use your actual profile name instead of `web` when different. Use the same CLI v
 
 Save drafts and wait for active tasks to finish. Restart DSH through the launcher or service manager that normally runs it, then refresh the browser. For a manually launched host, stop that terminal process normally and rerun its original command with the same profile and environment.
 
-Open Prelude from the composer, search for “验收标准”, and insert a snippet. Check that the original draft remains and no message was automatically sent. Settings should show Prelude 0.4.22.
+Open Prelude from the composer, search for “验收标准”, and insert a snippet. Check that the original draft remains and no message was automatically sent. Settings should show Prelude 0.4.24.
 
 ## Update and restore
 
