@@ -41,13 +41,12 @@ dsh --profile web --dump-config
 
 Run these commands in the Linux/WSL environment hosting DSH. Back up your profile and plugin state first, then normally reload the same profile and refresh the browser. See [installation and recovery](docs/installation.md) for details in Chinese.
 
-## Models, data, and limits
+## Models and data
 
 Local method browsing does not call a model. AI features use a model already configured in DSH and may incur provider charges. Follow the conversation model or select a fixed one; compatibility depends on the host adapter and provider.
 
 Only the current draft is used by default. Conversation excerpts and readable text attachments require explicit selection. Prelude does not automatically scan your conversations, local folders, or second brain. Extra model review is off by default.
 
-Full rewrites accept up to 4,000 characters and candidates up to 6,000. Special host commands or references may be copy-only. Mobile-sized layouts have been checked; physical phone testing is still outstanding.
 
 ## More
 
