@@ -237,7 +237,7 @@ var UsageLedger = class {
       }
       renameSync2(tmp, this.path);
       created = false;
-      const directory = openSync2(this.dir, "r");
+      const directory = openSync2(this.dir, process.platform === "win32" ? "r+" : "r");
       try {
         fsyncSync2(directory);
       } finally {
@@ -2118,7 +2118,7 @@ var LibraryRepository = class {
       }
       this.fs.renameSync(tmp, file);
       created = false;
-      const d = openSync3(this.dir, "r");
+      const d = openSync3(this.dir, process.platform === "win32" ? "r+" : "r");
       try {
         fsyncSync3(d);
       } finally {

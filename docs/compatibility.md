@@ -11,7 +11,7 @@
 | 模型 | 宿主模型适配层，合成适配器验证协议 | 不承诺所有第三方模型都输出合法结果 |
 | 旧数据 | API v4、0.2.2/0.2.3 JSON 延续 | 丢失的最新内容不能凭旧备份重造 |
 
-原生 Windows Node 的目录 fsync 探针返回 EPERM；不能通过略去同步步骤宣布支持。Windows 浏览器连接 WSL 宿主不受此限制。macOS 原生 rc.2–rc.5 已通过默认安装、启动、个人库写入和重启保留检查。
+Windows 原生 DSH：0.4.25 候选已在 Windows 原生 Node 24、DSH rc.5 安装并保存收藏。Windows 桌面连接 WSL2 是另一种运行方式。Windows 浏览器连接 WSL 宿主不受此限制。macOS 原生 rc.2–rc.5 已通过默认安装、启动、个人库写入和重启保留检查。
 
 浏览器优先使用支持原生 Popover 的版本。缺少 showPopover 或调用失败时有 fixed 定位回退，但无法保证绕开所有宿主变换祖先的裁剪/层叠；不是完整的 top-layer 模拟器。
 

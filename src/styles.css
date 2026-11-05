@@ -164,3 +164,29 @@
 .pc-root .pc-virtual-list{margin-top:16px}
 .pc-root .pc-virtual-row{padding-bottom:16px;display:flow-root;box-sizing:border-box}
 .pc-root .pc-virtual-row>.pc-card{margin:0}
+/* Keep full edges reachable; enlarge touch targets around the visible grips. */
+@media (pointer:coarse) {
+  .pc-root .pc-drag-handle {min-height:48px;position:relative;padding-inline-start:18px}
+  .pc-root .pc-drag-handle::before {content:"";position:absolute;inset-inline-start:0;width:10px;height:18px;background:radial-gradient(circle,var(--pc-accent) 1.4px,transparent 1.7px) 0 0/5px 6px}
+  .pc-root .pc-resize {display:grid;place-items:center;color:var(--pc-accent)}
+  .pc-root .pc-resize::after {content:"";pointer-events:none;background:currentColor;border-radius:5px;opacity:.75}
+  .pc-root .pc-resize:active::after {opacity:1;box-shadow:0 0 0 3px var(--pc-wash)}
+  .pc-root .pc-resize-e,.pc-root .pc-resize-w {top:36px;bottom:36px;width:12px}
+  .pc-root .pc-resize:is(.pc-resize-w,.pc-resize-e,.pc-resize-n,.pc-resize-s)::before {content:"";position:absolute}
+  .pc-root .pc-resize:is(.pc-resize-w,.pc-resize-e)::before {width:24px;height:56px}
+  .pc-root .pc-resize:is(.pc-resize-n,.pc-resize-s)::before {width:72px;height:32px}
+  .pc-root .pc-resize-w::before {left:0}
+  .pc-root .pc-resize-e::before {right:0}
+  .pc-root .pc-resize-s::before {bottom:0}
+  .pc-root .pc-resize-n::before {top:0}
+  .pc-root .pc-resize-e::after,.pc-root .pc-resize-w::after {width:3px;height:28px}
+  .pc-root .pc-resize-n,.pc-root .pc-resize-s {left:36px;right:36px;height:12px}
+  .pc-root .pc-resize-n::after,.pc-root .pc-resize-s::after {width:32px;height:3px}
+  .pc-root .pc-resize:is(.pc-resize-nw,.pc-resize-ne,.pc-resize-sw,.pc-resize-se) {width:36px;height:36px}
+  .pc-root .pc-resize:is(.pc-resize-nw,.pc-resize-ne,.pc-resize-sw,.pc-resize-se)::after {width:8px;height:8px;border:solid currentColor;border-width:2px 0 0 2px;background:none;border-radius:2px}
+  .pc-root .pc-resize-ne::after {transform:rotate(90deg)}
+  .pc-root .pc-resize-se::after {transform:rotate(180deg)}
+  .pc-root .pc-resize-sw::after {transform:rotate(270deg)}
+  .pc-root .pc-top {padding-inline:36px;padding-top:32px}
+  .pc-root .pc-scroll {margin-inline:12px}
+}

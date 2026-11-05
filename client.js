@@ -2654,7 +2654,7 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.24",
+  version: "0.4.25",
   description: "Prelude \u2014 DeepSeek Harness (DSH) \u63D0\u793A\u8BCD\u4F18\u5316\u4E0E\u6539\u5199\u52A9\u624B\uFF0C\u63D0\u4F9B\u65B9\u6CD5\u5361\u3001\u5C40\u90E8\u8865\u53E5\u548C\u539F\u7A3F\u5BF9\u7167\u3002",
   type: "module",
   main: "./index.mjs",
@@ -2717,7 +2717,13 @@ var package_default = {
     "docs/installation.en.md",
     "docs/assets/method-library.jpg",
     "docs/catalog.md",
-    "docs/method-sources.md"
+    "docs/method-sources.md",
+    "docs/quickstart.md",
+    "docs/privacy.md",
+    "docs/faq.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "VERIFICATION.md"
   ],
   peerDependencies: {
     "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5",
@@ -2726,7 +2732,8 @@ var package_default = {
   displayName: "Prelude",
   os: [
     "linux",
-    "darwin"
+    "darwin",
+    "win32"
   ],
   keywords: [
     "dsh",
@@ -2739,7 +2746,7 @@ var package_default = {
     type: "git",
     url: "git+https://github.com/dbcaskml183-dotcom/dsh-prelude.git"
   },
-  homepage: "https://github.com/dbcaskml183-dotcom/dsh-prelude#readme",
+  homepage: "",
   bugs: {
     url: "https://github.com/dbcaskml183-dotcom/dsh-prelude/issues"
   },
@@ -7949,7 +7956,199 @@ var sources_default = {
 };
 
 // src/styles.css
-var styles_default = ".pc-entry{order:2;border:1px solid transparent;background:transparent;color:inherit;border-radius:9px;padding:5px 8px;font:inherit;font-size:12px;display:inline-flex;gap:5px;align-items:center;white-space:nowrap;cursor:pointer;min-height:32px}\n.pc-entry:hover,.pc-entry[aria-expanded=true]{background:color-mix(in srgb,currentColor 9%,transparent);border-color:color-mix(in srgb,currentColor 20%,transparent)}\n.pc-dot{width:5px;height:5px;border-radius:50%;background:#4377da;display:inline-block}\n.pc-root{--pc-bg:var(--dsw-alias-bg-layer-1,#fff);--pc-text:var(--dsw-alias-label-primary,#202124);--pc-line:color-mix(in srgb,var(--pc-text) 19%,transparent);--pc-wash:color-mix(in srgb,var(--pc-text) 5%,transparent);--pc-accent:#3b6fcc;color:var(--pc-text);font-family:inherit;font-size:14px;line-height:1.65;width:100%;box-sizing:border-box}\n.pc-root *{box-sizing:border-box}\n/* Host glass themes may give background aliases an alpha channel. A reading\n   popover needs its own opaque surface; system colors follow color-scheme. */\n.pc-root .pc-panel{position:fixed;inset:auto;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);color:CanvasText;background:Canvas;border:1px solid var(--pc-line);border-radius:16px;box-shadow:0 12px 40px #0003;margin:0;overflow:hidden;display:flex;flex-direction:column;outline:none}\n.pc-root .pc-panel[popover]{position:fixed;inset:auto;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}\n.pc-root .pc-panel[popover]:not(:popover-open){display:none}\n.pc-root .pc-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:10px 20px;flex-shrink:0;background:var(--pc-bg)}\n.pc-root .pc-top strong{font-size:18px;line-height:1.5;font-weight:650}\n.pc-root .pc-button,.pc-root .pc-tab{font:inherit;font-size:13px;line-height:1.5;border:1px solid var(--pc-line);border-radius:9px;background:transparent;color:inherit;cursor:pointer;padding:8px 12px;min-height:38px;max-width:100%;overflow-wrap:anywhere}\n.pc-root .pc-button:hover,.pc-root .pc-tab:hover{background:var(--pc-wash)}\n.pc-root .pc-button:disabled{opacity:.45;cursor:default}.pc-root .pc-primary,.pc-root .pc-button[aria-pressed=true],.pc-root .pc-tab[aria-pressed=true]{border-color:var(--pc-accent);background:color-mix(in srgb,var(--pc-accent) 9%,var(--pc-bg))}\n.pc-root .pc-button:focus-visible,.pc-root .pc-tab:focus-visible,.pc-root .pc-input:focus-visible,.pc-entry:focus-visible{outline:2px solid var(--pc-accent);outline-offset:2px}\n.pc-root .pc-close{font-size:20px;min-width:38px;line-height:1}.pc-root .pc-star{min-width:38px;font-size:12px;line-height:1.5;padding:5px 8px;border-color:var(--pc-line)}\n.pc-root .pc-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:6px 20px 10px;flex-shrink:0;border-bottom:1px solid var(--pc-line)}\n/* Keep the native scrollbar outside the resize handle's hit area. */\n.pc-root .pc-scroll{padding:16px 20px 20px;margin-right:8px;overflow:auto;min-height:0;flex:1;overscroll-behavior:contain;scrollbar-width:thin}\n.pc-root .pc-note{padding:8px 20px;border-top:1px solid var(--pc-line);font-size:12px;line-height:1.5;flex-shrink:0;background:var(--pc-bg)}\n.pc-root .pc-card{border:1px solid var(--pc-line);border-radius:12px;padding:16px;margin:16px 0;background:var(--pc-bg);overflow-wrap:anywhere}\n.pc-root .pc-cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.pc-root .pc-cardhead strong{font-size:14px;line-height:1.6}\n.pc-root .pc-plain{font-size:12px;line-height:1.7;margin:8px 0 12px;opacity:.82}.pc-root .pc-reason,.pc-root .pc-place{font-size:12px;line-height:1.7;opacity:.82;margin:8px 0;overflow-wrap:anywhere}\n.pc-root .pc-snippet{font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--pc-wash);border-left:3px solid var(--pc-accent);border-radius:0 8px 8px 0;padding:12px;margin:0 0 16px}\n.pc-root .pc-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.pc-root .pc-refine{margin:16px 0}.pc-root .pc-detail{font-size:12px;line-height:1.7;margin-top:12px}.pc-root .pc-detail a{color:inherit;text-decoration:underline;overflow-wrap:anywhere}\n.pc-root summary{cursor:pointer;line-height:1.8;padding:7px 0}.pc-root .pc-detail p{margin:8px 0}.pc-root .pc-context,.pc-root .pc-model{margin:12px 0;padding-bottom:8px}\n.pc-root .pc-input{font:inherit;font-size:14px;color:var(--pc-text);background:var(--pc-wash);border:1px solid var(--pc-line);border-radius:9px;padding:10px 12px;min-width:0;max-width:100%;width:100%;min-height:40px}\n.pc-root .pc-input option{color:var(--pc-text);background:var(--pc-bg)}\n.pc-root textarea.pc-input{min-height:80px;max-height:240px;resize:vertical;line-height:1.6}.pc-root .pc-route{padding-top:4px}.pc-root label{display:block;margin:7px 0;line-height:1.7}\n.pc-root .pc-choice{display:flex;align-items:flex-start;gap:8px}.pc-root input[type=checkbox]{accent-color:var(--pc-accent);margin-top:5px;flex-shrink:0}\n.pc-root .pc-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 16px}.pc-root .pc-tools .pc-input{flex:1;min-width:120px}.pc-root .pc-tools select{max-width:170px}\n.pc-root .pc-message,.pc-root .pc-question{border:1px solid var(--pc-line);border-radius:10px;padding:10px;margin:10px 0;font-size:12px;line-height:1.7;overflow-wrap:anywhere}.pc-root .pc-question{border-left:3px solid var(--pc-accent)}\n.pc-root .pc-empty{padding:14px 0;line-height:1.8;opacity:.8}.pc-root .pc-editor{border-top:1px solid var(--pc-line);margin-top:14px;padding-top:12px}\n.pc-root .pc-evidence{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--pc-line);border-radius:8px;padding:7px;margin:7px 0;font-size:12px;overflow-wrap:anywhere}\n.pc-root .pc-material-picker{max-height:220px;overflow:auto;padding:8px 0;font-size:12px}.pc-root .pc-material-picker p{margin:5px 0;overflow-wrap:anywhere}\n.pc-root .pc-delete{margin-top:-3px;margin-bottom:10px}\n@media(max-width:640px),(max-width:960px) and (max-height:500px){.pc-entry{min-height:44px}.pc-root .pc-top{padding:10px 14px}.pc-root .pc-tabs{padding:6px 14px 10px;gap:8px}.pc-root .pc-scroll{padding:14px}.pc-root .pc-note{font-size:12px;padding:8px 14px}.pc-root .pc-button,.pc-root .pc-tab{min-height:44px}.pc-root .pc-close,.pc-root .pc-star{min-width:44px}.pc-root .pc-input{font-size:16px;min-height:44px}.pc-root .pc-card{padding:14px;margin:12px 0}}\n@media(prefers-reduced-motion:reduce){.pc-root *{scroll-behavior:auto}}\n\n/* Quiet hierarchy. All surfaces and controls remain inside this plugin root. */\n.pc-root{--pc-bg:Canvas;--pc-text:CanvasText;--pc-accent:var(--dsw-alias-link,#3b6fcc)}\n.pc-root .pc-summary-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;line-height:1.6;color:var(--pc-text);margin:0 0 16px}\n.pc-root .pc-badge{font-size:12px;font-weight:600;border:1px solid var(--pc-line);border-radius:999px;padding:2px 8px;flex-shrink:0}\n.pc-root .pc-summary-row>span:last-child{opacity:.72}\n.pc-root .pc-model summary{display:flex;gap:8px;align-items:center;min-height:36px}\n.pc-root .pc-model summary::before{content:'\u25B8';font-size:11px;flex:none}.pc-root .pc-model[open] summary::before{content:'\u25BE'}\n.pc-root .pc-summary-label{flex:none;font-size:12px;opacity:.8}.pc-root .pc-summary-value{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}\n.pc-root .pc-field-label{font-size:12px;font-weight:600;opacity:.82;display:block;margin:12px 0 8px}\n.pc-root .pc-card-actions{gap:8px}.pc-root .pc-primary{font-weight:600;background:color-mix(in srgb,var(--pc-accent) 12%,var(--pc-bg));border-color:var(--pc-accent)}\n.pc-root .pc-quiet{border-color:transparent;opacity:.76}.pc-root .pc-quiet:hover{border-color:var(--pc-line);opacity:1}\n.pc-root .pc-detail summary{font-size:12px;opacity:.82;min-height:36px;display:list-item;list-style-position:inside}\n.pc-root .pc-detail[open] summary{opacity:1}.pc-root .pc-detail p{font-size:12px}\n.pc-root .pc-warning{font-size:12px;line-height:1.65;border-left:3px solid currentColor;padding:5px 9px;margin:8px 0;overflow-wrap:anywhere}\n.pc-root .pc-feedback{font-size:12px;line-height:1.6;margin:8px 0 0;overflow-wrap:anywhere}\n.pc-root .pc-cost-note{font-size:12px;line-height:1.65;opacity:.82;margin:8px 0 12px}\n.pc-root .pc-editor-toggle{margin-top:12px}.pc-root .pc-editor{padding:12px;border:1px solid var(--pc-line);border-radius:10px;margin:10px 0}\n.pc-root .pc-personal-item{border:1px solid var(--pc-line);border-radius:12px;padding:0 12px 10px;margin:10px 0}\n.pc-root .pc-personal-item>.pc-card{border:0;padding:10px 0 0;margin:0 0 6px}.pc-root .pc-personal-item .pc-delete{margin:0}\n@media(max-width:640px),(max-width:960px) and (max-height:500px){\n .pc-root .pc-summary-row{gap:8px}.pc-root .pc-detail summary,.pc-root .pc-model summary{min-height:44px}.pc-root summary{min-height:44px;padding:10px 0}\n .pc-root .pc-snippet{font-size:14px}.pc-root .pc-card-actions>.pc-primary{flex:1 1 auto}.pc-root .pc-summary-value{white-space:normal;overflow:visible;overflow-wrap:anywhere}\n .pc-root .pc-personal-item{padding:0 14px 14px}\n}\n\n/* Terminology leads; the plain-language subtitle explains it without a second toolbar. */\n.pc-root .pc-card-title{min-width:0;flex:1;display:flex;flex-direction:column;gap:6px;overflow-wrap:anywhere}\n.pc-root .pc-card-title strong{font-size:16px;line-height:1.5;font-weight:650;white-space:normal}\n.pc-root .pc-card-subtitle{font-size:12px;line-height:1.6;opacity:.82}\n.pc-root .pc-search-summary{font-size:12px;line-height:1.5;margin:8px 0;opacity:.76}\n\n/* Settings use the host scroll container; every group draws its own complete\n   border. No absolute positioning, fixed height, or clipping of form controls. */\n.pc-root.pc-settings{max-width:850px;min-width:0;margin:0;padding:4px 0 16px;line-height:1.7;display:grid;gap:20px;overflow-wrap:anywhere}\n.pc-root.pc-settings .pc-settings-heading{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px;padding:4px 0 2px}\n.pc-root.pc-settings .pc-settings-identity{display:flex;align-items:flex-start;gap:10px;min-width:0}\n.pc-root.pc-settings h2{font-size:21px;line-height:1.4;margin:0;font-weight:650}\n.pc-root.pc-settings .pc-settings-project{font-size:12px;padding:3px 0;line-height:1.6;opacity:.82}\n.pc-root.pc-settings .pc-settings-card{min-width:0;border:1px solid var(--pc-line);border-radius:12px;padding:20px;background:var(--pc-wash);margin:0}\n.pc-root.pc-settings .pc-settings-card h3{font-size:16px;font-weight:650;line-height:1.5;margin:0 0 12px}\n.pc-root.pc-settings .pc-settings-card p{margin:7px 0;font-size:12px;line-height:1.7}\n.pc-root.pc-settings .pc-settings-help{opacity:.75}\n.pc-root.pc-settings .pc-settings-card .pc-route{padding-top:0}\n.pc-root.pc-settings .pc-settings-card label{margin:16px 0 10px}\n.pc-root.pc-settings .pc-settings-card .pc-input{display:block;margin-top:4px}\n.pc-root.pc-settings .pc-settings-card .pc-actions{gap:8px}\n.pc-root.pc-settings .pc-panel-defaults{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:6px 16px}\n.pc-root.pc-settings .pc-panel-defaults .pc-choice{min-height:44px;display:flex;align-items:center;gap:8px;margin:0;cursor:pointer}\n.pc-root.pc-settings .pc-settings-card .pc-tools{margin-top:12px}\n.pc-root.pc-settings .pc-settings-card .pc-library>.pc-reason:first-child{margin-top:0}\n@media(max-width:640px){\n .pc-root.pc-settings{gap:16px;padding-top:2px}\n .pc-root.pc-settings .pc-settings-card{padding:14px}\n .pc-root.pc-settings h2{font-size:19px}\n}\n\n/* Library growth stays behind two compact filters and one optional disclosure. */\n.pc-root .pc-tools .pc-search{flex:1 1 100%}\n.pc-root .pc-tools select{flex:1 1 120px;min-width:0;width:auto}\n.pc-root .pc-bundles{border:1px solid var(--pc-line);border-radius:10px;padding:0 12px;margin:16px 0;min-width:0}\n.pc-root .pc-bundles summary{cursor:pointer;min-height:36px;padding:9px 0;font-size:12px}\n.pc-root .pc-bundle-preview{padding-bottom:10px;overflow-wrap:anywhere}\n.pc-root .pc-bundle-choice{display:flex;gap:9px;align-items:flex-start;min-height:36px;margin:5px 0;padding:7px 0;cursor:pointer}\n.pc-root .pc-bundle-choice input{flex:none;margin-top:4px}\n.pc-root .pc-bundle-choice small{display:block;font-size:11px;opacity:.7}\n.pc-root .pc-bundle-text{white-space:pre-wrap}\n.pc-root .pc-variant-label{display:block;font-size:12px;margin:12px 0}\n.pc-root .pc-variant-label select{margin-top:4px}\n@media(max-width:640px),(max-width:960px) and (max-height:500px){.pc-root .pc-bundles summary,.pc-root .pc-bundle-choice{min-height:44px}.pc-root .pc-bundle-choice{padding:11px 0}}\n\n.pc-root .pc-drag-handle{flex:1;min-width:0;min-height:36px;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;justify-content:center;border-radius:6px}\n.pc-root .pc-drag-handle[data-dragging=true]{cursor:grabbing}\n.pc-root .pc-drag-handle:focus-visible{outline:2px solid var(--pc-accent);outline-offset:3px}\n@media(max-width:640px),(max-width:960px) and (max-height:500px){.pc-root .pc-drag-handle{min-height:44px}}\n\n/* The border owns resizing; content retains normal scrolling and selection. */\n.pc-root .pc-resize{position:absolute;z-index:4;touch-action:none;user-select:none;border-radius:4px}\n.pc-root .pc-resize:focus-visible{outline:2px solid var(--pc-accent);outline-offset:-2px;background:var(--pc-wash)}\n.pc-root .pc-resize-e,.pc-root .pc-resize-w{top:18px;bottom:18px;width:8px;cursor:ew-resize}\n.pc-root .pc-resize-e{right:0}.pc-root .pc-resize-w{left:0}\n.pc-root .pc-resize-n,.pc-root .pc-resize-s{left:18px;right:18px;height:8px;cursor:ns-resize}\n.pc-root .pc-resize-n{top:0}.pc-root .pc-resize-s{bottom:0}\n.pc-root .pc-resize-nw,.pc-root .pc-resize-ne,.pc-root .pc-resize-sw,.pc-root .pc-resize-se{width:18px;height:18px}\n.pc-root .pc-resize-nw{left:0;top:0;cursor:nwse-resize}.pc-root .pc-resize-ne{right:0;top:0;cursor:nesw-resize}\n.pc-root .pc-resize-sw{left:0;bottom:0;cursor:nesw-resize}.pc-root .pc-resize-se{right:0;bottom:0;cursor:nwse-resize}\n.pc-root .pc-panel[data-resizing]{user-select:none}\n@media(pointer:coarse){.pc-root .pc-scroll{margin-right:10px}.pc-root .pc-resize-e,.pc-root .pc-resize-w{width:10px}.pc-root .pc-resize-n,.pc-root .pc-resize-s{height:10px}.pc-root .pc-resize-nw,.pc-root .pc-resize-ne,.pc-root .pc-resize-sw,.pc-root .pc-resize-se{width:20px;height:20px}}\n\n/* Classification is readable metadata, not another set of filter buttons. */\n.pc-root .pc-card-meta{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 12px;min-width:0;margin:12px 0;font-size:12px;line-height:1.6}\n.pc-root .pc-meta-tag{display:inline-block;min-width:0;max-width:100%;padding:2px 0;white-space:normal;overflow-wrap:anywhere}\n.pc-root .pc-meta-key{opacity:.72}\n\n/* Whole-draft editing owns no host layout; confined to the existing Prelude surface. */\n.pc-root .pc-rewrite{border:1px solid var(--pc-line);border-radius:12px;padding:16px;margin:20px 0;min-width:0;container-type:inline-size}\n.pc-root .pc-rewrite-heading{display:flex;gap:8px;align-items:center;flex-wrap:wrap}\n.pc-root .pc-rewrite-columns{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:16px}\n.pc-root .pc-rewrite-column{display:flex;flex-direction:column;gap:8px;min-width:0}\n.pc-root textarea.pc-input.pc-rewrite-text{width:100%;box-sizing:border-box;min-height:180px;max-height:360px;resize:vertical;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}\n.pc-root .pc-rewrite-actions{position:sticky;bottom:0;background:var(--pc-bg);padding:12px 0 4px;z-index:1;border-top:1px solid var(--pc-line);margin-top:16px}\n.pc-root .pc-rewrite details{margin:16px 0;overflow-wrap:anywhere}\n.pc-root .pc-diff-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;padding:12px;border:1px solid var(--pc-line);border-radius:8px}\n.pc-root .pc-diff-text ins{background:rgba(50,180,100,.18);text-decoration:underline}\n.pc-root .pc-diff-text del{background:rgba(220,90,90,.18);text-decoration:line-through}\n.pc-root .pc-diff-label{font-size:.85em;font-weight:600}\n@container(min-width:640px){.pc-root .pc-rewrite-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}\n\n.pc-root .pc-review-controls{min-width:0;flex:1 1 100%;padding:12px 0}.pc-root .pc-review-controls .pc-choice{display:flex;align-items:center;gap:8px}.pc-root .pc-review-controls input{flex:0 0 auto}.pc-root .pc-review-status{border:1px solid var(--pc-line);border-radius:10px;padding:14px;margin:16px 0;overflow-wrap:anywhere}\n\n/* Method selection is part of the existing panel, never a second overlay. */\n.pc-root .pc-method-selection{border:1px solid var(--pc-line);border-radius:10px;padding:16px;margin:20px 0;min-width:0}\n.pc-effective-requirements{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;max-height:180px;overflow:auto}\n.pc-root .pc-method-body{margin:8px 0}.pc-root .pc-method-body>summary{cursor:pointer;font-size:12px;color:inherit}\n.pc-card>.pc-reason{margin:7px 0}.pc-method-selection .pc-actions{margin:8px 0}\n\n.pc-root .pc-work-toolbar{display:flex;flex-shrink:0;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 20px}.pc-root .pc-work-toolbar .pc-button{max-width:100%;white-space:normal}.pc-root .pc-work-confirm{border:1px solid var(--pc-line);border-radius:10px;padding:14px;margin-bottom:16px;overflow-wrap:anywhere}.pc-root .pc-old-comparison{border-top:1px solid var(--pc-line);padding-top:12px}.pc-root .pc-old-comparison>summary{cursor:pointer;margin-bottom:12px;font-weight:600}\n@media(max-width:640px),(max-width:960px) and (max-height:500px){\n .pc-root .pc-work-toolbar{padding:8px 14px}\n .pc-root .pc-rewrite,.pc-root .pc-method-selection{padding:12px;margin:16px 0}\n .pc-root .pc-rewrite-actions{position:static}\n}\n\n/* Catalog windowing: height is measured per visible row; card state stays in memory. */\n.pc-root .pc-virtual-list{margin-top:16px}\n.pc-root .pc-virtual-row{padding-bottom:16px;display:flow-root;box-sizing:border-box}\n.pc-root .pc-virtual-row>.pc-card{margin:0}\n";
+var styles_default = `.pc-entry{order:2;border:1px solid transparent;background:transparent;color:inherit;border-radius:9px;padding:5px 8px;font:inherit;font-size:12px;display:inline-flex;gap:5px;align-items:center;white-space:nowrap;cursor:pointer;min-height:32px}
+.pc-entry:hover,.pc-entry[aria-expanded=true]{background:color-mix(in srgb,currentColor 9%,transparent);border-color:color-mix(in srgb,currentColor 20%,transparent)}
+.pc-dot{width:5px;height:5px;border-radius:50%;background:#4377da;display:inline-block}
+.pc-root{--pc-bg:var(--dsw-alias-bg-layer-1,#fff);--pc-text:var(--dsw-alias-label-primary,#202124);--pc-line:color-mix(in srgb,var(--pc-text) 19%,transparent);--pc-wash:color-mix(in srgb,var(--pc-text) 5%,transparent);--pc-accent:#3b6fcc;color:var(--pc-text);font-family:inherit;font-size:14px;line-height:1.65;width:100%;box-sizing:border-box}
+.pc-root *{box-sizing:border-box}
+/* Host glass themes may give background aliases an alpha channel. A reading
+   popover needs its own opaque surface; system colors follow color-scheme. */
+.pc-root .pc-panel{position:fixed;inset:auto;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);color:CanvasText;background:Canvas;border:1px solid var(--pc-line);border-radius:16px;box-shadow:0 12px 40px #0003;margin:0;overflow:hidden;display:flex;flex-direction:column;outline:none}
+.pc-root .pc-panel[popover]{position:fixed;inset:auto;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}
+.pc-root .pc-panel[popover]:not(:popover-open){display:none}
+.pc-root .pc-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:10px 20px;flex-shrink:0;background:var(--pc-bg)}
+.pc-root .pc-top strong{font-size:18px;line-height:1.5;font-weight:650}
+.pc-root .pc-button,.pc-root .pc-tab{font:inherit;font-size:13px;line-height:1.5;border:1px solid var(--pc-line);border-radius:9px;background:transparent;color:inherit;cursor:pointer;padding:8px 12px;min-height:38px;max-width:100%;overflow-wrap:anywhere}
+.pc-root .pc-button:hover,.pc-root .pc-tab:hover{background:var(--pc-wash)}
+.pc-root .pc-button:disabled{opacity:.45;cursor:default}.pc-root .pc-primary,.pc-root .pc-button[aria-pressed=true],.pc-root .pc-tab[aria-pressed=true]{border-color:var(--pc-accent);background:color-mix(in srgb,var(--pc-accent) 9%,var(--pc-bg))}
+.pc-root .pc-button:focus-visible,.pc-root .pc-tab:focus-visible,.pc-root .pc-input:focus-visible,.pc-entry:focus-visible{outline:2px solid var(--pc-accent);outline-offset:2px}
+.pc-root .pc-close{font-size:20px;min-width:38px;line-height:1}.pc-root .pc-star{min-width:38px;font-size:12px;line-height:1.5;padding:5px 8px;border-color:var(--pc-line)}
+.pc-root .pc-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:6px 20px 10px;flex-shrink:0;border-bottom:1px solid var(--pc-line)}
+/* Keep the native scrollbar outside the resize handle's hit area. */
+.pc-root .pc-scroll{padding:16px 20px 20px;margin-right:8px;overflow:auto;min-height:0;flex:1;overscroll-behavior:contain;scrollbar-width:thin}
+.pc-root .pc-note{padding:8px 20px;border-top:1px solid var(--pc-line);font-size:12px;line-height:1.5;flex-shrink:0;background:var(--pc-bg)}
+.pc-root .pc-card{border:1px solid var(--pc-line);border-radius:12px;padding:16px;margin:16px 0;background:var(--pc-bg);overflow-wrap:anywhere}
+.pc-root .pc-cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.pc-root .pc-cardhead strong{font-size:14px;line-height:1.6}
+.pc-root .pc-plain{font-size:12px;line-height:1.7;margin:8px 0 12px;opacity:.82}.pc-root .pc-reason,.pc-root .pc-place{font-size:12px;line-height:1.7;opacity:.82;margin:8px 0;overflow-wrap:anywhere}
+.pc-root .pc-snippet{font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--pc-wash);border-left:3px solid var(--pc-accent);border-radius:0 8px 8px 0;padding:12px;margin:0 0 16px}
+.pc-root .pc-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.pc-root .pc-refine{margin:16px 0}.pc-root .pc-detail{font-size:12px;line-height:1.7;margin-top:12px}.pc-root .pc-detail a{color:inherit;text-decoration:underline;overflow-wrap:anywhere}
+.pc-root summary{cursor:pointer;line-height:1.8;padding:7px 0}.pc-root .pc-detail p{margin:8px 0}.pc-root .pc-context,.pc-root .pc-model{margin:12px 0;padding-bottom:8px}
+.pc-root .pc-input{font:inherit;font-size:14px;color:var(--pc-text);background:var(--pc-wash);border:1px solid var(--pc-line);border-radius:9px;padding:10px 12px;min-width:0;max-width:100%;width:100%;min-height:40px}
+.pc-root .pc-input option{color:var(--pc-text);background:var(--pc-bg)}
+.pc-root textarea.pc-input{min-height:80px;max-height:240px;resize:vertical;line-height:1.6}.pc-root .pc-route{padding-top:4px}.pc-root label{display:block;margin:7px 0;line-height:1.7}
+.pc-root .pc-choice{display:flex;align-items:flex-start;gap:8px}.pc-root input[type=checkbox]{accent-color:var(--pc-accent);margin-top:5px;flex-shrink:0}
+.pc-root .pc-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 16px}.pc-root .pc-tools .pc-input{flex:1;min-width:120px}.pc-root .pc-tools select{max-width:170px}
+.pc-root .pc-message,.pc-root .pc-question{border:1px solid var(--pc-line);border-radius:10px;padding:10px;margin:10px 0;font-size:12px;line-height:1.7;overflow-wrap:anywhere}.pc-root .pc-question{border-left:3px solid var(--pc-accent)}
+.pc-root .pc-empty{padding:14px 0;line-height:1.8;opacity:.8}.pc-root .pc-editor{border-top:1px solid var(--pc-line);margin-top:14px;padding-top:12px}
+.pc-root .pc-evidence{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--pc-line);border-radius:8px;padding:7px;margin:7px 0;font-size:12px;overflow-wrap:anywhere}
+.pc-root .pc-material-picker{max-height:220px;overflow:auto;padding:8px 0;font-size:12px}.pc-root .pc-material-picker p{margin:5px 0;overflow-wrap:anywhere}
+.pc-root .pc-delete{margin-top:-3px;margin-bottom:10px}
+@media(max-width:640px),(max-width:960px) and (max-height:500px){.pc-entry{min-height:44px}.pc-root .pc-top{padding:10px 14px}.pc-root .pc-tabs{padding:6px 14px 10px;gap:8px}.pc-root .pc-scroll{padding:14px}.pc-root .pc-note{font-size:12px;padding:8px 14px}.pc-root .pc-button,.pc-root .pc-tab{min-height:44px}.pc-root .pc-close,.pc-root .pc-star{min-width:44px}.pc-root .pc-input{font-size:16px;min-height:44px}.pc-root .pc-card{padding:14px;margin:12px 0}}
+@media(prefers-reduced-motion:reduce){.pc-root *{scroll-behavior:auto}}
+
+/* Quiet hierarchy. All surfaces and controls remain inside this plugin root. */
+.pc-root{--pc-bg:Canvas;--pc-text:CanvasText;--pc-accent:var(--dsw-alias-link,#3b6fcc)}
+.pc-root .pc-summary-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;line-height:1.6;color:var(--pc-text);margin:0 0 16px}
+.pc-root .pc-badge{font-size:12px;font-weight:600;border:1px solid var(--pc-line);border-radius:999px;padding:2px 8px;flex-shrink:0}
+.pc-root .pc-summary-row>span:last-child{opacity:.72}
+.pc-root .pc-model summary{display:flex;gap:8px;align-items:center;min-height:36px}
+.pc-root .pc-model summary::before{content:'\u25B8';font-size:11px;flex:none}.pc-root .pc-model[open] summary::before{content:'\u25BE'}
+.pc-root .pc-summary-label{flex:none;font-size:12px;opacity:.8}.pc-root .pc-summary-value{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pc-root .pc-field-label{font-size:12px;font-weight:600;opacity:.82;display:block;margin:12px 0 8px}
+.pc-root .pc-card-actions{gap:8px}.pc-root .pc-primary{font-weight:600;background:color-mix(in srgb,var(--pc-accent) 12%,var(--pc-bg));border-color:var(--pc-accent)}
+.pc-root .pc-quiet{border-color:transparent;opacity:.76}.pc-root .pc-quiet:hover{border-color:var(--pc-line);opacity:1}
+.pc-root .pc-detail summary{font-size:12px;opacity:.82;min-height:36px;display:list-item;list-style-position:inside}
+.pc-root .pc-detail[open] summary{opacity:1}.pc-root .pc-detail p{font-size:12px}
+.pc-root .pc-warning{font-size:12px;line-height:1.65;border-left:3px solid currentColor;padding:5px 9px;margin:8px 0;overflow-wrap:anywhere}
+.pc-root .pc-feedback{font-size:12px;line-height:1.6;margin:8px 0 0;overflow-wrap:anywhere}
+.pc-root .pc-cost-note{font-size:12px;line-height:1.65;opacity:.82;margin:8px 0 12px}
+.pc-root .pc-editor-toggle{margin-top:12px}.pc-root .pc-editor{padding:12px;border:1px solid var(--pc-line);border-radius:10px;margin:10px 0}
+.pc-root .pc-personal-item{border:1px solid var(--pc-line);border-radius:12px;padding:0 12px 10px;margin:10px 0}
+.pc-root .pc-personal-item>.pc-card{border:0;padding:10px 0 0;margin:0 0 6px}.pc-root .pc-personal-item .pc-delete{margin:0}
+@media(max-width:640px),(max-width:960px) and (max-height:500px){
+ .pc-root .pc-summary-row{gap:8px}.pc-root .pc-detail summary,.pc-root .pc-model summary{min-height:44px}.pc-root summary{min-height:44px;padding:10px 0}
+ .pc-root .pc-snippet{font-size:14px}.pc-root .pc-card-actions>.pc-primary{flex:1 1 auto}.pc-root .pc-summary-value{white-space:normal;overflow:visible;overflow-wrap:anywhere}
+ .pc-root .pc-personal-item{padding:0 14px 14px}
+}
+
+/* Terminology leads; the plain-language subtitle explains it without a second toolbar. */
+.pc-root .pc-card-title{min-width:0;flex:1;display:flex;flex-direction:column;gap:6px;overflow-wrap:anywhere}
+.pc-root .pc-card-title strong{font-size:16px;line-height:1.5;font-weight:650;white-space:normal}
+.pc-root .pc-card-subtitle{font-size:12px;line-height:1.6;opacity:.82}
+.pc-root .pc-search-summary{font-size:12px;line-height:1.5;margin:8px 0;opacity:.76}
+
+/* Settings use the host scroll container; every group draws its own complete
+   border. No absolute positioning, fixed height, or clipping of form controls. */
+.pc-root.pc-settings{max-width:850px;min-width:0;margin:0;padding:4px 0 16px;line-height:1.7;display:grid;gap:20px;overflow-wrap:anywhere}
+.pc-root.pc-settings .pc-settings-heading{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px;padding:4px 0 2px}
+.pc-root.pc-settings .pc-settings-identity{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.pc-root.pc-settings h2{font-size:21px;line-height:1.4;margin:0;font-weight:650}
+.pc-root.pc-settings .pc-settings-project{font-size:12px;padding:3px 0;line-height:1.6;opacity:.82}
+.pc-root.pc-settings .pc-settings-card{min-width:0;border:1px solid var(--pc-line);border-radius:12px;padding:20px;background:var(--pc-wash);margin:0}
+.pc-root.pc-settings .pc-settings-card h3{font-size:16px;font-weight:650;line-height:1.5;margin:0 0 12px}
+.pc-root.pc-settings .pc-settings-card p{margin:7px 0;font-size:12px;line-height:1.7}
+.pc-root.pc-settings .pc-settings-help{opacity:.75}
+.pc-root.pc-settings .pc-settings-card .pc-route{padding-top:0}
+.pc-root.pc-settings .pc-settings-card label{margin:16px 0 10px}
+.pc-root.pc-settings .pc-settings-card .pc-input{display:block;margin-top:4px}
+.pc-root.pc-settings .pc-settings-card .pc-actions{gap:8px}
+.pc-root.pc-settings .pc-panel-defaults{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:6px 16px}
+.pc-root.pc-settings .pc-panel-defaults .pc-choice{min-height:44px;display:flex;align-items:center;gap:8px;margin:0;cursor:pointer}
+.pc-root.pc-settings .pc-settings-card .pc-tools{margin-top:12px}
+.pc-root.pc-settings .pc-settings-card .pc-library>.pc-reason:first-child{margin-top:0}
+@media(max-width:640px){
+ .pc-root.pc-settings{gap:16px;padding-top:2px}
+ .pc-root.pc-settings .pc-settings-card{padding:14px}
+ .pc-root.pc-settings h2{font-size:19px}
+}
+
+/* Library growth stays behind two compact filters and one optional disclosure. */
+.pc-root .pc-tools .pc-search{flex:1 1 100%}
+.pc-root .pc-tools select{flex:1 1 120px;min-width:0;width:auto}
+.pc-root .pc-bundles{border:1px solid var(--pc-line);border-radius:10px;padding:0 12px;margin:16px 0;min-width:0}
+.pc-root .pc-bundles summary{cursor:pointer;min-height:36px;padding:9px 0;font-size:12px}
+.pc-root .pc-bundle-preview{padding-bottom:10px;overflow-wrap:anywhere}
+.pc-root .pc-bundle-choice{display:flex;gap:9px;align-items:flex-start;min-height:36px;margin:5px 0;padding:7px 0;cursor:pointer}
+.pc-root .pc-bundle-choice input{flex:none;margin-top:4px}
+.pc-root .pc-bundle-choice small{display:block;font-size:11px;opacity:.7}
+.pc-root .pc-bundle-text{white-space:pre-wrap}
+.pc-root .pc-variant-label{display:block;font-size:12px;margin:12px 0}
+.pc-root .pc-variant-label select{margin-top:4px}
+@media(max-width:640px),(max-width:960px) and (max-height:500px){.pc-root .pc-bundles summary,.pc-root .pc-bundle-choice{min-height:44px}.pc-root .pc-bundle-choice{padding:11px 0}}
+
+.pc-root .pc-drag-handle{flex:1;min-width:0;min-height:36px;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;justify-content:center;border-radius:6px}
+.pc-root .pc-drag-handle[data-dragging=true]{cursor:grabbing}
+.pc-root .pc-drag-handle:focus-visible{outline:2px solid var(--pc-accent);outline-offset:3px}
+@media(max-width:640px),(max-width:960px) and (max-height:500px){.pc-root .pc-drag-handle{min-height:44px}}
+
+/* The border owns resizing; content retains normal scrolling and selection. */
+.pc-root .pc-resize{position:absolute;z-index:4;touch-action:none;user-select:none;border-radius:4px}
+.pc-root .pc-resize:focus-visible{outline:2px solid var(--pc-accent);outline-offset:-2px;background:var(--pc-wash)}
+.pc-root .pc-resize-e,.pc-root .pc-resize-w{top:18px;bottom:18px;width:8px;cursor:ew-resize}
+.pc-root .pc-resize-e{right:0}.pc-root .pc-resize-w{left:0}
+.pc-root .pc-resize-n,.pc-root .pc-resize-s{left:18px;right:18px;height:8px;cursor:ns-resize}
+.pc-root .pc-resize-n{top:0}.pc-root .pc-resize-s{bottom:0}
+.pc-root .pc-resize-nw,.pc-root .pc-resize-ne,.pc-root .pc-resize-sw,.pc-root .pc-resize-se{width:18px;height:18px}
+.pc-root .pc-resize-nw{left:0;top:0;cursor:nwse-resize}.pc-root .pc-resize-ne{right:0;top:0;cursor:nesw-resize}
+.pc-root .pc-resize-sw{left:0;bottom:0;cursor:nesw-resize}.pc-root .pc-resize-se{right:0;bottom:0;cursor:nwse-resize}
+.pc-root .pc-panel[data-resizing]{user-select:none}
+@media(pointer:coarse){.pc-root .pc-scroll{margin-right:10px}.pc-root .pc-resize-e,.pc-root .pc-resize-w{width:10px}.pc-root .pc-resize-n,.pc-root .pc-resize-s{height:10px}.pc-root .pc-resize-nw,.pc-root .pc-resize-ne,.pc-root .pc-resize-sw,.pc-root .pc-resize-se{width:20px;height:20px}}
+
+/* Classification is readable metadata, not another set of filter buttons. */
+.pc-root .pc-card-meta{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 12px;min-width:0;margin:12px 0;font-size:12px;line-height:1.6}
+.pc-root .pc-meta-tag{display:inline-block;min-width:0;max-width:100%;padding:2px 0;white-space:normal;overflow-wrap:anywhere}
+.pc-root .pc-meta-key{opacity:.72}
+
+/* Whole-draft editing owns no host layout; confined to the existing Prelude surface. */
+.pc-root .pc-rewrite{border:1px solid var(--pc-line);border-radius:12px;padding:16px;margin:20px 0;min-width:0;container-type:inline-size}
+.pc-root .pc-rewrite-heading{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pc-root .pc-rewrite-columns{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:16px}
+.pc-root .pc-rewrite-column{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pc-root textarea.pc-input.pc-rewrite-text{width:100%;box-sizing:border-box;min-height:180px;max-height:360px;resize:vertical;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}
+.pc-root .pc-rewrite-actions{position:sticky;bottom:0;background:var(--pc-bg);padding:12px 0 4px;z-index:1;border-top:1px solid var(--pc-line);margin-top:16px}
+.pc-root .pc-rewrite details{margin:16px 0;overflow-wrap:anywhere}
+.pc-root .pc-diff-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;padding:12px;border:1px solid var(--pc-line);border-radius:8px}
+.pc-root .pc-diff-text ins{background:rgba(50,180,100,.18);text-decoration:underline}
+.pc-root .pc-diff-text del{background:rgba(220,90,90,.18);text-decoration:line-through}
+.pc-root .pc-diff-label{font-size:.85em;font-weight:600}
+@container(min-width:640px){.pc-root .pc-rewrite-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+
+.pc-root .pc-review-controls{min-width:0;flex:1 1 100%;padding:12px 0}.pc-root .pc-review-controls .pc-choice{display:flex;align-items:center;gap:8px}.pc-root .pc-review-controls input{flex:0 0 auto}.pc-root .pc-review-status{border:1px solid var(--pc-line);border-radius:10px;padding:14px;margin:16px 0;overflow-wrap:anywhere}
+
+/* Method selection is part of the existing panel, never a second overlay. */
+.pc-root .pc-method-selection{border:1px solid var(--pc-line);border-radius:10px;padding:16px;margin:20px 0;min-width:0}
+.pc-effective-requirements{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;max-height:180px;overflow:auto}
+.pc-root .pc-method-body{margin:8px 0}.pc-root .pc-method-body>summary{cursor:pointer;font-size:12px;color:inherit}
+.pc-card>.pc-reason{margin:7px 0}.pc-method-selection .pc-actions{margin:8px 0}
+
+.pc-root .pc-work-toolbar{display:flex;flex-shrink:0;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 20px}.pc-root .pc-work-toolbar .pc-button{max-width:100%;white-space:normal}.pc-root .pc-work-confirm{border:1px solid var(--pc-line);border-radius:10px;padding:14px;margin-bottom:16px;overflow-wrap:anywhere}.pc-root .pc-old-comparison{border-top:1px solid var(--pc-line);padding-top:12px}.pc-root .pc-old-comparison>summary{cursor:pointer;margin-bottom:12px;font-weight:600}
+@media(max-width:640px),(max-width:960px) and (max-height:500px){
+ .pc-root .pc-work-toolbar{padding:8px 14px}
+ .pc-root .pc-rewrite,.pc-root .pc-method-selection{padding:12px;margin:16px 0}
+ .pc-root .pc-rewrite-actions{position:static}
+}
+
+/* Catalog windowing: height is measured per visible row; card state stays in memory. */
+.pc-root .pc-virtual-list{margin-top:16px}
+.pc-root .pc-virtual-row{padding-bottom:16px;display:flow-root;box-sizing:border-box}
+.pc-root .pc-virtual-row>.pc-card{margin:0}
+/* Keep full edges reachable; enlarge touch targets around the visible grips. */
+@media (pointer:coarse) {
+  .pc-root .pc-drag-handle {min-height:48px;position:relative;padding-inline-start:18px}
+  .pc-root .pc-drag-handle::before {content:"";position:absolute;inset-inline-start:0;width:10px;height:18px;background:radial-gradient(circle,var(--pc-accent) 1.4px,transparent 1.7px) 0 0/5px 6px}
+  .pc-root .pc-resize {display:grid;place-items:center;color:var(--pc-accent)}
+  .pc-root .pc-resize::after {content:"";pointer-events:none;background:currentColor;border-radius:5px;opacity:.75}
+  .pc-root .pc-resize:active::after {opacity:1;box-shadow:0 0 0 3px var(--pc-wash)}
+  .pc-root .pc-resize-e,.pc-root .pc-resize-w {top:36px;bottom:36px;width:12px}
+  .pc-root .pc-resize:is(.pc-resize-w,.pc-resize-e,.pc-resize-n,.pc-resize-s)::before {content:"";position:absolute}
+  .pc-root .pc-resize:is(.pc-resize-w,.pc-resize-e)::before {width:24px;height:56px}
+  .pc-root .pc-resize:is(.pc-resize-n,.pc-resize-s)::before {width:72px;height:32px}
+  .pc-root .pc-resize-w::before {left:0}
+  .pc-root .pc-resize-e::before {right:0}
+  .pc-root .pc-resize-s::before {bottom:0}
+  .pc-root .pc-resize-n::before {top:0}
+  .pc-root .pc-resize-e::after,.pc-root .pc-resize-w::after {width:3px;height:28px}
+  .pc-root .pc-resize-n,.pc-root .pc-resize-s {left:36px;right:36px;height:12px}
+  .pc-root .pc-resize-n::after,.pc-root .pc-resize-s::after {width:32px;height:3px}
+  .pc-root .pc-resize:is(.pc-resize-nw,.pc-resize-ne,.pc-resize-sw,.pc-resize-se) {width:36px;height:36px}
+  .pc-root .pc-resize:is(.pc-resize-nw,.pc-resize-ne,.pc-resize-sw,.pc-resize-se)::after {width:8px;height:8px;border:solid currentColor;border-width:2px 0 0 2px;background:none;border-radius:2px}
+  .pc-root .pc-resize-ne::after {transform:rotate(90deg)}
+  .pc-root .pc-resize-se::after {transform:rotate(180deg)}
+  .pc-root .pc-resize-sw::after {transform:rotate(270deg)}
+  .pc-root .pc-top {padding-inline:36px;padding-top:32px}
+  .pc-root .pc-scroll {margin-inline:12px}
+}
+`;
 
 // client/input-adapter.mjs
 function materialFacts(input) {
@@ -8004,6 +8203,11 @@ function resizeRect(start, edge, dx, dy, v, min = { width: 448, height: 560 }, e
 
 // client/panel-minimum.mjs
 function panelMinimum(panel) {
+  const win = panel.ownerDocument?.defaultView;
+  if (win?.matchMedia("(pointer: coarse) and (max-width: 640px)").matches) {
+    const height = win.visualViewport?.height ?? win.innerHeight;
+    return { width: Math.min(320, Math.max(1, win.innerWidth - 48)), height: Math.min(360, Math.floor(height * 0.5)) };
+  }
   if (panel.querySelector?.('[data-pc-geometry-mode="rewrite"]')) return { width: 448, height: 560 };
   const scroll = panel.querySelector?.(".pc-scroll"), card = scroll?.querySelector?.(".pc-card");
   if (!scroll || !card) return { width: 448, height: 560 };
@@ -8202,7 +8406,9 @@ function mountCoachPopover(panel, anchor, onClose, win = window, expanded = fals
       const a = anchor.getBoundingClientRect(), v = viewportBounds(win), layout = popoverLayout(a, v, expanded), bounds = usableViewport(v), saved = positions[mode];
       panel.dataset.focusView = String(expanded);
       assign("maxHeight", bounds.height + "px");
-      const width = Math.min(bounds.width, Math.max(Math.min(448, bounds.width), saved?.width ?? layout.width));
+      const minimum = panelMinimum(panel);
+      const initialWidth = !expanded && minimum.width < 448 ? Math.max(minimum.width, bounds.width - 32) : layout.width;
+      const width = Math.min(bounds.width, Math.max(Math.min(minimum.width, bounds.width), saved?.width ?? initialWidth));
       assign("width", width + "px");
       const height = expanded ? bounds.height : Math.max(panelMinimum(panel).height, saved?.height ?? layout.maxHeight);
       const r = constrainRect({ x: saved?.x ?? layout.defaultLeft ?? v.left + (v.width - width) / 2, y: saved?.y ?? a.top - height - 8, width, height }, v, panelMinimum(panel), expanded);

@@ -1,6 +1,6 @@
 {
   "name": "dsh-prompt-coach",
-  "version": "0.4.24",
+  "version": "0.4.25",
   "description": "Prelude — DeepSeek Harness (DSH) 提示词优化与改写助手，提供方法卡、局部补句和原稿对照。",
   "type": "module",
   "main": "./index.mjs",
@@ -63,7 +63,13 @@
     "docs/installation.en.md",
     "docs/assets/method-library.jpg",
     "docs/catalog.md",
-    "docs/method-sources.md"
+    "docs/method-sources.md",
+    "docs/quickstart.md",
+    "docs/privacy.md",
+    "docs/faq.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "VERIFICATION.md"
   ],
   "peerDependencies": {
     "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5",
@@ -72,7 +78,8 @@
   "displayName": "Prelude",
   "os": [
     "linux",
-    "darwin"
+    "darwin",
+    "win32"
   ],
   "keywords": [
     "dsh",
@@ -85,7 +92,7 @@
     "type": "git",
     "url": "git+https://github.com/dbcaskml183-dotcom/dsh-prelude.git"
   },
-  "homepage": "https://github.com/dbcaskml183-dotcom/dsh-prelude#readme",
+  "homepage": "",
   "bugs": {
     "url": "https://github.com/dbcaskml183-dotcom/dsh-prelude/issues"
   },

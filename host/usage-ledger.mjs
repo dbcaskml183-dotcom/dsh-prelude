@@ -1,3 +1,4 @@
+// Windows FlushFileBuffers requires a writable directory handle; retain fsync errors.
 import {TransactionGate} from './transaction-gate.mjs';
 import {readFileSync,writeFileSync,renameSync,mkdirSync,openSync,closeSync,unlinkSync,fsyncSync} from 'node:fs';
 import {join} from 'node:path';
@@ -20,7 +21,7 @@ export class UsageLedger {
   }catch(e){if(e.code==='ENOENT')return {version:2,policy:'unlimited',calls:0,records:[]};throw new Error('历史调用记录异常，请先核对；本地方法库可用');}
  }
  save(v){const tmp=this.path+'.'+randomUUID()+'.tmp';let created=false;
-  try{const fd=openSync(tmp,'wx',0o600);created=true;try{writeFileSync(fd,JSON.stringify(v,null,2));fsyncSync(fd);}finally{closeSync(fd);}renameSync(tmp,this.path);created=false;const directory=openSync(this.dir,'r');try{fsyncSync(directory);}finally{closeSync(directory);}}
+  try{const fd=openSync(tmp,'wx',0o600);created=true;try{writeFileSync(fd,JSON.stringify(v,null,2));fsyncSync(fd);}finally{closeSync(fd);}renameSync(tmp,this.path);created=false;const directory=openSync(this.dir,process.platform==='win32'?'r+':'r');try{fsyncSync(directory);}finally{closeSync(directory);}}
   finally{if(created)try{unlinkSync(tmp);}catch{}}
  }
 

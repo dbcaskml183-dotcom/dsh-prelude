@@ -1,8 +1,8 @@
 # Prelude
 
-A prompt-writing assistant for DeepSeek Harness. Choose a method, add a missing requirement, and compare the rewrite with your draft before applying it.
+A prompt engineering plugin for the DeepSeek Harness (DSH) chat composer. Find missing requirements, insert one sentence at the cursor, or compare a full rewrite with your original before applying it. You choose what to send.
 
-[Download 0.4.24](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+[Download 0.4.25](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
 [Browse all 90 method cards (中文)](docs/catalog.md), including when each method applies, when to skip it, example scenarios, and sources.
 
@@ -16,10 +16,10 @@ The addition explains how to verify the script while preserving both original co
 
 ## Install in DSH
 
-On Linux/WSL2 or macOS with DSH 0.2.1-rc.2 through rc.5 and Node 24+, run this in the host terminal using the `web` profile. Back up an existing profile before adding plugins.
+On Linux, WSL2, macOS or native Windows (tested on rc.5), with DSH 0.2.1-rc.2 through rc.5 and Node 24+, run this in the host terminal using the `web` profile. Back up an existing profile before adding plugins.
 
 ```sh
-dsh plugin --profile web add dsh-prompt-coach@0.4.24 --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
 ```
 
 Save drafts, wait for tasks to finish, restart DSH through your usual launcher, and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)
@@ -37,6 +37,8 @@ Save phrases you use often in your personal library for next time.
 ![Prelude method library showing a method card and the actions to use, insert, or copy its guidance](docs/assets/method-library.jpg)
 
 Browsing methods is local. Analysis, rewriting, and optional review use the model provider configured in DSH and may incur charges. Conversation excerpts and text attachments are included only when selected.
+
+Native Windows: the 0.4.25 release was installed and saved favorites on native Windows Node 24 with DSH rc.5. Windows desktop with a WSL2 host is also supported.
 
 **Tested on Windows desktop** with a Windows launcher or browser connected to DSH 0.2.1-rc.2 in WSL2. Linux and native macOS passed clean-host installation, startup, favorite writes and restart persistence checks on rc.2 through rc.5.
 

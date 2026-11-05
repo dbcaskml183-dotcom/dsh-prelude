@@ -1,3 +1,4 @@
+// Windows FlushFileBuffers requires a writable directory handle; retain fsync errors.
 import {TransactionGate,CoordinationError} from './transaction-gate.mjs';
 import {mkdirSync,readFileSync,writeFileSync,openSync,closeSync,renameSync,unlinkSync,fsyncSync,lstatSync,fstatSync,readdirSync,constants} from 'node:fs';
 import {join} from 'node:path';
@@ -33,7 +34,7 @@ export class LibraryRepository{
 
  atomic(file,data){
   const tmp=join(this.dir,'.'+randomUUID()+'.tmp');let created=false;
-  try{const fd=openSync(tmp,'wx',0o600);created=true;try{writeFileSync(fd,data);fsyncSync(fd);}finally{closeSync(fd);}this.fs.renameSync(tmp,file);created=false;const d=openSync(this.dir,'r');try{fsyncSync(d);}finally{closeSync(d);}}
+  try{const fd=openSync(tmp,'wx',0o600);created=true;try{writeFileSync(fd,data);fsyncSync(fd);}finally{closeSync(fd);}this.fs.renameSync(tmp,file);created=false;const d=openSync(this.dir,process.platform==='win32'?'r+':'r');try{fsyncSync(d);}finally{closeSync(d);}}
   finally{if(created)try{unlinkSync(tmp);}catch{}}
  }
  write(expectedRevision,op){

@@ -30,6 +30,10 @@ React src → client controllers → AI v8 / storage v4 → host/service
 
 测试分层：纯逻辑/故障注入 → 真实打包客户端与 Cordis 生命周期 → 官方 CLI 全新 profile 安装/移除 → 隔离 API / 浏览器。通过某层不代替其余层，也不等于任意模型增益或长期无故障。
 
+## 历史实现记录
+
+以下按版本保留设计变迁，不代表当前协议与期限；当前使用方式见 quickstart.md。
+
 ## 0.2.5 整稿路径
 
 POST rewrite与原建议入口复用同一createHandler，operation只由注册路由指定，不放开用户自选执行命令。prepare/stream/取消/租约/用量待补登记只有一份。shared/rewrite-contract独立决定候选协议，不把自由改稿混入方法ID建议。

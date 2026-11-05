@@ -79,7 +79,9 @@ export function mountCoachPopover(panel,anchor,onClose,win=window,expanded=false
   try{
    const a=anchor.getBoundingClientRect(),v=viewportBounds(win),layout=popoverLayout(a,v,expanded),bounds=usableViewport(v),saved=positions[mode];
    panel.dataset.focusView=String(expanded);assign('maxHeight',bounds.height+'px');
-   const width=Math.min(bounds.width,Math.max(Math.min(448,bounds.width),saved?.width??layout.width));
+   const minimum=panelMinimum(panel);
+   const initialWidth=!expanded&&minimum.width<448?Math.max(minimum.width,bounds.width-32):layout.width;
+   const width=Math.min(bounds.width,Math.max(Math.min(minimum.width,bounds.width),saved?.width??initialWidth));
    assign('width',width+'px');
    const height=expanded?bounds.height:Math.max(panelMinimum(panel).height,saved?.height??layout.maxHeight);
    const r=constrainRect({x:saved?.x??layout.defaultLeft??v.left+(v.width-width)/2,y:saved?.y??a.top-height-8,width,height},v,panelMinimum(panel),expanded);

@@ -2,7 +2,7 @@
 
 **DSH 提示词优化与改写助手**
 
-发现需求中的遗漏，选择需要补充的要求，再决定怎样修改。
+在 DeepSeek Harness 的聊天输入框里做提示词工程：先看草稿缺了哪条要求，再选要补的内容。比如写「把 CSV 转成 JSON」，你可以只补一句「附上输入样例和预期输出」，也可以对照原稿编辑整段改写。
 
 - **补一句** — 从方法卡中选择补充内容，插入当前草稿。
 - **改整段** — 生成候选稿，对照原稿查看和编辑，确认后采用。
@@ -10,7 +10,7 @@
 90 张方法卡可按阶段、领域和关键词查找。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.24 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.24/dsh-prompt-coach-0.4.24.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.25 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
 
 ## 先看看方法卡
@@ -61,10 +61,10 @@
 
 ## 安装到 DSH
 
-支持 Linux / WSL2、macOS，DSH 0.2.1-rc.2 至 rc.5，Node 24 及以上。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
+可在 Linux、WSL2、macOS 或原生 Windows 的宿主终端安装。Windows 原生实测为 rc.5。插件声明适配 DSH 0.2.1-rc.2 至 rc.5，Node 24 及以上。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
 
 ```sh
-dsh plugin --profile web add dsh-prompt-coach@0.4.24 --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
 ```
 
 保存草稿、等任务结束后，按原启动方式正常重启 DSH，再刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
@@ -88,6 +88,8 @@ dsh plugin --profile web add dsh-prompt-coach@0.4.24 --ignore-scripts
 浏览和收藏方法卡免费，无需模型。智能分析、改写和可选审校使用你在 DSH 配置的模型，可能产生供应商费用。默认只处理当前草稿，上文和文本附件由你主动选取。[模型与隐私](docs/privacy.md)
 
 ## 支持环境
+
+Windows 原生 DSH：0.4.25 已在 Windows 原生 Node 24、DSH rc.5 安装并保存收藏。Windows 桌面连接 WSL2 是另一种运行方式。
 
 **Windows 桌面端已实测**：通过 Windows 桌面启动器或浏览器使用 Prelude，DSH 0.2.1-rc.2 运行在 WSL2 中。Linux 和原生 macOS 的 rc.2–rc.5 已通过干净宿主安装、启动及数据保存检查。[各平台与 DSH 版本实测](docs/installation.md#支持环境)
 
