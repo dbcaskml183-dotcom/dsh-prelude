@@ -19,7 +19,7 @@ The addition explains how to verify the script while preserving both original co
 On Linux, WSL2, macOS or native Windows (tested on rc.5), with DSH 0.2.1-rc.2 through rc.5 and Node 24+, run this in the host terminal using the `web` profile. Back up an existing profile before adding plugins.
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 ```
 
 Save drafts, wait for tasks to finish, restart DSH through your usual launcher, and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)

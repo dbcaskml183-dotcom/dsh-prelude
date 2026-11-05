@@ -64,7 +64,7 @@
 可在 Linux、WSL2、macOS 或原生 Windows 的宿主终端安装。Windows 原生实测为 rc.5。插件声明适配 DSH 0.2.1-rc.2 至 rc.5，Node 24 及以上。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
+dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 ```
 
 保存草稿、等任务结束后，按原启动方式正常重启 DSH，再刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
