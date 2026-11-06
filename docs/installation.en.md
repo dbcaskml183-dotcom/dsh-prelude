@@ -4,16 +4,16 @@
 
 ## Tested environments
 
-Version 0.4.25 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5 on Linux / WSL2 and macOS. Default installation needs no version override. Later host versions remain outside the declared range until tested.
+Version 0.4.25 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5 on Linux / WSL2, macOS, and native Windows. Native Windows was tested with rc.5. Default installation needs no version override. Later host versions remain outside the declared range until tested.
 
 | Environment | Verified scope |
 | --- | --- |
-| Windows desktop connected to DSH in WSL2 | Existing desktop launcher and browser interaction evidence; install inside WSL as on Linux. This is not native Windows Node support. |
+| Windows desktop connected to DSH in WSL2 | Windows launcher or browser connected to DSH running inside WSL2; desktop interactions verified. Install the plugin inside WSL. |
 | Linux, DSH rc.2 / rc.3 / rc.4 / rc.5 | Clean official host installation, boot, authenticated status, favorite write and persistence after restart; native storage tests. |
 | macOS, DSH rc.2 / rc.3 / rc.4 / rc.5 | The same checks on GitHub macOS runners, not manual desktop interaction or real model validation. |
-| Native Windows Node | Native Windows: the 0.4.25 release was installed and saved favorites on native Windows Node 24 with DSH rc.5. Windows desktop with a WSL2 host is also supported. |
+| Native Windows Node | Native Windows · Node 24 · DSH rc.5: installation, startup, plugin response, and saving favorites verified. |
 
-This release does not change model calls or rewriting logic; paid model rounds were not rerun. [Compatibility evidence](compatibility.md#0424-发布验证)
+This release does not change model calls or rewriting logic; paid model rounds were not rerun. [Compatibility evidence](../VERIFICATION.md)
 
 ## Install
 
@@ -21,7 +21,13 @@ The display name is Prelude. The package keeps its earlier name, `dsh-prompt-coa
 
 Save your profile configuration, dependency manifest and lockfile first. Preserve copies of any locally modified plugins too.
 
-Run in the terminal (including Windows PowerShell) hosting DSH:
+Install from npm in the terminal hosting DSH:
+
+```sh
+dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
+```
+
+Or install this release directly (including Windows PowerShell):
 
 ```sh
 dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts

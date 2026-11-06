@@ -19,7 +19,7 @@ if(process.argv.includes('--release')){
  const archiveDigest=sha('release/'+filename);
  const docExceptions={
   '50ce75c0c1ae3514af59f5e8b02779c0879ffac41a9623e720922331820efa18':['README.md','docs/compatibility.md'],
-  '1be2e18ff81e9f31e18623c805f852c57cef1f3516261a6b257f3bba21d23370':['README.md','README.en.md']
+  '1be2e18ff81e9f31e18623c805f852c57cef1f3516261a6b257f3bba21d23370':['README.md','README.en.md','docs/installation.md','docs/installation.en.md','docs/compatibility.md','VERIFICATION.md']
  };
  const docs=docExceptions[archiveDigest]??[];
  const runtimeRows=bytes=>bytes.toString().split('\n').filter(line=>!docs.includes(line.slice(66))).join('\n');

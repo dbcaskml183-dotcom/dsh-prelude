@@ -4,7 +4,39 @@ A prompt engineering plugin for the DeepSeek Harness (DSH) chat composer. Find m
 
 [Download 0.4.25](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
-[Browse all 90 method cards (中文)](docs/catalog.md), including when each method applies, when to skip it, example scenarios, and sources.
+**Start with 90 method cards across task stages and domains, then build your own collection of reusable requirements.**
+
+Find guidance for planning, design, implementation, review, verification, and handoff, across coding, research, writing, data analysis, and other domains. Browse by stage, domain, or keyword. Create, edit, and save your own snippets in **My snippets (我的补句)** for future tasks. The personal library supports import, export, and recovery from its recycle bin.
+
+[Browse the 90 method cards (中文)](docs/catalog.md) · [Machine-readable methods](methods.json) · [Project guide for agents](llms.txt)
+
+## Preview three methods
+
+### Acceptance criteria
+
+Use when a task needs a clear definition of completion.
+
+> Define verifiable completion criteria. At handoff, state the evidence for each criterion and what remains unverified.
+
+[Scenarios and sources](docs/catalog.md#method-acceptance)
+
+### High cohesion, low coupling
+
+Use when unclear module boundaries cause changes to spread across the codebase.
+
+> Organize modules by responsibility, clarify interfaces and dependency direction, and reduce cascading changes. Base the structure on current needs.
+
+[Scenarios and sources](docs/catalog.md#method-cohesion)
+
+### Second-order thinking
+
+Use when a decision may create delayed effects or change later choices.
+
+> Check direct results and subsequent effects, feedback, and delays. Separate evidence from assumptions and focus on consequences that could change the decision.
+
+[Scenarios and sources](docs/catalog.md#method-second-order)
+
+These are English previews of the Chinese cards. The installed method library is primarily in Chinese.
 
 ## A rewrite in practice
 
@@ -24,6 +56,13 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 
 Save drafts, wait for tasks to finish, restart DSH through your usual launcher, and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)
 
+## Choose the right action
+
+- **Add a sentence** when the draft is clear but lacks one specific requirement. Insert it at the cursor.
+- **Rewrite the draft** when several requirements need organizing. Compare and edit the candidate before applying it.
+- **Keep the original** when the goal and constraints are already clear. Simple questions can go straight to the conversation.
+- **Save a personal snippet** for a format, constraint, or check you use repeatedly.
+
 ## Try it in the DSH composer
 
 | What you want | What to do |
@@ -38,7 +77,7 @@ Save phrases you use often in your personal library for next time.
 
 Browsing methods is local. Analysis, rewriting, and optional review use the model provider configured in DSH and may incur charges. Conversation excerpts and text attachments are included only when selected.
 
-Native Windows: the 0.4.25 release was installed and saved favorites on native Windows Node 24 with DSH rc.5. Windows desktop with a WSL2 host is also supported.
+Native Windows · Node 24 · DSH rc.5: installation, startup, plugin response, and saving favorites verified. Windows desktop clients connected to a WSL2 host have separate testing evidence.
 
 **Tested on Windows desktop** with a Windows launcher or browser connected to DSH 0.2.1-rc.2 in WSL2. Linux and native macOS passed clean-host installation, startup, favorite writes and restart persistence checks on rc.2 through rc.5.
 

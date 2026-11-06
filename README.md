@@ -7,7 +7,9 @@
 - **补一句** — 从方法卡中选择补充内容，插入当前草稿。
 - **改整段** — 生成候选稿，对照原稿查看和编辑，确认后采用。
 
-90 张方法卡可按阶段、领域和关键词查找。是否采用、何时发送，都由你决定。
+**90 张内置方法卡，覆盖多种任务阶段与领域，还能积累你自己的常用补句。**
+
+从开工、设计、实施到审查、验收与收尾，方法涵盖代码工程、研究资料、写作表达、数据分析等领域。按阶段、领域或关键词查找，查看适用说明与示例。内置方法库提供起点；你可以在 **我的补句** 中新建、编辑和保存个人要求，下次直接使用。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
 当前 **0.4.25 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
@@ -15,7 +17,7 @@
 
 ## 先看看方法卡
 
-安装前即可阅读[全部 90 张方法卡](docs/catalog.md)，每张包含适用条件、场景示例、补句和参考来源。
+安装前即可阅读[全部 90 张方法卡](docs/catalog.md)，每张包含适用条件、场景示例、补句和参考来源。程序或 AI 工具可直接读取[方法库 JSON](methods.json)；快速查找项目资料可从[资料索引](llms.txt)开始。
 
 ### 验收标准
 
@@ -69,6 +71,13 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 
 保存草稿、等任务结束后，按原启动方式正常重启 DSH，再刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
 
+## 什么时候用哪种操作
+
+- **补一句**：草稿主体已经清楚，只缺一条具体要求，直接在光标处插入。
+- **改整段**：几条要求分散或表达需要整理，生成候选后对照原稿检查，再决定是否采用。
+- **保留原稿**：需求与限制已经说清楚，可以直接发送；简单问答也无需为了优化而增加流程。
+- **存为个人补句**：经常重复使用的格式、约束或检查要求，保存后下次复用。个人库支持导入、导出与回收恢复。
+
 ## 第一次打开 Prelude
 
 在 DSH 输入框写下需求，打开旁边的 **Prelude**，按你此刻想做的事选一条。
@@ -89,7 +98,7 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 
 ## 支持环境
 
-Windows 原生 DSH：0.4.25 已在 Windows 原生 Node 24、DSH rc.5 安装并保存收藏。Windows 桌面连接 WSL2 是另一种运行方式。
+原生 Windows · Node 24 · DSH rc.5：已验证安装、启动、插件响应与收藏保存。
 
 **Windows 桌面端已实测**：通过 Windows 桌面启动器或浏览器使用 Prelude，DSH 0.2.1-rc.2 运行在 WSL2 中。Linux 和原生 macOS 的 rc.2–rc.5 已通过干净宿主安装、启动及数据保存检查。[各平台与 DSH 版本实测](docs/installation.md#支持环境)
 

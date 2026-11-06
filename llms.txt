@@ -1,0 +1,21 @@
+# Prelude
+
+> A prompt engineering assistant embedded in the DeepSeek Harness (DSH) chat composer. Analyze missing requirements, insert one sentence, or compare and edit a full rewrite before applying it.
+
+90 built-in method cards cover multiple task stages and domains. Users can create, edit, and save personal snippets, with library import, export, and recycle recovery.
+The installed methods are primarily in Chinese. Sources document method references; they do not imply endorsement.
+The user chooses what to apply and send. Clear drafts can stay as written.
+Browsing methods is local. Smart analysis, rewriting, and optional review use the configured model provider and may incur charges. Conversation excerpts and text attachments are user-selected.
+Install with `dsh plugin --profile web add dsh-prompt-coach --ignore-scripts`. See installation documentation for tested platform and host versions.
+
+## Documentation
+
+- [English overview](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/README.en.md)
+- [中文介绍](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/README.md)
+- [Installation and tested environments](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/docs/installation.en.md)
+- [Method catalog with examples and sources](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/docs/catalog.md)
+- [Machine-readable method definitions](https://raw.githubusercontent.com/dbcaskml183-dotcom/dsh-prelude/main/methods.json)
+- [Usage and personal snippets](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/docs/quickstart.md)
+- [Model usage and privacy](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/docs/privacy.md)
+- [Verification scope and known observations](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/VERIFICATION.md)
+- [MIT license](https://github.com/dbcaskml183-dotcom/dsh-prelude/blob/main/LICENSE)

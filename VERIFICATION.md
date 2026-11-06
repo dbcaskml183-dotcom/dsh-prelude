@@ -1,6 +1,6 @@
 # 0.4.25 验证
 
-Windows 原生 DSH：0.4.25 已在 Windows 原生 Node 24、DSH rc.5 安装并保存收藏。Windows 桌面连接 WSL2 是另一种运行方式。
+原生 Windows · Node 24 · DSH rc.5：已验证安装、启动、插件响应与收藏保存。 2026-11-05 的原生宿主启动后，手机 Chrome 实际访问宿主页面并打开 Prelude；随后在该宿主完成下述触控检查。
 
 Android Chrome 通过 USB 连接上述宿主。已验证标题拖动、内容滚动、上下边和四角缩放。一次刷新后入口点击被宿主滚动区遮挡，使用键盘打开后继续测试。本轮未验证 iOS 或真实模型调用。
 
@@ -13,7 +13,7 @@ Android Chrome 通过 USB 连接上述宿主。已验证标题拖动、内容滚
 - 本地 WSL 官方 rc.5、自动化 Chromium：完成初始引导，选择合成工作区，输入 CSV 转换需求，打开 Prelude，搜索验收标准，插入补句；原文保留、未发送、无页面异常。
 - Linux / macOS 原生存储测试通过；现有功能测试与 lint 通过。
 - npm 上的 0.4.23 与 GitHub 原发行附件逐字节一致。
-- 本轮无付费模型调用。原生 Windows 仍不支持；macOS 人工交互及手机真机未在本轮验收。
+- 本轮无付费模型调用。原生 Windows 在 0.4.24 当时尚未支持（0.4.25 的安装、启动与收藏保存结果见本文开头）；macOS 人工交互及手机真机未在本轮验收。
 
 [官方宿主运行记录](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41591435614) · [最终包跨平台检查](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41594173084) · [最终包 rc.5 浏览器操作通过](https://github.com/dbcaskml183-dotcom/dsh-prelude/actions/runs/41594676308)
 

@@ -4,22 +4,28 @@
 
 ## 支持环境
 
-0.4.25 支持 Node 24 及以上，在 Linux / WSL2、macOS 上使用 DSH 0.2.1-rc.2 至 rc.5。默认安装无需版本豁免；尚未验证的后续宿主版本不自动放行。
+0.4.25 支持 Node 24 及以上，在 Linux / WSL2、macOS 和原生 Windows 上使用 DSH 0.2.1-rc.2 至 rc.5。原生 Windows 实测宿主为 rc.5。默认安装无需版本豁免；尚未验证的后续宿主版本不自动放行。
 
 | 环境 | 已验证的范围 |
 |---|---|
-| Windows 桌面端，DSH 运行在 WSL2 中 | 既有桌面启动器与浏览器实操记录；宿主内按 Linux 方式安装。不是 Windows 原生 Node 宿主。 |
+| Windows 桌面端，DSH 运行在 WSL2 中 | Windows 桌面启动器或浏览器连接 WSL2 内的 DSH，已实操验证；在 WSL 内安装插件。 |
 | Linux，DSH rc.2 / rc.3 / rc.4 / rc.5 | 官方干净宿主默认安装、启动、鉴权后的插件响应、收藏写入、重启后保留；本地存储测试通过。 |
 | macOS，DSH rc.2 / rc.3 / rc.4 / rc.5 | 同上。在 GitHub 的 macOS 测试机运行；不等同于 macOS 人工桌面操作或真实模型验收。 |
-| Windows 原生 Node | Windows 原生 DSH：0.4.25 已在 Windows 原生 Node 24、DSH rc.5 安装并保存收藏。Windows 桌面连接 WSL2 是另一种运行方式。 |
+| Windows 原生 Node | 原生 Windows · Node 24 · DSH rc.5：已验证安装、启动、插件响应与收藏保存。 |
 
-本轮没有重跑真实模型回合，也没有改动模型调用和改写逻辑。[兼容验证记录](compatibility.md#0424-发布验证)
+本轮没有重跑真实模型回合，也没有改动模型调用和改写逻辑。[兼容验证记录](../VERIFICATION.md)
 
 ## 首次安装
 
 Prelude 的安装包名为 `dsh-prompt-coach`，沿用旧名以兼容已有配置和个人库。先保存现有 profile 的配置、依赖清单和锁文件；其他插件有本地修改时也要保存其程序副本。
 
-**直接从 Release 安装。** 在运行 DSH 的终端执行（原生 Windows 可用 PowerShell）：
+**从 npm 安装。**
+
+```sh
+dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
+```
+
+**从 Release 安装指定版本。** 在运行 DSH 的终端执行（原生 Windows 可用 PowerShell）：
 
 ```sh
 dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
