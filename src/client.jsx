@@ -36,7 +36,7 @@ const library=new LibraryController(),EMPTY_DIRECTORY={current:null,groups:[]};
 const sessionScope=createSessionScope();
 const buckets=createSessionBuckets(actions=>{
  let state={...taskResetPatch(0),...panelOpenPatch(),open:false,surfaceVisible:false,tab:'suggest',availableSkills:[],expanded:false,statusConfig:null,ledgerError:null,rewriteAvailable:false,analysisAvailable:false};const listeners=new Set();let disposed=false;
- const b={actions,rewrite:new RewriteController({methods,getSkills:()=>state.availableSkills}),position:{},gate:new RequestController(),span:null,ownEdit:false,generatedChoices:[],previewDirty:false,previewVersion:0,previewChanged:dirty=>{b.previewDirty=dirty;b.previewVersion++;},subscribe:fn=>{if(disposed)return()=>{};listeners.add(fn);return()=>listeners.delete(fn);},get:()=>state,set:patch=>{if(disposed)return;state={...state,...patch};for(const fn of listeners)fn();},cancel:()=>{b.gate.cancel();b.set({pending:false,decision:null,decisionSource:null});},dispose:()=>{if(disposed)return;disposed=true;listeners.clear();const errors=[];for(const clean of [()=>b.gate.cancel(),()=>b.rewrite.dispose()])try{clean();}catch(e){errors.push(e);}state={...state,open:false,pending:false,decision:null,decisionSource:null};b.span=null;b.trigger=null;if(errors.length)throw new AggregateError(errors,'Prelude session cleanup failed');}};return b;
+ const b={actions,rewrite:new RewriteController({methods,getSkills:()=>state.availableSkills}),position:{},gate:new RequestController(),span:null,ownEdit:false,generatedChoices:[],previewDirty:false,previewVersion:0,previewChanged:dirty=>{b.previewDirty=dirty;b.previewVersion++;},subscribe:fn=>{if(disposed)return()=>{};listeners.add(fn);return()=>listeners.delete(fn);},get:()=>state,set:patch=>{if(disposed)return;state={...state,...patch};for(const fn of listeners)fn();},cancel:()=>{b.gate.cancel();b.set({pending:false,decision:null,decisionSource:null});},dispose:()=>{if(disposed)return;disposed=true;listeners.clear();const errors=[];for(const clean of [()=>b.gate.cancel(),()=>b.rewrite.dispose()])try{clean();}catch(e){errors.push(e);}b.lastAnalysis=null;state={...state,open:false,pending:false,decision:null,decisionSource:null};b.span=null;b.trigger=null;if(errors.length)throw new AggregateError(errors,'Prelude session cleanup failed');}};return b;
 });
 const bind=(actions,sessionId)=>buckets.get(sessionId,actions);
 
@@ -118,12 +118,16 @@ function Panel(props){
   if(localDecision)return b.set({decision:localDecision,decisionSource:'local',message:'已在本地检查，未调用模型。'});
   if(!route)return message('当前没有可用模型路线；请选择主会话模型或固定路线，本地方法库仍可用。');
   if(ui.ledgerError)return message(ui.ledgerError);
+  const key=JSON.stringify([ui.resetGeneration,native.generation,[...ui.availableSkills].sort(),request]);
+  if(b.lastAnalysis?.key===key)return b.set({...b.lastAnalysis.result,message:'已显示这份草稿的分析结果。'});
+  b.lastAnalysis=null;
   const ticket=b.gate.begin(fingerprint),requestId=crypto.randomUUID();
   b.set({pending:true,decision:null,message:`正在分析：仅发送${selected?'所选草稿段落':'当前草稿'}、补充要求和${selectedEvidence.length}条已选资料。`});
   try{
    const r=await deadlineFetch('/api/prompt-coach/v8/suggest',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({protocolVersion:ANALYSIS_PROTOCOL,requestId,...request}),signal:ticket.abort.signal},50000);
    const v=await r.json();if(!b.gate.valid(ticket,live.current.fingerprint))return;
    if(!v.ok||v.protocolVersion!==ANALYSIS_PROTOCOL||v.rulesHash!==RULES_HASH||v.requestId!==requestId)return b.set({pending:false,message:typeof v.error==='string'?v.error:'返回身份不符，未采用结果。'});
+   if(!v.ledgerError&&v.decision&&v.decision.kind!=='unavailable')b.lastAnalysis={key,result:{decision:v.decision,decisionSource:v.modelUsed?'model':'local'}};
    b.set({pending:false,decision:v.decision,decisionSource:v.modelUsed?'model':'local',ledgerError:v.ledgerError||null,message:v.ledgerError|| (v.modelUsed?'分析已完成；请选择适用方法，不会自动改写或发送。':'已在本地检查，未调用模型。')});
   }catch{if(b.gate.valid(ticket,live.current.fingerprint))b.set({pending:false,message:'细化失败、取消或超时；已开始的调用可能计费。本地建议仍可用，不自动重试。'});}
  };
@@ -143,7 +147,7 @@ function Panel(props){
   if(!resetAllowed())return;
   if(key&&key!==resetToken()){b.set({resetConfirmation:null,message:'工作内容已变化，请重新核对后再开始；当前工作保留。'});resetTriggerRef.current?.focus({preventScroll:true});return;}
   const next=b.get().resetGeneration+1;
-  b.gate.cancel();b.rewrite.dismiss();b.span=null;b.ownEdit=true;b.generatedChoices=[];b.previewDirty=false;b.previewVersion++;
+  b.gate.cancel();b.rewrite.dismiss();b.span=null;b.ownEdit=true;b.generatedChoices=[];b.previewDirty=false;b.previewVersion++;b.lastAnalysis=null;
   b.set({...taskResetPatch(next),tab:'suggest',message:'已按当前草稿重新开始；尚未调用模型。需要时可重新选择资料和方法。'});
   scrollRef.current?.scrollTo?.({top:0});resetTriggerRef.current?.focus({preventScroll:true});
  };
@@ -173,7 +177,7 @@ function Panel(props){
  };
  const chooseSelection=()=>{const span=actions?.captureInsertion?.();if(!span||span.draftRev!==input.draftRev||span.end<=span.start)return message('请先在输入框选中要分析的一段文字，再点此按钮。');const text=input.draft.slice(span.start,span.end);if(text.length>4000)return message('所选段落超过4000字符，请缩小选择范围；未截断。');b.set({selection:{text,rev:input.draftRev}});};
  if(!ui.open)return null;
- const decision=ui.decision||localDecision,suggestions=(decision?.suggestions??local).filter(s=>!ui.hidden.includes(s.methodId));
+ const decision=ui.decision||localDecision,suggestions=(ui.pending?[]:(decision?.suggestions??local)).filter(s=>!ui.hidden.includes(s.methodId));
  const decisionView=decisionPresentation({pending:ui.pending,source:ui.decisionSource,kind:decision?.kind,count:suggestions.length});
  const list=searchMethods(methods,query,category,onlyFavorite?personal.value?.favorites||[]:null,sources,domain);
  const methodBusy=ui.pending||routeBusy||['generating','reviewing','repairing'].includes(rewriteState.phase);

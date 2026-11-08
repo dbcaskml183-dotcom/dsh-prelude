@@ -4,7 +4,7 @@
 
 ## Tested environments
 
-Version 0.4.25 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5 on Linux / WSL2, macOS, and native Windows. Native Windows was tested with rc.5. Default installation needs no version override. Later host versions remain outside the declared range until tested.
+Version 0.4.25 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5, plus 0.2.2-rc.1 on Linux / WSL2, macOS, and native Windows. Native Windows was tested with rc.5. Default installation needs no version override. Later host versions remain outside the declared range until tested.
 
 | Environment | Verified scope |
 | --- | --- |
@@ -30,7 +30,7 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 Or install this release directly (including Windows PowerShell):
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.26/dsh-prompt-coach-0.4.26.tgz --ignore-scripts
 ```
 
 The same packaged artifact is used for cross-platform verification and publication. The package includes built files, so installation scripts are unnecessary.

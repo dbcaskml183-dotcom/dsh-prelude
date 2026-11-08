@@ -1,6 +1,6 @@
 {
   "name": "dsh-prompt-coach",
-  "version": "0.4.25",
+  "version": "0.4.26",
   "description": "Prelude — DeepSeek Harness (DSH) 提示词优化与改写助手，提供方法卡、局部补句和原稿对照。",
   "type": "module",
   "main": "./index.mjs",
@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "engines": {
-    "dsh": ">=0.2.1-rc.2 <=0.2.1-rc.5",
+    "dsh": ">=0.2.1-rc.2 <=0.2.1-rc.5 || 0.2.2-rc.1",
     "node": ">=24"
   },
   "dsh": {
@@ -72,8 +72,8 @@
     "VERIFICATION.md"
   ],
   "peerDependencies": {
-    "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5",
-    "@deepseek-ai/schemastery": "3.18.5"
+    "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5 || 0.2.2-rc.1",
+    "@deepseek-ai/schemastery": "3.18.5 || 3.19.0"
   },
   "displayName": "Prelude",
   "os": [

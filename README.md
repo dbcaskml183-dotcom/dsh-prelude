@@ -12,7 +12,7 @@
 从开工、设计、实施到审查、验收与收尾，方法涵盖代码工程、研究资料、写作表达、数据分析等领域。按阶段、领域或关键词查找，查看适用说明与示例。内置方法库提供起点；你可以在 **我的补句** 中新建、编辑和保存个人要求，下次直接使用。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.25 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.26 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.26/dsh-prompt-coach-0.4.26.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
 
 ## 先看看方法卡
@@ -63,11 +63,13 @@
 
 ## 安装到 DSH
 
-可在 Linux、WSL2、macOS 或原生 Windows 的宿主终端安装。Windows 原生实测为 rc.5。插件声明适配 DSH 0.2.1-rc.2 至 rc.5，Node 24 及以上。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
+可在 Linux、WSL2、macOS 或原生 Windows 的宿主终端安装。Windows 原生实测为 rc.5。插件声明适配 DSH 0.2.1-rc.2 至 rc.5，以及 0.2.2-rc.1，Node 24 及以上。已有插件时先备份当前配置，然后在运行 DSH 的终端执行：
 
 ```sh
 dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 ```
+
+桌面 App 请在插件管理界面安装；npm CLI 的 `web` profile 与桌面 App 的 `desktop` profile 分开管理。
 
 保存草稿、等任务结束后，按原启动方式正常重启 DSH，再刷新页面，在聊天输入框旁打开 **Prelude**。安装包沿用兼容名称 `dsh-prompt-coach`。[本地文件安装与其他平台](docs/installation.md)
 

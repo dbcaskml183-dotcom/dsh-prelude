@@ -1,11 +1,22 @@
 // One trusted catalog supplies discovery and recommendation. No I/O or SDKs.
 export const DOMAINS=Object.freeze(['任务规划','思考决策','代码工程','故障恢复','研究资料','写作表达','数据分析','产品体验','学习理解','安全可靠','长任务收尾']);
 const compiled=new WeakMap();
+const wordSegmenter=typeof Intl.Segmenter==='function'?new Intl.Segmenter('zh',{granularity:'word'}):null;
+function citationSignals(text){
+ const value=text.replace(/(?:Markdown\s*)?引用(?:块|计数|类型)/giu,' ');
+ if(!value.includes('引用'))return value;
+ const words=wordSegmenter?.segment(value);
+ return value.replace(/引用/gu,(word,index)=>{
+  const part=words?.containing(index);
+  return part?.segment===word||(!words&&/^(?:来源|文献|论文|出处)/u.test(value.slice(index+2)))?word:' ';
+ });
+}
 export const autoEligible=m=>m.recommendation_mode!=='manual';
 export function recommendationMatch(method,text){
  if(!autoEligible(method))return null;
  let rules=compiled.get(method);if(!rules){rules=(method.recommendation?.signals||[]).map(s=>new RegExp(s,'i'));compiled.set(method,rules);}
- for(const rule of rules){const hit=rule.exec(text);if(hit)return hit[0];}return null;
+ const signalText=method.id==='citations'?citationSignals(text):text;
+ for(const rule of rules){const hit=rule.exec(signalText);if(hit)return hit[0];}return null;
 }
 export function orderedMethods(methods){return [...methods].sort((a,b)=>(b.recommendation?.priority||0)-(a.recommendation?.priority||0));}
 export function modelCatalog(methods){

@@ -80,6 +80,16 @@ function searchCatalog(methods2, query, category = "\u5168\u90E8", favorites = n
 // shared/catalog-registry.mjs
 var DOMAINS = Object.freeze(["\u4EFB\u52A1\u89C4\u5212", "\u601D\u8003\u51B3\u7B56", "\u4EE3\u7801\u5DE5\u7A0B", "\u6545\u969C\u6062\u590D", "\u7814\u7A76\u8D44\u6599", "\u5199\u4F5C\u8868\u8FBE", "\u6570\u636E\u5206\u6790", "\u4EA7\u54C1\u4F53\u9A8C", "\u5B66\u4E60\u7406\u89E3", "\u5B89\u5168\u53EF\u9760", "\u957F\u4EFB\u52A1\u6536\u5C3E"]);
 var compiled = /* @__PURE__ */ new WeakMap();
+var wordSegmenter = typeof Intl.Segmenter === "function" ? new Intl.Segmenter("zh", { granularity: "word" }) : null;
+function citationSignals(text) {
+  const value = text.replace(/(?:Markdown\s*)?引用(?:块|计数|类型)/giu, " ");
+  if (!value.includes("\u5F15\u7528")) return value;
+  const words = wordSegmenter?.segment(value);
+  return value.replace(/引用/gu, (word, index) => {
+    const part = words?.containing(index);
+    return part?.segment === word || !words && /^(?:来源|文献|论文|出处)/u.test(value.slice(index + 2)) ? word : " ";
+  });
+}
 var autoEligible = (m) => m.recommendation_mode !== "manual";
 function recommendationMatch(method, text) {
   if (!autoEligible(method)) return null;
@@ -88,8 +98,9 @@ function recommendationMatch(method, text) {
     rules = (method.recommendation?.signals || []).map((s) => new RegExp(s, "i"));
     compiled.set(method, rules);
   }
+  const signalText = method.id === "citations" ? citationSignals(text) : text;
   for (const rule of rules) {
-    const hit = rule.exec(text);
+    const hit = rule.exec(signalText);
     if (hit) return hit[0];
   }
   return null;
@@ -188,6 +199,7 @@ function intentOf(input, methods2 = []) {
   const constraints = { noQuestions: false, readOnly: false, noWrite: false, noExecute: false, noRewrite: false, noMvp: false, fixedScope: false, ...operationConstraints(context), ...operationConstraints(draft) };
   let signals = authority.join("\n");
   for (const m of methods2) for (const s of new Set(methodTexts(m))) signals = signals.split(s).join(" ");
+  signals = signals.replace(/(?:不(?:自行|擅自)|禁止|不得|不要)\s*(?:升级|更新)(?:依赖|项目版本)?/gu, " ");
   signals = signals.replace(/(^|[。！？；;，,\n])\s*(?:不要|不用|不必|无需|不需要|不做|别用|do not|don't|no\s)[^。！？；;，,\n]*/gi, "$1");
   return { ...constraints, draft, context, authority: authority.join("\n"), signals: signals.trim() };
 }
@@ -1437,6 +1449,29 @@ function literalAtoms(text, withCode = true) {
 function sourceAtoms(request) {
   return [...strings(request), ...methodTexts2(request)].flatMap((t) => literalAtoms(t));
 }
+function sourceQuotes(text) {
+  const quotes = [];
+  const pattern = /(?:\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60\n]*\x60)|([“「"])/gu;
+  for (const match of text.matchAll(pattern)) {
+    if (!match[1] || quotes.some((q) => match.index < q.end)) continue;
+    const open = match[1], close = open === "\u201C" ? "\u201D" : open === "\u300C" ? "\u300D" : '"';
+    let i = match.index + 1, depth = 1;
+    for (; i < text.length; i++) {
+      if (text[i] === "\\") {
+        i++;
+        continue;
+      }
+      if (open !== close && text[i] === open) depth++;
+      if (text[i] === close && !--depth) break;
+    }
+    if (i === text.length) continue;
+    const prefix = text.slice(Math.max(0, match.index - 48), match.index);
+    const material = /(?:原话|原文|素材|报错|错误信息|这句话|这段话|润色|转述|翻译|回复|写道|说|内容为|said|quote|translate|rewrite|error message)\s*[:：,，]?\s*$/iu.exec(prefix);
+    const owner = /(?:^|[：:，,\n;；。])\s*([^：:，,\n;；。]{1,24}(?:说|写道|原话|said))\s*[:：]?\s*$/iu.exec(prefix)?.[1]?.trim() || "";
+    quotes.push({ end: i + 1, raw: text.slice(match.index, i + 1), owner, material: !!material });
+  }
+  return quotes.filter((q) => q.material);
+}
 function directiveFragments(request) {
   const result = [];
   for (const text of strings(request)) {
@@ -1474,6 +1509,13 @@ function missingRequirements(request, text) {
   const heads = directiveHeads(text);
   const atoms = literalAtoms(text, false), present = new Set(atoms.map((x) => x.kind + ":" + x.value));
   const missing = sourceAtoms(request).filter((a) => a.kind === "code" ? !text.includes(a.raw) : !present.has(a.kind + ":" + a.value)).map((a) => a.raw);
+  const expectedQuotes = strings(request).flatMap(sourceQuotes);
+  const actualQuotes = sourceQuotes(text);
+  for (const quote of expectedQuotes) {
+    const index = actualQuotes.findIndex((q) => q.raw === quote.raw && q.owner === quote.owner);
+    if (index < 0) missing.push(quote.owner ? quote.owner + "\uFF1A" + quote.raw : quote.raw);
+    else actualQuotes.splice(index, 1);
+  }
   return [.../* @__PURE__ */ new Set([...missing, ...directiveFragments(request).filter((s) => !heads.some((h) => h === s || directiveKey(h) === directiveKey(s)))])];
 }
 function permissionFacts(text) {
@@ -2654,7 +2696,7 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.25",
+  version: "0.4.26",
   description: "Prelude \u2014 DeepSeek Harness (DSH) \u63D0\u793A\u8BCD\u4F18\u5316\u4E0E\u6539\u5199\u52A9\u624B\uFF0C\u63D0\u4F9B\u65B9\u6CD5\u5361\u3001\u5C40\u90E8\u8865\u53E5\u548C\u539F\u7A3F\u5BF9\u7167\u3002",
   type: "module",
   main: "./index.mjs",
@@ -2665,7 +2707,7 @@ var package_default = {
   },
   license: "MIT",
   engines: {
-    dsh: ">=0.2.1-rc.2 <=0.2.1-rc.5",
+    dsh: ">=0.2.1-rc.2 <=0.2.1-rc.5 || 0.2.2-rc.1",
     node: ">=24"
   },
   dsh: {
@@ -2726,8 +2768,8 @@ var package_default = {
     "VERIFICATION.md"
   ],
   peerDependencies: {
-    "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5",
-    "@deepseek-ai/schemastery": "3.18.5"
+    "@deepseek-ai/dsh-home-paths": ">=0.2.1-rc.2 <=0.2.1-rc.5 || 0.2.2-rc.1",
+    "@deepseek-ai/schemastery": "3.18.5 || 3.19.0"
   },
   displayName: "Prelude",
   os: [
@@ -8889,6 +8931,7 @@ var buckets = createSessionBuckets((actions) => {
     } catch (e) {
       errors.push(e);
     }
+    b.lastAnalysis = null;
     state = { ...state, open: false, pending: false, decision: null, decisionSource: null };
     b.span = null;
     b.trigger = null;
@@ -9057,6 +9100,9 @@ function Panel(props) {
     if (localDecision) return b.set({ decision: localDecision, decisionSource: "local", message: "\u5DF2\u5728\u672C\u5730\u68C0\u67E5\uFF0C\u672A\u8C03\u7528\u6A21\u578B\u3002" });
     if (!route) return message("\u5F53\u524D\u6CA1\u6709\u53EF\u7528\u6A21\u578B\u8DEF\u7EBF\uFF1B\u8BF7\u9009\u62E9\u4E3B\u4F1A\u8BDD\u6A21\u578B\u6216\u56FA\u5B9A\u8DEF\u7EBF\uFF0C\u672C\u5730\u65B9\u6CD5\u5E93\u4ECD\u53EF\u7528\u3002");
     if (ui.ledgerError) return message(ui.ledgerError);
+    const key = JSON.stringify([ui.resetGeneration, native.generation, [...ui.availableSkills].sort(), request]);
+    if (b.lastAnalysis?.key === key) return b.set({ ...b.lastAnalysis.result, message: "\u5DF2\u663E\u793A\u8FD9\u4EFD\u8349\u7A3F\u7684\u5206\u6790\u7ED3\u679C\u3002" });
+    b.lastAnalysis = null;
     const ticket = b.gate.begin(fingerprint), requestId = crypto.randomUUID();
     b.set({ pending: true, decision: null, message: `\u6B63\u5728\u5206\u6790\uFF1A\u4EC5\u53D1\u9001${selected ? "\u6240\u9009\u8349\u7A3F\u6BB5\u843D" : "\u5F53\u524D\u8349\u7A3F"}\u3001\u8865\u5145\u8981\u6C42\u548C${selectedEvidence.length}\u6761\u5DF2\u9009\u8D44\u6599\u3002` });
     try {
@@ -9064,6 +9110,7 @@ function Panel(props) {
       const v = await r.json();
       if (!b.gate.valid(ticket, live.current.fingerprint)) return;
       if (!v.ok || v.protocolVersion !== ANALYSIS_PROTOCOL || v.rulesHash !== RULES_HASH || v.requestId !== requestId) return b.set({ pending: false, message: typeof v.error === "string" ? v.error : "\u8FD4\u56DE\u8EAB\u4EFD\u4E0D\u7B26\uFF0C\u672A\u91C7\u7528\u7ED3\u679C\u3002" });
+      if (!v.ledgerError && v.decision && v.decision.kind !== "unavailable") b.lastAnalysis = { key, result: { decision: v.decision, decisionSource: v.modelUsed ? "model" : "local" } };
       b.set({ pending: false, decision: v.decision, decisionSource: v.modelUsed ? "model" : "local", ledgerError: v.ledgerError || null, message: v.ledgerError || (v.modelUsed ? "\u5206\u6790\u5DF2\u5B8C\u6210\uFF1B\u8BF7\u9009\u62E9\u9002\u7528\u65B9\u6CD5\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u6539\u5199\u6216\u53D1\u9001\u3002" : "\u5DF2\u5728\u672C\u5730\u68C0\u67E5\uFF0C\u672A\u8C03\u7528\u6A21\u578B\u3002") });
     } catch {
       if (b.gate.valid(ticket, live.current.fingerprint)) b.set({ pending: false, message: "\u7EC6\u5316\u5931\u8D25\u3001\u53D6\u6D88\u6216\u8D85\u65F6\uFF1B\u5DF2\u5F00\u59CB\u7684\u8C03\u7528\u53EF\u80FD\u8BA1\u8D39\u3002\u672C\u5730\u5EFA\u8BAE\u4ECD\u53EF\u7528\uFF0C\u4E0D\u81EA\u52A8\u91CD\u8BD5\u3002" });
@@ -9127,6 +9174,7 @@ function Panel(props) {
     b.generatedChoices = [];
     b.previewDirty = false;
     b.previewVersion++;
+    b.lastAnalysis = null;
     b.set({ ...taskResetPatch(next), tab: "suggest", message: "\u5DF2\u6309\u5F53\u524D\u8349\u7A3F\u91CD\u65B0\u5F00\u59CB\uFF1B\u5C1A\u672A\u8C03\u7528\u6A21\u578B\u3002\u9700\u8981\u65F6\u53EF\u91CD\u65B0\u9009\u62E9\u8D44\u6599\u548C\u65B9\u6CD5\u3002" });
     scrollRef.current?.scrollTo?.({ top: 0 });
     resetTriggerRef.current?.focus({ preventScroll: true });
@@ -9178,7 +9226,7 @@ function Panel(props) {
     b.set({ selection: { text, rev: input.draftRev } });
   };
   if (!ui.open) return null;
-  const decision = ui.decision || localDecision, suggestions = (decision?.suggestions ?? local).filter((s) => !ui.hidden.includes(s.methodId));
+  const decision = ui.decision || localDecision, suggestions = (ui.pending ? [] : decision?.suggestions ?? local).filter((s) => !ui.hidden.includes(s.methodId));
   const decisionView = decisionPresentation({ pending: ui.pending, source: ui.decisionSource, kind: decision?.kind, count: suggestions.length });
   const list = searchCatalog(methods, query, category, onlyFavorite ? personal.value?.favorites || [] : null, sources, domain);
   const methodBusy = ui.pending || routeBusy || ["generating", "reviewing", "repairing"].includes(rewriteState.phase);

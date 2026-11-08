@@ -121,7 +121,28 @@ function literalAtoms(text,withCode=true){
  }).filter(x=>x.value);
 }
 function sourceAtoms(request){return [...strings(request),...methodTexts(request)].flatMap(t=>literalAtoms(t));}
-function literalFragments(request){return [...new Set(sourceAtoms(request).map(x=>x.raw))];}
+// The downstream task may transform its material. Preserve that material in the prompt.
+function sourceQuotes(text){
+ const quotes=[];
+ const pattern=/(?:\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60\n]*\x60)|([“「"])/gu;
+ for(const match of text.matchAll(pattern)){
+  if(!match[1]||quotes.some(q=>match.index<q.end))continue;
+  const open=match[1],close=open==='“'?'”':open==='「'?'」':'"';
+  let i=match.index+1,depth=1;
+  for(;i<text.length;i++){
+   if(text[i]==='\\'){i++;continue;}
+   if(open!==close&&text[i]===open)depth++;
+   if(text[i]===close&&!--depth)break;
+  }
+  if(i===text.length)continue;
+  const prefix=text.slice(Math.max(0,match.index-48),match.index);
+  const material=/(?:原话|原文|素材|报错|错误信息|这句话|这段话|润色|转述|翻译|回复|写道|说|内容为|said|quote|translate|rewrite|error message)\s*[:：,，]?\s*$/iu.exec(prefix);
+  const owner=/(?:^|[：:，,\n;；。])\s*([^：:，,\n;；。]{1,24}(?:说|写道|原话|said))\s*[:：]?\s*$/iu.exec(prefix)?.[1]?.trim()||'';
+  quotes.push({end:i+1,raw:text.slice(match.index,i+1),owner,material:!!material});
+ }
+ return quotes.filter(q=>q.material);
+}
+function literalFragments(request){return [...new Set([...sourceAtoms(request).map(x=>x.raw),...strings(request).flatMap(sourceQuotes).map(q=>q.raw)])];}
 function directiveFragments(request){
  const result=[];
  for(const text of strings(request)){
@@ -160,6 +181,13 @@ export function missingRequirements(request,text){
  const heads=directiveHeads(text);
  const atoms=literalAtoms(text,false),present=new Set(atoms.map(x=>x.kind+':'+x.value));
  const missing=sourceAtoms(request).filter(a=>a.kind==='code'?!text.includes(a.raw):!present.has(a.kind+':'+a.value)).map(a=>a.raw);
+ const expectedQuotes=strings(request).flatMap(sourceQuotes);
+ const actualQuotes=sourceQuotes(text);
+ for(const quote of expectedQuotes){
+  const index=actualQuotes.findIndex(q=>q.raw===quote.raw&&q.owner===quote.owner);
+  if(index<0)missing.push(quote.owner?quote.owner+'：'+quote.raw:quote.raw);
+  else actualQuotes.splice(index,1);
+ }
  return [...new Set([...missing,...directiveFragments(request).filter(s=>!heads.some(h=>h===s||directiveKey(h)===directiveKey(s)))])];
 }
 function permissionFacts(text){

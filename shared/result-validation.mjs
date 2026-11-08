@@ -1,7 +1,7 @@
-import {requestText} from './intent.mjs';
+import {requestText,intentOf} from './intent.mjs';
 import {excluded} from './method-policy.mjs';
 import {DECISIONS} from './method-limits.mjs';
-import {safeSnippet} from './catalog-registry.mjs';
+import {recommendationMatch,safeSnippet} from './catalog-registry.mjs';
 import {coverageOf} from './intent.mjs';
 import {sourceBlocks} from './prompt-contract.mjs';
 export function checkModelSuggestions(raw,input,methods) {
@@ -22,6 +22,12 @@ export function checkModelSuggestions(raw,input,methods) {
   const blocks=sourceBlocks(request).filter(b=>b.kind!=='user-method');
   const valid=inc&&typeof inc==='object'&&!Array.isArray(inc)&&Object.keys(inc).every(k=>['sourceBlockId','sourceQuote','snippetQuote'].includes(k))&&typeof inc.sourceBlockId==='string'&&typeof inc.sourceQuote==='string'&&inc.sourceQuote.trim().length>0&&inc.sourceQuote.length<=160&&typeof inc.snippetQuote==='string'&&inc.snippetQuote.trim().length>=4&&inc.snippetQuote.length<=200&&text.includes(inc.snippetQuote)&&blocks.some(b=>b.id===inc.sourceBlockId&&b.text.includes(inc.sourceQuote));
   if(!valid){filtered.unconfirmed++;continue;}
+  // A real source quote can still be unrelated to the recommended action.
+  const evidenceSignal=intentOf({draft:inc.sourceQuote},methods).signals;
+  if(['citations','regression'].includes(m.id)&&!recommendationMatch(m,evidenceSignal)&&
+    !(m.id==='regression'&&/故障|异常|报错|失效|失败|复现|修好|报.{0,5}错|bug|fail|broken|fix/iu.test(evidenceSignal))){
+   filtered.unconfirmed++;continue;
+  }
   const proposedView=coverageOf(m,{draft:inc.snippetQuote}),proposed=proposedView.state==='covered'?(m.coverage?.actions||[]).map(a=>({...a,found:true})):proposedView.actions.filter(a=>a.found);
   if(m.coverage&&(!proposed.length||proposed.every(a=>coverage.actions.some(old=>old.id===a.id&&old.found)))){filtered.unconfirmed++;continue;}
   const p=r.placement;

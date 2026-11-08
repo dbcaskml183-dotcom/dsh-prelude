@@ -4,7 +4,7 @@
 
 ## 支持环境
 
-0.4.25 支持 Node 24 及以上，在 Linux / WSL2、macOS 和原生 Windows 上使用 DSH 0.2.1-rc.2 至 rc.5。原生 Windows 实测宿主为 rc.5。默认安装无需版本豁免；尚未验证的后续宿主版本不自动放行。
+0.4.25 支持 Node 24 及以上，在 Linux / WSL2、macOS 和原生 Windows 上使用 DSH 0.2.1-rc.2 至 rc.5，以及 0.2.2-rc.1。原生 Windows 实测宿主为 rc.5。默认安装无需版本豁免；尚未验证的后续宿主版本不自动放行。
 
 | 环境 | 已验证的范围 |
 |---|---|
@@ -28,12 +28,12 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 **从 Release 安装指定版本。** 在运行 DSH 的终端执行（原生 Windows 可用 PowerShell）：
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.26/dsh-prompt-coach-0.4.26.tgz --ignore-scripts
 ```
 
 本版使用同一份安装包进行跨平台验证与发布。
 
-**使用已下载的文件。** 也可以先[下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
+**使用已下载的文件。** 也可以先[下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.26/dsh-prompt-coach-0.4.26.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
 
 例如文件保存在 Windows 的 `D:\Downloads`，WSL 路径通常为：
 

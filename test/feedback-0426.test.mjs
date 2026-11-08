@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {localSuggestions} from '../shared/method-policy.mjs';
+import {recommendationMatch,safeSnippet} from '../shared/catalog-registry.mjs';
+import {validateDecision} from '../shared/contracts.mjs';
+import {missingRequirements,protectedLiterals} from '../shared/prompt-contract.mjs';
+const methods=JSON.parse(readFileSync(new URL('../methods.json',import.meta.url))).methods;
+const m=id=>methods.find(x=>x.id===id),ids=d=>localSuggestions({draft:d},methods).map(s=>s.methodId);
+for(const text of ['帮我写一段能吸引用户的产品介绍','改进 Markdown 引用块的排版','解释引用计数的实现方式'])test('citation word/meaning '+text,()=>assert.equal(recommendationMatch(m('citations'),text),null));
+for(const text of ['请引用文献来源','核查论文里的引用','优化引用块，另外为论文添加引用'])test('real citations '+text,()=>assert.ok(recommendationMatch(m('citations'),text)));
+for(const text of ['请写一篇产品介绍，不自行升级项目版本。','请写产品说明，禁止升级依赖。','请写一段吸引用户的介绍'])test('first-open unrelated maintenance '+text,()=>assert.ok(!ids(text).includes('regression')));
+test('negative upgrade does not hide positive fix',()=>assert.ok(ids('不要升级，但请修复订单保存闪退。').includes('regression')));
+test('positive upgrade remains eligible',()=>assert.ok(ids('请升级项目依赖以支持新接口。').includes('regression')));
+function decision(id,draft,sourceQuote=draft){return validateDecision(JSON.stringify({kind:'suggestions',suggestions:[{methodId:id,variantId:'standard',reason:'补充动作',increment:{sourceBlockId:'draft',sourceQuote,snippetQuote:safeSnippet(m(id),[])},placement:{hint:'末尾',quote:''}}]}),{draft},methods);}
+for(const [id,d,q] of [['regression','实现订单保存功能','订单'],['citations','写一段吸引用户的产品介绍','吸引用户'],['regression','写产品说明，不自行升级项目版本。','不自行升级项目版本']])test('unrelated grounded model quote '+q,()=>assert.equal(decision(id,d,q).kind,'uncertain'));
+for(const [id,d] of [['regression','修复订单保存闪退问题'],['citations','给论文补充文献引用']])test('real grounded model quote '+d,()=>assert.equal(decision(id,d).suggestions.length,1));
+for(const [a,b] of [['“','”'],['"','"'],['「','」']])test('material exact '+a,()=>{const raw=a+'这里不好看，改一下'+b,draft='请润色这句话：'+raw;assert.ok(protectedLiterals({draft}).includes(raw));assert.deepEqual(missingRequirements({draft},draft),[]);assert.ok(missingRequirements({draft},draft.replace('不好看','不够美观')).length);});
+for(const raw of ['“他说“不要急”，然后走了”',String.raw`"he said \"no\""`,'“第一行\n第二行”'])test('nested, escaped, multiline '+raw,()=>{const draft='原文：'+raw;assert.deepEqual(missingRequirements({draft},draft),[]);assert.ok(missingRequirements({draft},'原文：“另一段材料”').length);});
+test('two identical quotes cannot collapse',()=>{const draft='张三说：“同意”；李四说：“同意”';assert.ok(missingRequirements({draft},'张三说：“同意”').length);assert.deepEqual(missingRequirements({draft},draft),[]);});
+test('quotes cannot exchange owners',()=>{const draft='张三说：“同意”；李四说：“拒绝”';assert.ok(missingRequirements({draft},'张三说：“拒绝”；李四说：“同意”').length);});
+test('moving material to an unrelated example does not preserve its role',()=>assert.ok(missingRequirements({draft:'请润色这句话：“今天很好”'},'请润色这句话：“今天真好”；举例：“今天很好”').length));
+test('title emphasis is not automatically locked',()=>assert.deepEqual(missingRequirements({draft:'起一个“好记”的标题'},'起一个简短好记的标题'),[]));
+test('unbalanced quote does not hang or invent a fragment',()=>assert.deepEqual(protectedLiterals({draft:'请润色“这句还没打完'}),[]));
+test('JSON code remains exactly protected',()=>{const draft='解释这段代码：`{"text":"原话"}`';assert.deepEqual(missingRequirements({draft},draft),[]);assert.ok(missingRequirements({draft},draft.replace('原话','新话')).length);});

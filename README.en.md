@@ -2,7 +2,7 @@
 
 A prompt engineering plugin for the DeepSeek Harness (DSH) chat composer. Find missing requirements, insert one sentence at the cursor, or compare a full rewrite with your original before applying it. You choose what to send.
 
-[Download 0.4.25](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.25/dsh-prompt-coach-0.4.25.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+[Download 0.4.26](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.26/dsh-prompt-coach-0.4.26.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
 **Start with 90 method cards across task stages and domains, then build your own collection of reusable requirements.**
 
@@ -48,13 +48,15 @@ The addition explains how to verify the script while preserving both original co
 
 ## Install in DSH
 
-On Linux, WSL2, macOS or native Windows (tested on rc.5), with DSH 0.2.1-rc.2 through rc.5 and Node 24+, run this in the host terminal using the `web` profile. Back up an existing profile before adding plugins.
+On Linux, WSL2, macOS or native Windows (tested on rc.5), with DSH 0.2.1-rc.2 through rc.5, plus 0.2.2-rc.1 and Node 24+, run this in the host terminal using the `web` profile. Back up an existing profile before adding plugins.
 
 ```sh
 dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 ```
 
 Save drafts, wait for tasks to finish, restart DSH through your usual launcher, and refresh the page. The package retains its earlier name, `dsh-prompt-coach`. [Installation and other environments](docs/installation.en.md)
+
+Desktop App users should install through its plugin manager. The npm CLI manages `web`, not the Electron-managed `desktop` profile.
 
 ## Choose the right action
 

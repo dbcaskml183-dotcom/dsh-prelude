@@ -47,6 +47,7 @@ export function intentOf(input,methods=[]) {
  let signals=authority.join('\n');
  for(const m of methods)for(const s of new Set(methodTexts(m)))signals=signals.split(s).join(' ');
  // Negative clauses keep their authority but cannot create positive topic hits.
+ signals=signals.replace(/(?:不(?:自行|擅自)|禁止|不得|不要)\s*(?:升级|更新)(?:依赖|项目版本)?/gu,' ');
  signals=signals.replace(/(^|[。！？；;，,\n])\s*(?:不要|不用|不必|无需|不需要|不做|别用|do not|don't|no\s)[^。！？；;，,\n]*/gi,'$1');
  return {...constraints,draft,context,authority:authority.join('\n'),signals:signals.trim()};
 }
