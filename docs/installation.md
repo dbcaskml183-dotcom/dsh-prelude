@@ -4,7 +4,7 @@
 
 ## 支持环境
 
-0.4.25 支持 Node 24 及以上，在 Linux / WSL2、macOS 和原生 Windows 上使用 DSH 0.2.1-rc.2 至 rc.5，以及 0.2.2-rc.1。原生 Windows 实测宿主为 rc.5。默认安装无需版本豁免；尚未验证的后续宿主版本不自动放行。
+0.4.26 支持 Node 24 及以上，在 Linux / WSL2、macOS 和原生 Windows 上使用 DSH 0.2.1-rc.2 至 rc.5，以及 0.2.2-rc.1。原生 Windows 实测宿主为 rc.5。默认安装无需版本豁免；尚未验证的后续宿主版本不自动放行。
 
 | 环境 | 已验证的范围 |
 |---|---|
@@ -13,13 +13,13 @@
 | macOS，DSH rc.2 / rc.3 / rc.4 / rc.5 | 同上。在 GitHub 的 macOS 测试机运行；不等同于 macOS 人工桌面操作或真实模型验收。 |
 | Windows 原生 Node | 原生 Windows · Node 24 · DSH rc.5：已验证安装、启动、插件响应与收藏保存。 |
 
-本轮没有重跑真实模型回合，也没有改动模型调用和改写逻辑。[兼容验证记录](../VERIFICATION.md)
+0.4.26 在原生 Windows 的 0.2.2-rc.1 Web 宿主上实测了方法库、收藏及插入补句。[兼容验证记录](../VERIFICATION.md)
 
 ## 首次安装
 
 Prelude 的安装包名为 `dsh-prompt-coach`，沿用旧名以兼容已有配置和个人库。先保存现有 profile 的配置、依赖清单和锁文件；其他插件有本地修改时也要保存其程序副本。
 
-**从 npm 安装。**
+**从 npm 安装当前 npm 版本。** 如需指定 0.4.26，请使用下方 GitHub Release 地址。
 
 ```sh
 dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
@@ -38,7 +38,7 @@ dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/r
 例如文件保存在 Windows 的 `D:\Downloads`，WSL 路径通常为：
 
 ```sh
-dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.25.tgz --ignore-scripts
+dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.26.tgz --ignore-scripts
 ```
 
 以上假设使用 `web` profile；如实际 profile 不同，使用自己的名称。执行 CLI 应与运行宿主是同一版本。官方命令维护 bundle 和依赖，不重复手工添加 `prompt-coach` entry。
@@ -47,7 +47,7 @@ dsh plugin --profile web add /mnt/d/Downloads/dsh-prompt-coach-0.4.25.tgz --igno
 
 ## 亲眼确认安装成功
 
-1. 设置中出现 **Prelude**，版本为 **0.4.25**。
+1. 设置中出现 **Prelude**，版本为 **0.4.26**。
 2. 输入区打开 Prelude，搜索“验收标准”，预览并插入一条补句。
 3. 确认原草稿仍在，并且没有自动发送。
 
