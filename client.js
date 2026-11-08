@@ -478,11 +478,11 @@ function previewForAdoption(original, text) {
 }
 function decisionPresentation({ pending = false, source, kind, count = 0 } = {}) {
   if (pending) return { label: "\u5206\u6790\u4E2D", hint: "\u53EA\u63D0\u4EA4\u4F60\u660E\u786E\u9009\u62E9\u7684\u5185\u5BB9" };
-  if (source === "model") return { label: { no_suggestion: "\u672A\u53D1\u73B0\u5FC5\u8981\u8865\u5145", suggestions: "\u53EF\u8003\u8651\u8865\u5145", needs_context: "\u76EE\u6807\u5F85\u660E\u786E", uncertain: "\u4F9D\u636E\u6709\u9650", unavailable: "\u5206\u6790\u4E0D\u53EF\u7528" }[kind] || "\u6A21\u578B\u5206\u6790", hint: "\u4EC5\u4F9D\u636E\u672C\u6B21\u6240\u9009\u5185\u5BB9\uFF1B\u4E0D\u4EE3\u8868\u539F\u7A3F\u6700\u4F18" };
+  if (source === "model") return { label: { no_suggestion: "\u672A\u53D1\u73B0\u5FC5\u8981\u8865\u5145", suggestions: "\u53EF\u8003\u8651\u8865\u5145", needs_context: "\u76EE\u6807\u5F85\u660E\u786E", uncertain: "\u4F9D\u636E\u6709\u9650", unavailable: "\u5206\u6790\u4E0D\u53EF\u7528" }[kind] || "\u6A21\u578B\u5206\u6790", hint: "\u6A21\u578B\u5206\u6790 \xB7 \u4EC5\u4F9D\u636E\u672C\u6B21\u6240\u9009\u5185\u5BB9" };
   if (kind === "needs_context") return { label: "\u76EE\u6807\u5F85\u8865", hint: "\u53EF\u8865\u5145\uFF0C\u4E5F\u53EF\u4EE5\u8DF3\u8FC7" };
   if (kind === "uncertain") return { label: "\u4F9D\u636E\u6709\u9650", hint: "\u53EF\u8865\u5145\u76F8\u5173\u8D44\u6599\uFF0C\u4E5F\u53EF\u7EE7\u7EED\u4F7F\u7528\u65B9\u6CD5\u5E93" };
   if (kind === "no_suggestion") return { label: "\u672C\u5730\u9884\u68C0\u67E5", hint: "\u672A\u8C03\u7528\u6A21\u578B\uFF0C\u4E0D\u4EE3\u8868\u5B8C\u6574\u8D28\u91CF\u5224\u65AD" };
-  return { label: "\u672C\u5730\u76F8\u5173\u65B9\u6CD5", hint: count ? "\u76F8\u5173\u65B9\u6CD5\u5019\u9009\uFF0C\u4E0D\u7B49\u4E8E\u53D1\u73B0\u7F3A\u9677" : "\u7167\u5E38\u5199\u9700\u6C42\uFF0C\u6216\u53BB\u65B9\u6CD5\u5E93\u6311\u9009" };
+  return { label: "\u672C\u5730\u53C2\u8003 \xB7 \u672A\u8C03\u7528\u6A21\u578B", hint: count ? "\u76F8\u5173\u65B9\u6CD5\u5019\u9009\uFF0C\u4E0D\u7B49\u4E8E\u53D1\u73B0\u7F3A\u9677" : "\u7167\u5E38\u5199\u9700\u6C42\uFF0C\u6216\u53BB\u65B9\u6CD5\u5E93\u6311\u9009" };
 }
 function rewriteBadge(snapshot2) {
   if (snapshot2.phase === "generating") return "\u751F\u6210\u4E2D";
@@ -491,6 +491,12 @@ function rewriteBadge(snapshot2) {
   if (snapshot2.phase === "needs_context") return "\u5F85\u8865\u5145\u76EE\u6807";
   if (["error", "cancelled"].includes(snapshot2.phase)) return "\u672A\u91C7\u7528\u7ED3\u679C";
   return snapshot2.modelUsed ? "\u6A21\u578B\u5019\u9009" : "\u672C\u5730\u68C0\u67E5";
+}
+function statusFailure(code) {
+  if (code === 401) return "DSH \u767B\u5F55\u5DF2\u5931\u6548\uFF0C\u8BF7\u91CD\u65B0\u767B\u5F55\u3002";
+  if (code === 403) return "DSH \u62D2\u7EDD\u8BBF\u95EE Prelude\uFF0C\u8BF7\u6838\u5BF9\u5F53\u524D\u767B\u5F55\u8EAB\u4EFD\u3002";
+  if (code === 404) return "\u627E\u4E0D\u5230 Prelude \u540E\u7AEF\uFF0C\u8BF7\u68C0\u67E5\u63D2\u4EF6\u662F\u5426\u5DF2\u52A0\u8F7D\u3002";
+  return "Prelude \u540E\u7AEF\u8FD4\u56DE HTTP " + code + "\u3002";
 }
 
 // client/native-adapter.mjs
@@ -2696,7 +2702,7 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.26",
+  version: "0.4.27",
   description: "Prelude \u2014 DeepSeek Harness (DSH) \u63D0\u793A\u8BCD\u4F18\u5316\u4E0E\u6539\u5199\u52A9\u624B\uFF0C\u63D0\u4F9B\u65B9\u6CD5\u5361\u3001\u5C40\u90E8\u8865\u53E5\u548C\u539F\u7A3F\u5BF9\u7167\u3002",
   type: "module",
   main: "./index.mjs",
@@ -9057,17 +9063,39 @@ function Panel(props) {
     b.rewrite.cancel();
     b.set({ open: false, resetConfirmation: null });
   }, [b, sessionId]);
+  const [statusAttempt, recheckStatus] = (0, import_react8.useState)(0);
+  const [connectionNote, setConnectionNote] = (0, import_react8.useState)(null);
+  (0, import_react8.useEffect)(() => {
+    if (ui.open) library.load();
+  }, [ui.open, native.generation]);
   (0, import_react8.useEffect)(() => {
     if (!ui.open) return;
-    const ac = new AbortController();
-    library.load();
-    deadlineFetch("/api/prompt-coach/v4/status", { credentials: "same-origin", cache: "no-store", signal: ac.signal }, 5e3).then((r) => r.json()).then((v) => {
-      if (!ac.signal.aborted && v.ok && v.protocolVersion === 4) b.set({ availableSkills: v.availableSkills || [], statusConfig: v.config, ledgerError: v.ledgerError, rewriteAvailable: analysisReady(v), analysisAvailable: analysisReady(v) });
-    }).catch(() => {
-      if (!ac.signal.aborted) message("\u667A\u80FD\u670D\u52A1\u6682\u4E0D\u53EF\u7528\uFF1B\u672C\u5730\u65B9\u6CD5\u5E93\u4ECD\u53EF\u4F7F\u7528\u3002");
-    });
-    return () => ac.abort();
-  }, [ui.open, native.generation]);
+    const owner = new AbortController();
+    b.set({ analysisAvailable: false, rewriteAvailable: false });
+    setConnectionNote({ message: "\u6B63\u5728\u8FDE\u63A5 Prelude\u2026", retry: false });
+    async function check() {
+      let failure;
+      try {
+        const response = await deadlineFetch("/api/prompt-coach/v4/status", { credentials: "same-origin", cache: "no-store", signal: owner.signal }, 15e3);
+        if (!response.ok) failure = statusFailure(response.status);
+        else {
+          const value = await response.json();
+          if (owner.signal.aborted) return;
+          if (value?.protocolVersion !== 4 || !analysisReady(value)) failure = "Prelude \u9875\u9762\u4E0E\u540E\u7AEF\u672A\u80FD\u786E\u8BA4\u517C\u5BB9\uFF0C\u8BF7\u5237\u65B0\u9875\u9762\u3002";
+          else {
+            b.set({ availableSkills: value.availableSkills || [], statusConfig: value.config, ledgerError: value.ledgerError || null, rewriteAvailable: true, analysisAvailable: true });
+            setConnectionNote(null);
+            return;
+          }
+        }
+      } catch (error) {
+        failure = error?.name === "TimeoutError" ? "\u8FDE\u63A5 Prelude \u8D85\u65F6\u3002" : error instanceof SyntaxError ? "Prelude \u8FD4\u56DE\u4E86\u65E0\u6CD5\u8BFB\u53D6\u7684\u5185\u5BB9\u3002" : "\u672A\u80FD\u8FDE\u63A5 Prelude\uFF0C\u8BF7\u68C0\u67E5 DSH \u8FDE\u63A5\u3002";
+      }
+      if (!owner.signal.aborted) setConnectionNote({ message: failure, retry: true });
+    }
+    void check();
+    return () => owner.abort();
+  }, [b, ui.open, native.generation, statusAttempt]);
   const close = () => {
     b.cancel();
     b.rewrite.cancel();
@@ -9101,7 +9129,7 @@ function Panel(props) {
     if (!route) return message("\u5F53\u524D\u6CA1\u6709\u53EF\u7528\u6A21\u578B\u8DEF\u7EBF\uFF1B\u8BF7\u9009\u62E9\u4E3B\u4F1A\u8BDD\u6A21\u578B\u6216\u56FA\u5B9A\u8DEF\u7EBF\uFF0C\u672C\u5730\u65B9\u6CD5\u5E93\u4ECD\u53EF\u7528\u3002");
     if (ui.ledgerError) return message(ui.ledgerError);
     const key = JSON.stringify([ui.resetGeneration, native.generation, [...ui.availableSkills].sort(), request]);
-    if (b.lastAnalysis?.key === key) return b.set({ ...b.lastAnalysis.result, message: "\u5DF2\u663E\u793A\u8FD9\u4EFD\u8349\u7A3F\u7684\u5206\u6790\u7ED3\u679C\u3002" });
+    if (b.lastAnalysis?.key === key) return b.set({ ...b.lastAnalysis.result, message: "\u6CBF\u7528\u672C\u6B21\u5206\u6790\u3002" });
     b.lastAnalysis = null;
     const ticket = b.gate.begin(fingerprint), requestId = crypto.randomUUID();
     b.set({ pending: true, decision: null, message: `\u6B63\u5728\u5206\u6790\uFF1A\u4EC5\u53D1\u9001${selected ? "\u6240\u9009\u8349\u7A3F\u6BB5\u843D" : "\u5F53\u524D\u8349\u7A3F"}\u3001\u8865\u5145\u8981\u6C42\u548C${selectedEvidence.length}\u6761\u5DF2\u9009\u8D44\u6599\u3002` });
@@ -9136,12 +9164,14 @@ function Panel(props) {
   };
   const reviewCurrent = async () => {
     if (!workCurrent()) return;
+    if (!ui.rewriteAvailable) return message("\u8BF7\u5148\u8FDE\u63A5 Prelude\uFF0C\u518D\u5BA1\u6821\u5F53\u524D\u7A3F\u3002");
     if (ui.ledgerError) return message(ui.ledgerError);
     const result = await b.rewrite.reviewCurrent(getCurrentRewrite());
     if (result?.ledgerError) b.set({ ledgerError: result.ledgerError });
   };
   const repairCurrent = async () => {
     if (!workCurrent()) return;
+    if (!ui.rewriteAvailable) return message("\u8BF7\u5148\u8FDE\u63A5 Prelude\uFF0C\u518D\u4FEE\u7A3F\u3002");
     if (ui.pending || routeBusy || ui.ledgerError) return message(ui.ledgerError || "\u8BF7\u7B49\u5F85\u5F53\u524D\u64CD\u4F5C\u5B8C\u6210\u3002");
     try {
       const result = await b.rewrite.repairCurrent(getCurrentRewrite());
@@ -9226,7 +9256,7 @@ function Panel(props) {
     b.set({ selection: { text, rev: input.draftRev } });
   };
   if (!ui.open) return null;
-  const decision = ui.decision || localDecision, suggestions = (ui.pending ? [] : decision?.suggestions ?? local).filter((s) => !ui.hidden.includes(s.methodId));
+  const decision = ui.decision || localDecision, suggestions = (ui.pending ? [] : decision ? decision.suggestions || [] : local).filter((s) => !ui.hidden.includes(s.methodId));
   const decisionView = decisionPresentation({ pending: ui.pending, source: ui.decisionSource, kind: decision?.kind, count: suggestions.length });
   const list = searchCatalog(methods, query, category, onlyFavorite ? personal.value?.favorites || [] : null, sources, domain);
   const methodBusy = ui.pending || routeBusy || ["generating", "reviewing", "repairing"].includes(rewriteState.phase);
@@ -9255,7 +9285,7 @@ function Panel(props) {
   return /* @__PURE__ */ import_react8.default.createElement("section", { className: "pc-root", ref: rootRef, "aria-label": BRAND.title, "data-testid": "prompt-coach-panel" }, /* @__PURE__ */ import_react8.default.createElement("div", { ref: panelRef, popover: "manual", tabIndex: -1, className: "pc-panel", "aria-label": BRAND.title + "\u9762\u677F" }, (ui.expanded ? ["w", "e"] : ["n", "s", "w", "e", "nw", "ne", "sw", "se"]).map((edge) => /* @__PURE__ */ import_react8.default.createElement("span", { key: edge, className: "pc-resize pc-resize-" + edge, "data-pc-resize": edge, tabIndex: 0, role: "button", "aria-label": "\u8C03\u6574Prelude\u5927\u5C0F\uFF1A" + { n: "\u4E0A\u8FB9", s: "\u4E0B\u8FB9", w: "\u5DE6\u8FB9", e: "\u53F3\u8FB9", nw: "\u5DE6\u4E0A\u89D2", ne: "\u53F3\u4E0A\u89D2", sw: "\u5DE6\u4E0B\u89D2", se: "\u53F3\u4E0B\u89D2" }[edge], title: "\u62D6\u52A8\u8C03\u6574\u5927\u5C0F\uFF1B\u65B9\u5411\u952E\u5FAE\u8C03\uFF0CHome\u590D\u4F4D" })), /* @__PURE__ */ import_react8.default.createElement("header", { className: "pc-top" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-drag-handle", "data-pc-drag-handle": "true", role: "button", tabIndex: 0, "aria-label": ui.expanded ? "\u79FB\u52A8Prelude\u9762\u677F\uFF1A\u5C55\u5F00\u65F6\u4EC5\u5DE6\u53F3\uFF1B\u65B9\u5411\u952E\u79FB\u52A8\uFF0C\u56DE\u8F66\u590D\u4F4D" : "\u79FB\u52A8Prelude\u9762\u677F\uFF1A\u62D6\u52A8\u6216\u65B9\u5411\u952E\u79FB\u52A8\uFF0C\u56DE\u8F66\u590D\u4F4D", title: ui.expanded ? "\u62D6\u52A8\u6807\u9898\u5DE6\u53F3\u79FB\u52A8\uFF1B\u65B9\u5411\u952E\u5FAE\u8C03\uFF0C\u56DE\u8F66\u6216\u53CC\u51FB\u590D\u4F4D\u4F4D\u7F6E\u4E0E\u5927\u5C0F" : "\u62D6\u52A8\u6807\u9898\u79FB\u52A8\uFF1B\u65B9\u5411\u952E\u5FAE\u8C03\uFF0C\u56DE\u8F66\u6216\u53CC\u51FB\u590D\u4F4D\u4F4D\u7F6E\u4E0E\u5927\u5C0F" }, /* @__PURE__ */ import_react8.default.createElement("strong", null, BRAND.title)), /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", "aria-pressed": ui.expanded, onClick: () => b.set({ expanded: !ui.expanded }) }, ui.expanded ? "\u6536\u8D77" : "\u5C55\u5F00"), /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button pc-close", "aria-label": "\u5173\u95ED" + BRAND.short, onClick: close }, "\xD7"))), /* @__PURE__ */ import_react8.default.createElement("nav", { className: "pc-tabs", "aria-label": BRAND.title + "\u9875\u9762" }, [["suggest", "\u5F53\u524D\u5EFA\u8BAE"], ["library", "\u65B9\u6CD5\u5E93 \xB7 " + methods.length], ["custom", "\u6211\u7684\u8865\u53E5"]].map(([id, label]) => /* @__PURE__ */ import_react8.default.createElement("button", { key: id, type: "button", className: "pc-tab", "aria-pressed": ui.tab === id, onClick: () => b.set({ tab: id, message: "" }) }, label))), /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-work-toolbar" }, /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", ref: resetTriggerRef, onClick: requestReset, title: "\u4FDD\u7559\u8F93\u5165\u6846\u5185\u5BB9\uFF0C\u6E05\u9664\u8FD9\u6B21\u5206\u6790\u3001\u6539\u5199\u53CA\u6240\u9009\u4F9D\u636E\uFF1B\u4E0D\u4F1A\u53D1\u9001\u6216\u8C03\u7528\u6A21\u578B\u3002" }, "\u6362\u4E2A\u9700\u6C42\uFF0C\u91CD\u65B0\u5F00\u59CB"), (ui.context.trim() || ui.methodChoices.length > 0 || selectedEvidence.length > 0) && /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-reason" }, "\u5F53\u524D\u4ECD\u9009\u6709\uFF1A", [ui.methodChoices.length ? ui.methodChoices.length + "\u9879\u65B9\u6CD5" : "", selectedEvidence.length ? selectedEvidence.length + "\u6BB5\u8D44\u6599" : "", ui.context.trim() ? "\u8865\u5145\u8981\u6C42" : ""].filter(Boolean).join("\u3001"))), /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-scroll", ref: scrollRef, "aria-busy": ui.pending }, ui.disclosureDefaultsPending && /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-reason", role: "status" }, native.formStatus === "unavailable" ? "\u9ED8\u8BA4\u5C55\u5F00\u504F\u597D\u672A\u8BFB\u53D6\uFF0C\u53EF\u624B\u52A8\u5F00\u5408\u3002" : "\u6B63\u5728\u8BFB\u53D6\u9ED8\u8BA4\u5C55\u5F00\u504F\u597D\uFF0C\u53EF\u5148\u624B\u52A8\u5F00\u5408\u3002"), ui.resetConfirmation && /* @__PURE__ */ import_react8.default.createElement("section", { className: "pc-work-confirm", "aria-label": "\u786E\u8BA4\u653E\u5F03\u672C\u6B21\u5DE5\u4F5C" }, /* @__PURE__ */ import_react8.default.createElement("strong", null, ui.resetConfirmation.kind === "reset" ? "\u91CD\u65B0\u5F00\u59CB\u524D\u8BF7\u786E\u8BA4" : "\u91CD\u65B0\u751F\u6210\u524D\u8BF7\u786E\u8BA4"), /* @__PURE__ */ import_react8.default.createElement("p", null, "\u8F93\u5165\u6846\u5185\u5BB9\u4FDD\u7559\u3002", ui.resetConfirmation.kind === "reset" ? "\u5C06\u6E05\u9664\u672C\u6B21\u5206\u6790\u3001\u5019\u9009\u3001\u65B9\u6CD5\u548C\u5DF2\u9009\u8D44\u6599\uFF0C\u5176\u4E2D\u5305\u62EC\uFF1A" : "\u65B0\u5019\u9009\u5C06\u66FF\u6362\uFF1A", ui.resetConfirmation.items.join("\u3001"), "\u3002"), /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-reason" }, ui.resetConfirmation.kind === "reset" ? "\u672C\u5730\u6E05\u7406\u4E0D\u8C03\u7528\u6A21\u578B\uFF1B\u5DF2\u7ECF\u5F00\u59CB\u7684\u8C03\u7528\u4ECD\u53EF\u80FD\u8BA1\u8D39\u3002" : "\u786E\u8BA4\u540E\u624D\u4F1A\u6309\u5F53\u524D\u8349\u7A3F\u751F\u6210\uFF0C\u53EF\u80FD\u8BA1\u8D39\u3002"), /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button pc-primary", onClick: confirmWork }, ui.resetConfirmation.kind === "reset" ? "\u786E\u8BA4\u91CD\u65B0\u5F00\u59CB" : "\u786E\u8BA4\u91CD\u65B0\u751F\u6210"), /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", onClick: () => {
     b.set({ resetConfirmation: null });
     resetTriggerRef.current?.focus({ preventScroll: true });
-  } }, "\u53D6\u6D88\uFF0C\u4FDD\u7559\u5DE5\u4F5C"))), ui.message && /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-message", role: "status" }, ui.message), ui.tab === "suggest" && /* @__PURE__ */ import_react8.default.createElement(import_react8.default.Fragment, null, /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-summary-row" }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-badge" }, decisionView.label), /* @__PURE__ */ import_react8.default.createElement("span", null, decisionView.hint)), ui.decisionSource === "model" && /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-reason" }, "\u9009\u5361\u4E0D\u4F1A\u91CD\u65B0\u5206\u6790\uFF1B\u9700\u8981\u65F6\u53EF\u518D\u6B21\u70B9\u51FB\u201C\u5206\u6790\u63D0\u793A\u8BCD\u201D\u3002"), reflected.length > 0 && /* @__PURE__ */ import_react8.default.createElement("details", { ...disclosure("reflected"), className: "pc-detail" }, /* @__PURE__ */ import_react8.default.createElement("summary", null, "\u5F53\u524D\u6587\u5B57\u5DF2\u4F53\u73B0\u7684\u65B9\u6CD5 \xB7 ", reflected.length), reflected.map((x) => /* @__PURE__ */ import_react8.default.createElement("p", { key: x.methodId }, /* @__PURE__ */ import_react8.default.createElement("strong", null, x.label), "\uFF1A", /* @__PURE__ */ import_react8.default.createElement("q", null, x.evidence[0]?.quote), "\uFF1B\u65E0\u9700\u91CD\u590D\u8865\u5165\u3002"))), /* @__PURE__ */ import_react8.default.createElement("details", { ...disclosure("model"), className: "pc-model" }, /* @__PURE__ */ import_react8.default.createElement("summary", null, /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-summary-label" }, routeView.mode), /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-summary-value", title: routeView.label }, routeView.label)), /* @__PURE__ */ import_react8.default.createElement(RouteControls, { ...{ sessionId, message }, onBusy: setRouteBusy }), /* @__PURE__ */ import_react8.default.createElement(ReviewControls, { target: true, targetOnly: true, busy: ui.pending || ["generating", "reviewing", "repairing"].includes(rewriteState.phase), message })), /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-cost-note" }, "\u672C\u5730\u65B9\u6CD5\u514D\u8D39\uFF1B\u5206\u6790\u3001\u6539\u5199\u6309\u6A21\u578B\u8BA1\u8D39\u3002\u53EF\u76F4\u63A5\u6539\u5199\u3002"), /* @__PURE__ */ import_react8.default.createElement("details", { ...disclosure("requirements"), className: "pc-context" }, /* @__PURE__ */ import_react8.default.createElement("summary", null, "\u8865\u5145\u8981\u6C42\uFF08\u53EF\u9009\uFF09"), /* @__PURE__ */ import_react8.default.createElement("textarea", { className: "pc-input", "aria-label": "\u8865\u5145\u8981\u6C42", maxLength: 2e3, placeholder: "\u4F8B\u5982\uFF1A\u672C\u8F6E\u53EA\u8C03\u67E5\u3001\u4E0D\u4FEE\u6539\uFF1B\u4E0D\u8981MVP\u3002\u4E0E\u4F60\u7684\u8349\u7A3F\u4E00\u8D77\u68C0\u67E5\uFF0C\u4E0D\u5728\u672C\u63D2\u4EF6\u6C38\u4E45\u4FDD\u5B58\u3002", value: ui.context, onChange: (e) => b.set({ context: e.target.value }) })), /* @__PURE__ */ import_react8.default.createElement(MaterialControls, { disclosure: disclosure("materials"), key: "materials:" + ui.resetGeneration, workCurrent, onPreviewChange: previewChanged, services: nativeServices, ...{ sessionId, input, chat, message }, evidence: selectedEvidence, onChange: (evidence) => {
+  } }, "\u53D6\u6D88\uFF0C\u4FDD\u7559\u5DE5\u4F5C"))), ui.message && /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-message", role: "status" }, ui.message), ui.tab === "suggest" && /* @__PURE__ */ import_react8.default.createElement(import_react8.default.Fragment, null, connectionNote && /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-actions", role: "status" }, /* @__PURE__ */ import_react8.default.createElement("span", null, connectionNote.message), connectionNote.retry && /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", onClick: () => recheckStatus((n) => n + 1) }, "\u91CD\u65B0\u8FDE\u63A5")), /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-summary-row" }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-badge" }, decisionView.label), /* @__PURE__ */ import_react8.default.createElement("span", null, decisionView.hint)), ui.decisionSource === "model" && /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-reason" }, "\u9009\u5361\u4E0D\u4F1A\u91CD\u65B0\u5206\u6790\uFF1B\u9700\u8981\u65F6\u53EF\u518D\u6B21\u70B9\u51FB\u201C\u5206\u6790\u63D0\u793A\u8BCD\u201D\u3002"), reflected.length > 0 && /* @__PURE__ */ import_react8.default.createElement("details", { ...disclosure("reflected"), className: "pc-detail" }, /* @__PURE__ */ import_react8.default.createElement("summary", null, "\u5F53\u524D\u6587\u5B57\u5DF2\u4F53\u73B0\u7684\u65B9\u6CD5 \xB7 ", reflected.length), reflected.map((x) => /* @__PURE__ */ import_react8.default.createElement("p", { key: x.methodId }, /* @__PURE__ */ import_react8.default.createElement("strong", null, x.label), "\uFF1A", /* @__PURE__ */ import_react8.default.createElement("q", null, x.evidence[0]?.quote), "\uFF1B\u65E0\u9700\u91CD\u590D\u8865\u5165\u3002"))), /* @__PURE__ */ import_react8.default.createElement("details", { ...disclosure("model"), className: "pc-model" }, /* @__PURE__ */ import_react8.default.createElement("summary", null, /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-summary-label" }, routeView.mode), /* @__PURE__ */ import_react8.default.createElement("span", { className: "pc-summary-value", title: routeView.label }, routeView.label)), /* @__PURE__ */ import_react8.default.createElement(RouteControls, { ...{ sessionId, message }, onBusy: setRouteBusy }), /* @__PURE__ */ import_react8.default.createElement(ReviewControls, { target: true, targetOnly: true, busy: ui.pending || ["generating", "reviewing", "repairing"].includes(rewriteState.phase), message })), /* @__PURE__ */ import_react8.default.createElement("p", { className: "pc-cost-note" }, "\u672C\u5730\u65B9\u6CD5\u514D\u8D39\uFF1B\u5206\u6790\u3001\u6539\u5199\u6309\u6A21\u578B\u8BA1\u8D39\u3002\u53EF\u76F4\u63A5\u6539\u5199\u3002"), /* @__PURE__ */ import_react8.default.createElement("details", { ...disclosure("requirements"), className: "pc-context" }, /* @__PURE__ */ import_react8.default.createElement("summary", null, "\u8865\u5145\u8981\u6C42\uFF08\u53EF\u9009\uFF09"), /* @__PURE__ */ import_react8.default.createElement("textarea", { className: "pc-input", "aria-label": "\u8865\u5145\u8981\u6C42", maxLength: 2e3, placeholder: "\u4F8B\u5982\uFF1A\u672C\u8F6E\u53EA\u8C03\u67E5\u3001\u4E0D\u4FEE\u6539\uFF1B\u4E0D\u8981MVP\u3002\u4E0E\u4F60\u7684\u8349\u7A3F\u4E00\u8D77\u68C0\u67E5\uFF0C\u4E0D\u5728\u672C\u63D2\u4EF6\u6C38\u4E45\u4FDD\u5B58\u3002", value: ui.context, onChange: (e) => b.set({ context: e.target.value }) })), /* @__PURE__ */ import_react8.default.createElement(MaterialControls, { disclosure: disclosure("materials"), key: "materials:" + ui.resetGeneration, workCurrent, onPreviewChange: previewChanged, services: nativeServices, ...{ sessionId, input, chat, message }, evidence: selectedEvidence, onChange: (evidence) => {
     if (workCurrent()) b.set({ evidence });
   } }), (input.draft.length > 4e3 || selected) && /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-message" }, selected ? `\u4EC5\u5206\u6790\u4F60\u9009\u4E2D\u7684${selected.text.length}\u5B57\u7B26\uFF0C\u4E0D\u4EE3\u8868\u5168\u7A3F\u5DF2\u8BFB\u3002` : "\u8349\u7A3F\u8D85\u8FC74000\u5B57\u7B26\uFF1B\u53EF\u9009\u6BB5\u505A\u8865\u53E5\u7EC6\u5316\uFF0C\u6574\u7A3F\u6539\u5199\u6682\u4E0D\u53EF\u7528\uFF0C\u4E0D\u4F1A\u622A\u65AD\u3002", /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", onMouseDown: (e) => e.preventDefault(), onClick: chooseSelection }, "\u4F7F\u7528\u8F93\u5165\u6846\u9009\u4E2D\u6BB5"), selected && /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", onClick: () => b.set({ selection: null }) }, "\u53D6\u6D88\u9009\u6BB5"))), (!localDecision || ui.pending) && /* @__PURE__ */ import_react8.default.createElement("div", { className: "pc-actions pc-refine" }, /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button pc-primary", onClick: refine, disabled: !preferencesReady || !ui.analysisAvailable || ui.pending || routeBusy || ["generating", "reviewing", "repairing"].includes(rewriteState.phase) || request.draft.length > 4e3 }, ui.pending ? "\u6B63\u5728\u5206\u6790\u2026" : "\u5206\u6790\u63D0\u793A\u8BCD"), ui.pending && /* @__PURE__ */ import_react8.default.createElement("button", { type: "button", className: "pc-button", onClick: () => {
     b.cancel();

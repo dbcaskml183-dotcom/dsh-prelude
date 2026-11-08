@@ -55,12 +55,19 @@ export function previewForAdoption(original,text){return {...original,text,cover
 
 export function decisionPresentation({pending=false,source,kind,count=0}={}){
  if(pending)return {label:'分析中',hint:'只提交你明确选择的内容'};
- if(source==='model')return {label:({no_suggestion:'未发现必要补充',suggestions:'可考虑补充',needs_context:'目标待明确',uncertain:'依据有限',unavailable:'分析不可用'})[kind]||'模型分析',hint:'仅依据本次所选内容；不代表原稿最优'};
+ if(source==='model')return {label:({no_suggestion:'未发现必要补充',suggestions:'可考虑补充',needs_context:'目标待明确',uncertain:'依据有限',unavailable:'分析不可用'})[kind]||'模型分析',hint:'模型分析 · 仅依据本次所选内容'};
  if(kind==='needs_context')return {label:'目标待补',hint:'可补充，也可以跳过'};
  if(kind==='uncertain')return {label:'依据有限',hint:'可补充相关资料，也可继续使用方法库'};
  if(kind==='no_suggestion')return {label:'本地预检查',hint:'未调用模型，不代表完整质量判断'};
- return {label:'本地相关方法',hint:count?'相关方法候选，不等于发现缺陷':'照常写需求，或去方法库挑选'};
+ return {label:'本地参考 · 未调用模型',hint:count?'相关方法候选，不等于发现缺陷':'照常写需求，或去方法库挑选'};
 }
 
 // Cancellation/error does not prove that a paid call never started.
 export function rewriteBadge(snapshot){if(snapshot.phase==='generating')return '生成中';if(snapshot.phase==='reviewing')return '审校中';if(snapshot.phase==='repairing')return '修稿并审校中';if(snapshot.phase==='needs_context')return '待补充目标';if(['error','cancelled'].includes(snapshot.phase))return '未采用结果';return snapshot.modelUsed?'模型候选':'本地检查';}
+
+export function statusFailure(code){
+ if(code===401)return 'DSH 登录已失效，请重新登录。';
+ if(code===403)return 'DSH 拒绝访问 Prelude，请核对当前登录身份。';
+ if(code===404)return '找不到 Prelude 后端，请检查插件是否已加载。';
+ return 'Prelude 后端返回 HTTP '+code+'。';
+}

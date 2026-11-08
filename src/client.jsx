@@ -24,7 +24,7 @@ import {preflightDecision} from '../shared/policy.mjs';
 import {deadlineFetch} from '../shared/async.mjs';
 import {materialFacts,inputFingerprint} from '../client/input-adapter.mjs';
 import {mountCoachPopover} from '../client/popover.mjs';
-import {routePresentation,decisionPresentation,panelOpenPatch,hydratePanelDefaults,panelDisclosureTouch,panelDisclosureChange,panelDisclosureOpen} from '../client/presentation.mjs';
+import {statusFailure,routePresentation,decisionPresentation,panelOpenPatch,hydratePanelDefaults,panelDisclosureTouch,panelDisclosureChange,panelDisclosureOpen} from '../client/presentation.mjs';
 import {createSessionBuckets,taskResetPatch,taskResetToken} from '../client/session-buckets.mjs';
 import {RequestController} from '../client/request-controller.mjs';
 import {nativeServices,nativeStore,connectNative,getDirectory,resolveRoute} from '../client/native-adapter.mjs';
@@ -99,12 +99,37 @@ function Panel(props){
  useEffect(()=>{b.gate.cancel();b.set({pending:false});},[fingerprint]);
  useEffect(()=>{b.cancel();b.span=null;b.set({hidden:[],message:b.ownEdit?b.get().message:'',...(selectedEvidence.length!==ui.evidence.length?{evidence:selectedEvidence}:{}),...(b.get().selection?.rev!==input.draftRev?{selection:null}:{})});b.ownEdit=false;},[analysisFingerprint]);
  useEffect(()=>()=>{b.cancel();b.rewrite.cancel();b.set({open:false,resetConfirmation:null});},[b,sessionId]);
+ const [statusAttempt,recheckStatus]=useState(0);
+ const [connectionNote,setConnectionNote]=useState(null);
+ useEffect(()=>{if(ui.open)library.load();},[ui.open,native.generation]);
  useEffect(()=>{
-  if(!ui.open)return;const ac=new AbortController();
-  library.load();
-  deadlineFetch('/api/prompt-coach/v4/status',{credentials:'same-origin',cache:'no-store',signal:ac.signal},5000).then(r=>r.json()).then(v=>{if(!ac.signal.aborted&&v.ok&&v.protocolVersion===4)b.set({availableSkills:v.availableSkills||[],statusConfig:v.config,ledgerError:v.ledgerError,rewriteAvailable:analysisReady(v),analysisAvailable:analysisReady(v)});}).catch(()=>{if(!ac.signal.aborted)message('智能服务暂不可用；本地方法库仍可使用。');});
-  return()=>ac.abort();
- },[ui.open,native.generation]);
+  if(!ui.open)return;
+  const owner=new AbortController();
+  b.set({analysisAvailable:false,rewriteAvailable:false});
+  setConnectionNote({message:'正在连接 Prelude…',retry:false});
+  async function check(){
+   let failure;
+   try{
+    const response=await deadlineFetch('/api/prompt-coach/v4/status',{credentials:'same-origin',cache:'no-store',signal:owner.signal},15000);
+    if(!response.ok) failure=statusFailure(response.status);
+    else{
+     const value=await response.json();
+     if(owner.signal.aborted)return;
+     if(value?.protocolVersion!==4||!analysisReady(value)) failure='Prelude 页面与后端未能确认兼容，请刷新页面。';
+     else{
+      b.set({availableSkills:value.availableSkills||[],statusConfig:value.config,ledgerError:value.ledgerError||null,rewriteAvailable:true,analysisAvailable:true});
+      setConnectionNote(null);
+      return;
+     }
+    }
+   }catch(error){
+    failure=error?.name==='TimeoutError'?'连接 Prelude 超时。':error instanceof SyntaxError?'Prelude 返回了无法读取的内容。':'未能连接 Prelude，请检查 DSH 连接。';
+   }
+   if(!owner.signal.aborted)setConnectionNote({message:failure,retry:true});
+  }
+  void check();
+  return ()=>owner.abort();
+ },[b,ui.open,native.generation,statusAttempt]);
  const close=()=>{b.cancel();b.rewrite.cancel();b.set({open:false,resetConfirmation:null});b.trigger?.focus();};
  useEffect(()=>{if(!ui.open)return;const off=mountCoachPopover(panelRef.current,rootRef.current,close,window,ui.expanded,b.position,{isBehindModal,onVisibility:value=>{if(b.get().surfaceVisible!==value)b.set({surfaceVisible:value});}});positionRef.current=off;b.surface=off;return()=>{off();if(b.surface===off)b.surface=null;positionRef.current=null;};},[ui.open,ui.expanded]);
  useEffect(()=>{positionRef.current?.update?.();},[fingerprint,ui.tab,ui.message]);
@@ -119,7 +144,7 @@ function Panel(props){
   if(!route)return message('当前没有可用模型路线；请选择主会话模型或固定路线，本地方法库仍可用。');
   if(ui.ledgerError)return message(ui.ledgerError);
   const key=JSON.stringify([ui.resetGeneration,native.generation,[...ui.availableSkills].sort(),request]);
-  if(b.lastAnalysis?.key===key)return b.set({...b.lastAnalysis.result,message:'已显示这份草稿的分析结果。'});
+  if(b.lastAnalysis?.key===key)return b.set({...b.lastAnalysis.result,message:'沿用本次分析。'});
   b.lastAnalysis=null;
   const ticket=b.gate.begin(fingerprint),requestId=crypto.randomUUID();
   b.set({pending:true,decision:null,message:`正在分析：仅发送${selected?'所选草稿段落':'当前草稿'}、补充要求和${selectedEvidence.length}条已选资料。`});
@@ -136,8 +161,8 @@ function Panel(props){
  useEffect(()=>{b.rewrite.invalidate(rewriteCurrent);},[fingerprint]);
  const generateReason=selected?'当前为选段分析，整稿改写不可用。':input.draft.length>MAX_DRAFT?'完整草稿超过4000字符；可缩短草稿，或仅分析选段。':'';
  const generateNow=async()=>{if(!workCurrent())return;if(generateReason)return message(generateReason);if(live.current.fingerprint!==fingerprint)return message('草稿或依据刚有变化，请再次操作；未发出请求。');if(!compositionResult.valid)return message(compositionResult.issues.join(' '));b.generatedChoices=structuredClone(ui.methodChoices);if(!preferencesReady||!ui.rewriteAvailable)return message('宿主整稿接口尚未就绪，请确认前后端版本匹配后重新打开面板；原稿未改动。');if(ui.pending||routeBusy||['generating','reviewing','repairing'].includes(rewriteState.phase))return;if(ui.ledgerError)return message(ui.ledgerError);const result=await b.rewrite.start({protocolVersion:ANALYSIS_PROTOCOL,requestId:crypto.randomUUID(),...request},getCurrentRewrite());if(result?.ledgerError)b.set({ledgerError:result.ledgerError});};
- const reviewCurrent=async()=>{if(!workCurrent())return;if(ui.ledgerError)return message(ui.ledgerError);const result=await b.rewrite.reviewCurrent(getCurrentRewrite());if(result?.ledgerError)b.set({ledgerError:result.ledgerError});};
- const repairCurrent=async()=>{if(!workCurrent())return;if(ui.pending||routeBusy||ui.ledgerError)return message(ui.ledgerError||'请等待当前操作完成。');try{const result=await b.rewrite.repairCurrent(getCurrentRewrite());if(result?.ledgerError)b.set({ledgerError:result.ledgerError});}catch{b.rewrite.publish({message:'修稿未能完成；保留候选和审校意见，请核对后重试。'});}};
+ const reviewCurrent=async()=>{if(!workCurrent())return;if(!ui.rewriteAvailable)return message('请先连接 Prelude，再审校当前稿。');if(ui.ledgerError)return message(ui.ledgerError);const result=await b.rewrite.reviewCurrent(getCurrentRewrite());if(result?.ledgerError)b.set({ledgerError:result.ledgerError});};
+ const repairCurrent=async()=>{if(!workCurrent())return;if(!ui.rewriteAvailable)return message('请先连接 Prelude，再修稿。');if(ui.pending||routeBusy||ui.ledgerError)return message(ui.ledgerError||'请等待当前操作完成。');try{const result=await b.rewrite.repairCurrent(getCurrentRewrite());if(result?.ledgerError)b.set({ledgerError:result.ledgerError});}catch{b.rewrite.publish({message:'修稿未能完成；保留候选和审校意见，请核对后重试。'});}};
  const resetToken=()=>taskResetToken(b.get(),b.rewrite.getSnapshot(),b.previewVersion,b.rewrite.receipt);
  const resetAllowed=()=>{
   if(!workCurrent())return false;
@@ -177,7 +202,7 @@ function Panel(props){
  };
  const chooseSelection=()=>{const span=actions?.captureInsertion?.();if(!span||span.draftRev!==input.draftRev||span.end<=span.start)return message('请先在输入框选中要分析的一段文字，再点此按钮。');const text=input.draft.slice(span.start,span.end);if(text.length>4000)return message('所选段落超过4000字符，请缩小选择范围；未截断。');b.set({selection:{text,rev:input.draftRev}});};
  if(!ui.open)return null;
- const decision=ui.decision||localDecision,suggestions=(ui.pending?[]:(decision?.suggestions??local)).filter(s=>!ui.hidden.includes(s.methodId));
+ const decision=ui.decision||localDecision,suggestions=(ui.pending?[]:(decision ? (decision.suggestions||[]) : local)).filter(s=>!ui.hidden.includes(s.methodId));
  const decisionView=decisionPresentation({pending:ui.pending,source:ui.decisionSource,kind:decision?.kind,count:suggestions.length});
  const list=searchMethods(methods,query,category,onlyFavorite?personal.value?.favorites||[]:null,sources,domain);
  const methodBusy=ui.pending||routeBusy||['generating','reviewing','repairing'].includes(rewriteState.phase);
@@ -197,6 +222,7 @@ function Panel(props){
    {ui.resetConfirmation&&<section className="pc-work-confirm" aria-label="确认放弃本次工作"><strong>{ui.resetConfirmation.kind==='reset'?'重新开始前请确认':'重新生成前请确认'}</strong><p>输入框内容保留。{ui.resetConfirmation.kind==='reset'?'将清除本次分析、候选、方法和已选资料，其中包括：':'新候选将替换：'}{ui.resetConfirmation.items.join('、')}。</p><p className="pc-reason">{ui.resetConfirmation.kind==='reset'?'本地清理不调用模型；已经开始的调用仍可能计费。':'确认后才会按当前草稿生成，可能计费。'}</p><div className="pc-actions"><button type="button" className="pc-button pc-primary" onClick={confirmWork}>{ui.resetConfirmation.kind==='reset'?'确认重新开始':'确认重新生成'}</button><button type="button" className="pc-button" onClick={()=>{b.set({resetConfirmation:null});resetTriggerRef.current?.focus({preventScroll:true});}}>取消，保留工作</button></div></section>}
    {ui.message&&<p className="pc-message" role="status">{ui.message}</p>}
    {ui.tab==='suggest'&&<>
+    {connectionNote&&<div className="pc-actions" role="status"><span>{connectionNote.message}</span>{connectionNote.retry&&<button type="button" className="pc-button" onClick={()=>recheckStatus(n=>n+1)}>重新连接</button>}</div>}
     <div className="pc-summary-row"><span className="pc-badge">{decisionView.label}</span><span>{decisionView.hint}</span></div>
     {ui.decisionSource==='model'&&<p className="pc-reason">选卡不会重新分析；需要时可再次点击“分析提示词”。</p>}
      {reflected.length>0&&<details {...disclosure('reflected')} className="pc-detail"><summary>当前文字已体现的方法 · {reflected.length}</summary>{reflected.map(x=><p key={x.methodId}><strong>{x.label}</strong>：<q>{x.evidence[0]?.quote}</q>；无需重复补入。</p>)}</details>}

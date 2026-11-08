@@ -4,7 +4,7 @@
 
 ## Tested environments
 
-Version 0.4.26 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5, plus 0.2.2-rc.1 on Linux / WSL2, macOS, and native Windows. Native Windows was tested with rc.5. Default installation needs no version override. Later host versions remain outside the declared range until tested.
+Version 0.4.27 supports Node 24+ and DSH 0.2.1-rc.2 through rc.5, plus 0.2.2-rc.1 on Linux / WSL2, macOS, and native Windows. Native Windows was tested with rc.5. Default installation needs no version override. Later host versions remain outside the declared range until tested.
 
 | Environment | Verified scope |
 | --- | --- |
@@ -21,7 +21,7 @@ The display name is Prelude. The package keeps its earlier name, `dsh-prompt-coa
 
 Save your profile configuration, dependency manifest and lockfile first. Preserve copies of any locally modified plugins too.
 
-Install the npm channel in the host terminal. For exactly 0.4.26, use the GitHub release command below.
+Install the npm channel in the host terminal. For exactly 0.4.27, use the GitHub release command below.
 
 ```sh
 dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
@@ -30,18 +30,18 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 Or install this release directly (including Windows PowerShell):
 
 ```sh
-dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.26/dsh-prompt-coach-0.4.26.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.27/dsh-prompt-coach-0.4.27.tgz --ignore-scripts
 ```
 
 The same packaged artifact is used for cross-platform verification and publication. The package includes built files, so installation scripts are unnecessary.
 
-Use your actual profile name instead of `web` when different. Use the same CLI version as the running host. For an offline copy, replace the URL with the downloaded file's absolute path. A Windows file at `D:\Downloads\dsh-prompt-coach-0.4.26.tgz` is normally `/mnt/d/Downloads/dsh-prompt-coach-0.4.26.tgz` inside WSL.
+Use your actual profile name instead of `web` when different. Use the same CLI version as the running host. For an offline copy, replace the URL with the downloaded file's absolute path. A Windows file at `D:\Downloads\dsh-prompt-coach-0.4.27.tgz` is normally `/mnt/d/Downloads/dsh-prompt-coach-0.4.27.tgz` inside WSL.
 
 ## Restart and check
 
 Save drafts and wait for active tasks to finish. Restart DSH through the launcher or service manager that normally runs it, then refresh the browser. For a manually launched host, stop that terminal process normally and rerun its original command with the same profile and environment.
 
-Open Prelude from the composer, search for “验收标准”, and insert a snippet. Check that the original draft remains and no message was automatically sent. Settings should show Prelude 0.4.26.
+Open Prelude from the composer, search for “验收标准”, and insert a snippet. Check that the original draft remains and no message was automatically sent. Settings should show Prelude 0.4.27.
 
 ## Update and restore
 
