@@ -4,6 +4,7 @@
 
 90 built-in method cards cover multiple task stages and domains. Users can create, edit, and save personal snippets, with library import, export, and recycle recovery.
 The installed methods are primarily in Chinese. Sources document method references; they do not imply endorsement.
+When a rewrite changes a recognized direct quote, Prelude checks its wording and attribution. A uniquely located change can be restored in the candidate while keeping other edits.
 The user chooses what to apply and send. Clear drafts can stay as written.
 Browsing methods is local. Smart analysis, rewriting, and optional review use the configured model provider and may incur charges. Conversation excerpts and text attachments are user-selected.
 Install with `dsh plugin --profile web add dsh-prompt-coach --ignore-scripts`. See installation documentation for tested platform and host versions.

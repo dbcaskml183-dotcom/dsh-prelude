@@ -19,7 +19,7 @@
 
 Prelude 的安装包名为 `dsh-prompt-coach`，沿用旧名以兼容已有配置和个人库。先保存现有 profile 的配置、依赖清单和锁文件；其他插件有本地修改时也要保存其程序副本。
 
-**从 npm 安装当前 npm 版本。** 如需指定 0.4.28，请使用下方 本地候选包 地址。
+**从 npm 安装当前 npm 版本。** 如需固定版本，可以把包名写成 `dsh-prompt-coach@0.4.28`。桌面 App 用户可在插件管理界面选择该版本。
 
 ```sh
 dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
@@ -28,12 +28,12 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 **从 Release 安装指定版本。** 在运行 DSH 的终端执行（原生 Windows 可用 PowerShell）：
 
 ```sh
-dsh plugin --profile web add /path/to/dsh-prompt-coach-0.4.28.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz --ignore-scripts
 ```
 
 本版使用同一份安装包进行跨平台验证与发布。
 
-**使用已下载的文件。** 也可以先[下载安装包](/path/to/dsh-prompt-coach-0.4.28.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
+**使用已下载的文件。** 也可以先[下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz)，把上面命令中的网址换成文件在宿主里的绝对路径。
 
 例如文件保存在 Windows 的 `D:\Downloads`，WSL 路径通常为：
 

@@ -2,13 +2,15 @@
 
 A prompt engineering plugin for the DeepSeek Harness (DSH) chat composer. Find missing requirements, insert one sentence at the cursor, or compare a full rewrite with your original before applying it. You choose what to send.
 
-[Local candidate archive](release/dsh-prompt-coach-0.4.28.tgz) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+[Download 0.4.28](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz) · [npm](https://www.npmjs.com/package/dsh-prompt-coach) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
 **Start with 90 method cards across task stages and domains, then build your own collection of reusable requirements.**
 
 Find guidance for planning, design, implementation, review, verification, and handoff, across coding, research, writing, data analysis, and other domains. Browse by stage, domain, or keyword. Create, edit, and save your own snippets in **My snippets (我的补句)** for future tasks. The personal library supports import, export, and recovery from its recycle bin.
 
 [Browse the 90 method cards (中文)](docs/catalog.md) · [Machine-readable methods](methods.json) · [Project guide for agents](llms.txt)
+
+**Rewrite a prompt that contains a direct quote.** If your draft says `客户原话：“我想先试用”` (“I want to try it first”), Prelude checks the recognized quote and its speaker against the rewrite. When it can locate one changed passage, choose **恢复这处原话** to restore that quote and keep your other edits. Compare the result before applying it. [Release notes](CHANGELOG.md)
 
 ## Preview three methods
 

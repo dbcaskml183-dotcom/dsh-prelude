@@ -21,7 +21,7 @@ The display name is Prelude. The package keeps its earlier name, `dsh-prompt-coa
 
 Save your profile configuration, dependency manifest and lockfile first. Preserve copies of any locally modified plugins too.
 
-Install the npm channel in the host terminal. For exactly 0.4.28, use the local candidate archive command below.
+Install the npm channel in the host terminal. To pin this version, use `dsh-prompt-coach@0.4.28`. In the desktop app, select this version in the plugin manager.
 
 ```sh
 dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
@@ -30,7 +30,7 @@ dsh plugin --profile web add dsh-prompt-coach --ignore-scripts
 Or install this release directly (including Windows PowerShell):
 
 ```sh
-dsh plugin --profile web add /path/to/dsh-prompt-coach-0.4.28.tgz --ignore-scripts
+dsh plugin --profile web add https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz --ignore-scripts
 ```
 
 The same packaged artifact is used for cross-platform verification and publication. The package includes built files, so installation scripts are unnecessary.

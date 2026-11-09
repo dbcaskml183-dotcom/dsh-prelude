@@ -12,8 +12,10 @@
 从开工、设计、实施到审查、验收与收尾，方法涵盖代码工程、研究资料、写作表达、数据分析等领域。按阶段、领域或关键词查找，查看适用说明与示例。内置方法库提供起点；你可以在 **我的补句** 中新建、编辑和保存个人要求，下次直接使用。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.28 预览版** · [本地候选包](release/dsh-prompt-coach-0.4.28.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.28 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz) · [npm](https://www.npmjs.com/package/dsh-prompt-coach) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
+
+**改写带原话的需求。** 比如你写了`客户原话：“我想先试用”`。改写后，Prelude 会检查可识别的引文正文和说话人。如果模型改了引文，而原话在候选中能唯一定位，点 **恢复这处原话** 就能修正那一句，保留你在其他地方做的编辑。再对照原稿决定是否采用。[0.4.28 更新说明](CHANGELOG.md)
 
 ## 先看看方法卡
 
