@@ -1,6 +1,6 @@
 {
   "name": "dsh-prompt-coach",
-  "version": "0.4.28",
+  "version": "0.4.29",
   "description": "Prelude — DeepSeek Harness (DSH) 提示词优化与改写助手，提供方法卡、局部补句和原稿对照。",
   "type": "module",
   "main": "./index.mjs",

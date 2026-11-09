@@ -18,3 +18,33 @@ const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {
 test('047 generation close finishes before automatic review starts',()=>fixture(async budget=>{const closing=deferred(),startedClose=deferred();let calls=0;const h=createHandler({methods,budget,limits:{minIntervalMs:0},llm:{prepareCall:async config=>({config,stream(){const index=++calls;let step=0;return {[Symbol.asyncIterator](){return this;},next:async()=>step++===0?{done:false,value:{type:'text-delta',text:JSON.stringify(index===1?packets.rewrite:{verdict:'no_issue_found',findings:[],uncertainties:[]})}}:step===2?{done:false,value:{type:'finish',reason:{kind:'stop'}}}:{done:true},return(){if(index===1){startedClose.resolve();return closing.promise;}return Promise.resolve({done:true});}};}})}});const flight=h.handle(req(body({reviewMode:'auto'})),{operation:'rewrite'});await startedClose.promise;assert.equal(calls,1);assert.equal((await h.handle(req(body()),{operation:'rewrite'})).status,429);closing.resolve({done:true});const r=await flight;assert.equal(r.status,200);assert.equal((await r.json()).review.state,'no_issue_found');assert.equal(calls,2);h.dispose();}));
 for(const sync of [false,true])test('047 failed close preserves candidate and refuses the automatic next stage '+sync,()=>fixture(async budget=>{let calls=0;const h=createHandler({methods,budget,limits:{minIntervalMs:0},llm:{prepareCall:async config=>({config,stream(){calls++;let step=0;return {[Symbol.asyncIterator](){return this;},next:async()=>step++===0?{done:false,value:{type:'text-delta',text:JSON.stringify(packets.rewrite)}}:step===2?{done:false,value:{type:'finish',reason:{kind:'stop'}}}:{done:true},return(){if(sync)throw Error('synthetic close');return Promise.reject(Error('synthetic close'));}};}})}});const r=await h.handle(req(body({reviewMode:'auto'})),{operation:'rewrite'}),v=await r.json();assert.equal(r.status,200);assert.equal(v.rewrite.text,packets.rewrite.text);assert.equal(v.review.state,'failed');assert.ok(v.reviewError.includes('收尾'));assert.equal(calls,1);h.dispose();}));
 test('047 cancelled response retains lease until queued iterator cleanup settles',()=>fixture(async budget=>{const enter=deferred(),yieldNext=deferred(),closeEnter=deferred(),closeDone=deferred();let calls=0;const h=createHandler({methods,budget,limits:{minIntervalMs:0},llm:{prepareCall:async config=>({config,async *stream(){calls++;try{enter.resolve();await yieldNext.promise;yield {type:'text-delta',text:'cancelled'};}finally{closeEnter.resolve();await closeDone.promise;}}})}});const ac=new AbortController(),flight=h.handle(req(body(),ac.signal),{operation:'rewrite'});await enter.promise;ac.abort();assert.equal((await flight).status,503);yieldNext.resolve();await closeEnter.promise;await new Promise(r=>setTimeout(r,0));const status=await(await h.handle(new Request('http://synthetic.invalid/status'))).json();assert.equal(status.busy,true);assert.equal((await h.handle(req(body()),{operation:'rewrite'})).status,429);assert.equal(calls,1);closeDone.resolve();await new Promise(r=>setTimeout(r,0));assert.equal((await(await h.handle(new Request('http://synthetic.invalid/status'))).json()).busy,false);h.dispose();}));
+
+test('busy takes priority over repeat timing; rejected attempts never start another model call',()=>fixture(async budget=>{
+ const entered=deferred(), finish=deferred();
+ let clock=10000, calls=0;
+ const llm={prepareCall:async config=>{
+  calls++;
+  entered.resolve();
+  await finish.promise;
+  return fake().prepareCall(config);
+ }};
+ const handler=createHandler({methods,budget,llm,now:()=>clock,limits:{minIntervalMs:2000}});
+ const send=()=>handler.handle(req(body()),{operation:'rewrite'});
+ try{
+  const first=send();
+  await entered.promise;
+  const busy=await send();
+  assert.equal(busy.status,429);
+  assert.match((await busy.json()).error,/正在执行或收尾/);
+  finish.resolve();
+  assert.equal((await first).status,200);
+  const repeat=await send();
+  assert.equal(repeat.status,429);
+  assert.match((await repeat.json()).error,/相同操作/);
+  assert.equal(calls,1);
+  assert.equal(budget.status().calls,1);
+  clock+=2000;
+  assert.equal((await send()).status,200);
+  assert.equal(calls,2);
+ }finally{finish.resolve();handler.dispose();}
+}));

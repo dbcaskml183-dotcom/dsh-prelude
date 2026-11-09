@@ -137,7 +137,12 @@ export class RewriteController{
   const seq=++this.serial,ac=new AbortController();this.controller=ac;const signal=AbortSignal.any([ac.signal,AbortSignal.timeout(this.timeoutMs)]);
   this.publish({phase:'reviewing',message:'正在审校当前稿；这次可能计费，不会自动采用。'});
   try{const packet=await this.request('/api/prompt-coach/v8/review',body,signal);if(seq!==this.serial||signal.aborted||this.disposed)return false;if(packet.candidate!==candidate)throw new Error('审校对应的候选不符。');const review=packetReview(packet,body,candidate);this.source.editBasis=null;this.publish({phase:'preview',review,message:packet.ledgerError||'辅助审校结束；请核对后决定是否采用。'});return packet;}
-  catch(e){if(seq===this.serial&&!this.disposed)this.source.editBasis={text:candidate,review:{...reviewFor('failed'),findings:previousReview.findings||[]}};this.publish({phase:'preview',review:reviewFor('failed'),message:signal.aborted?'审校取消或超时，已开始的调用可能计费。':e.message});return false;}
+  catch(e){
+   if(seq!==this.serial||this.disposed)return false;
+   this.source.editBasis={text:candidate,review:{...reviewFor('failed'),findings:previousReview.findings||[]}};
+   this.publish({phase:'preview',review:reviewFor('failed'),message:signal.aborted?'审校超时，已开始的调用可能计费。':e.message});
+   return false;
+  }
   finally{if(this.controller===ac)this.controller=null;}
  }
  applyReason(current){
@@ -148,7 +153,9 @@ export class RewriteController{
   const semantics=editorPolicyReason(this.state.candidate);if(semantics)return semantics;
   try{validateRewrite(JSON.stringify({kind:'rewrite',text:this.state.candidate,changes:[],uncertainties:[]}),this.source.request);}catch(e){return publicError(e);}
   const state=this.state.review.state;
-  if(['blocked','conflict','uncertain','failed'].includes(state))return '本稿审校发现问题或未完成，请核对并修改/重新审校；不会自动降级采用。';
+  if(state==='failed')return '本次审校未完成，可重新审校当前稿。';
+  if(state==='blocked'||state==='conflict')return '请按检查意见核对并修改候选。';
+  if(state==='uncertain')return '审校有待确认的内容，请对照原稿核对。';
   if(this.state.reviewMode==='auto'&&!this.state.edited&&!['no_issue_found','unchanged'].includes(state))return '本次自动审校尚未完成。';
   return '';
  }

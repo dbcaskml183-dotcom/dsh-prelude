@@ -53,7 +53,8 @@ export function createHandler({getLlm,llm,budget,methods,skills=async()=>[],vers
   const rewrite=operation==='rewrite',reviewOnly=operation==='review';const local=reviewOnly||body.repair?null:rewrite?rewritePreflight(body):preflightDecision(body,methods);if(local)return json({ok:true,protocolVersion:ANALYSIS_PROTOCOL,requestId:body.requestId,rulesHash:RULES_HASH,reviewMode:body.reviewMode,[rewrite?'rewrite':'decision']:local,review:reviewFor(rewrite&&local.kind==='unchanged'?'unchanged':'not_requested'),modelUsed:false});
   if(pendingSettlement)return json({ok:false,error:pendingWarning()},503);
   const nextKind=body.repair?'repair':operation;
-  if(lease||(lastKind===nextKind&&now()-last<policy.minIntervalMs))return json({ok:false,error:'已有请求或上一请求仍在收尾；本地方法库可用，请稍后再试。'},429);
+  if(lease)return json({ok:false,error:'已有操作正在执行或收尾，请稍后再试。'},429);
+  if(lastKind===nextKind&&now()-last<policy.minIntervalMs)return json({ok:false,error:'刚执行过相同操作，请稍后再试。'},429);
   const guidance=guidanceFor(body),payload={draft:body.draft,explicitRequirements:body.explicitRequirements,selectedMethods:body.selectedMethods,selectedEvidence:body.selectedEvidence,materials:{...body.materials,contentRead:body.selectedEvidence.length?'selected-excerpts-only':'none'},analysisScope:body.analysisScope,target:body.target,guidance,...(rewrite?{protectedFragments:protectedFragments(body),...(body.repair?{repair:{candidate:body.repair.candidate,feedback:body.repair.review,codeIssues:rewriteIssues(body,body.repair.candidate)}}:{})}:{})};
   const system=rewrite?makeRewriteSystem():makeSystem(methods);
   if(Buffer.byteLength(system+JSON.stringify(payload))+2048>policy.maxBytes)return json({ok:false,error:publicError(new CoachError('INPUT'))},400);

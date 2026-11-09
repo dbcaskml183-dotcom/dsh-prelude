@@ -2,7 +2,7 @@
 
 A prompt engineering plugin for the DeepSeek Harness (DSH) chat composer. Find missing requirements, insert one sentence at the cursor, or compare a full rewrite with your original before applying it. You choose what to send.
 
-[Download 0.4.28](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz) · [npm](https://www.npmjs.com/package/dsh-prompt-coach) · [Installation](docs/installation.en.md) · [简体中文](README.md)
+[Local 0.4.29 candidate](release/dsh-prompt-coach-0.4.29.tgz) · [Download published 0.4.28](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.28/dsh-prompt-coach-0.4.28.tgz) · [npm](https://www.npmjs.com/package/dsh-prompt-coach) · [Installation](docs/installation.en.md) · [简体中文](README.md)
 
 **Start with 90 method cards across task stages and domains, then build your own collection of reusable requirements.**
 

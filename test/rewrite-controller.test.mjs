@@ -56,3 +56,57 @@ test('a late restore click cannot change another candidate or a new draft',async
  const live=h.c.state.candidate;assert.ok(h.c.restoreQuote(h.current(),h.c.source,live,issue.restore.start));assert.equal(h.c.state.candidate,'请整理记录。客户说：“试用”。请分段。');assert.equal(h.counts().writes,0);
  h.c.edit(bad);h.change({draft:'已经换题'});assert.equal(h.c.restoreQuote(h.current(),h.c.source,bad,issue.restore.start),false);
 });
+
+for (const action of ['dismiss', 'cancel', 'dismiss-then-start']) {
+ test('late review failure respects '+action, async () => {
+  let rejectReview;
+  const waiting = new Promise((_, reject) => { rejectReview = reject; });
+  const h = harness({fetcher: async (path, opts) => path.endsWith('/review') ? waiting : new Response(JSON.stringify(h.response(JSON.parse(opts.body))))});
+  await h.c.start(h.body(), h.current());
+  const review = h.c.reviewCurrent(h.current());
+  assert.equal(h.c.state.phase, 'reviewing');
+  if (action === 'cancel') h.c.cancel();
+  else h.c.dismiss();
+  const snapshot = h.c.getSnapshot();
+  const next = action === 'dismiss-then-start' && h.c.start(h.body(), h.current());
+  const seen = [];
+  const off = h.c.subscribe(() => seen.push(h.c.getSnapshot()));
+  rejectReview(new Error('late response'));
+  await review;
+  if (next) {
+   await next;
+   assert.equal(h.c.state.phase, 'preview');
+   assert.equal(h.c.state.review.state, 'not_requested');
+   assert.ok(seen.every(s => s.review.state !== 'failed'));
+  } else assert.deepEqual(h.c.getSnapshot(), snapshot);
+  off();
+  assert.deepEqual(h.counts(), {writes:0, submits:0});
+ });
+}
+test('current review failure keeps its candidate and allows another review',async()=>{
+ const h=harness({fetcher:async(path,o)=>{
+  if(path.endsWith('/review'))throw new Error('current failure');
+  return new Response(JSON.stringify(h.response(JSON.parse(o.body))));
+ }});
+ await h.c.start(h.body(),h.current());
+ const text=h.c.state.candidate;
+ await h.c.reviewCurrent(h.current());
+ assert.equal(h.c.state.review.state,'failed');
+ assert.equal(h.c.state.candidate,text);
+ assert.equal(h.c.reviewReason(h.current()),'');
+});
+
+test('timeout of the current review leaves a retryable preview',async()=>{
+ const h=harness({timeoutMs:35,fetcher:(path,o)=>path.endsWith('/review')?new Promise(()=>{}):Promise.resolve(new Response(JSON.stringify(h.response(JSON.parse(o.body)))))});
+ await h.c.start(h.body(),h.current());
+ const candidate=h.c.state.candidate;
+ const keepAlive=setTimeout(()=>{},2000);
+ try {
+  assert.equal(await h.c.reviewCurrent(h.current()),false);
+  assert.equal(h.c.state.phase,'preview');
+  assert.match(h.c.state.message,/超时/);
+  assert.equal(h.c.state.review.state,'failed');
+  assert.equal(h.c.state.candidate,candidate);
+  assert.equal(h.c.reviewReason(h.current()),'');
+ } finally {clearTimeout(keepAlive);}
+});

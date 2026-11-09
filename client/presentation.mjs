@@ -59,7 +59,7 @@ export function decisionPresentation({pending=false,source,kind,count=0}={}){
  if(kind==='needs_context')return {label:'目标待补',hint:'可补充，也可以跳过'};
  if(kind==='uncertain')return {label:'依据有限',hint:'可补充相关资料，也可继续使用方法库'};
  if(kind==='no_suggestion')return {label:'本地预检查',hint:'仅根据当前草稿，不代表完整质量判断'};
- return {label:'本地参考',hint:count?'相关方法候选，不等于发现缺陷':'照常写需求，或去方法库挑选'};
+ return {label:'本地参考',hint:count?'根据当前草稿本地匹配，供你选择':'照常写需求，或去方法库挑选'};
 }
 
 // Cancellation/error does not prove that a paid call never started.

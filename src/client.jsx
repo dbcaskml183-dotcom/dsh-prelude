@@ -144,10 +144,13 @@ function Panel(props){
   if(!route)return message('当前没有可用模型路线；请选择主会话模型或固定路线，本地方法库仍可用。');
   if(ui.ledgerError)return message(ui.ledgerError);
   const key=JSON.stringify([ui.resetGeneration,native.generation,[...ui.availableSkills].sort(),request]);
-  if(b.lastAnalysis?.key===key)return b.set({...b.lastAnalysis.result,message:'沿用本次分析。'});
+  if(b.lastAnalysis?.key===key){
+   const result=b.lastAnalysis.result;
+   return b.set({...result,message:result.decisionSource==='model'?'沿用上次模型分析，本次未再次调用模型。':'沿用上次本地检查结果。'});
+  }
   b.lastAnalysis=null;
   const ticket=b.gate.begin(fingerprint),requestId=crypto.randomUUID();
-  b.set({pending:true,decision:null,message:`正在分析：仅发送${selected?'所选草稿段落':'当前草稿'}、补充要求和${selectedEvidence.length}条已选资料。`});
+  b.set({pending:true,decision:null,decisionSource:null,message:`正在分析：仅发送${selected?'所选草稿段落':'当前草稿'}、补充要求和${selectedEvidence.length}条已选资料。`});
   try{
    const r=await deadlineFetch('/api/prompt-coach/v8/suggest',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({protocolVersion:ANALYSIS_PROTOCOL,requestId,...request}),signal:ticket.abort.signal},50000);
    const v=await r.json();if(!b.gate.valid(ticket,live.current.fingerprint))return;
@@ -203,6 +206,7 @@ function Panel(props){
  const chooseSelection=()=>{const span=actions?.captureInsertion?.();if(!span||span.draftRev!==input.draftRev||span.end<=span.start)return message('请先在输入框选中要分析的一段文字，再点此按钮。');const text=input.draft.slice(span.start,span.end);if(text.length>4000)return message('所选段落超过4000字符，请缩小选择范围；未截断。');b.set({selection:{text,rev:input.draftRev}});};
  if(!ui.open)return null;
  const decision=ui.decision||localDecision,suggestions=(ui.pending?[]:(decision ? (decision.suggestions||[]) : local)).filter(s=>!ui.hidden.includes(s.methodId));
+ const ignoredLastCard=!ui.pending&&!suggestions.length&&ui.hidden.length>0&&(decision?decision.suggestions?.some(s=>ui.hidden.includes(s.methodId)):true);
  const decisionView=decisionPresentation({pending:ui.pending,source:ui.decisionSource,kind:decision?.kind,count:suggestions.length});
  const list=searchMethods(methods,query,category,onlyFavorite?personal.value?.favorites||[]:null,sources,domain);
  const methodBusy=ui.pending||routeBusy||['generating','reviewing','repairing'].includes(rewriteState.phase);
@@ -234,7 +238,8 @@ function Panel(props){
     {(!localDecision||ui.pending)&&<div className="pc-actions pc-refine"><button type="button" className="pc-button pc-primary" onClick={refine} disabled={!preferencesReady||!ui.analysisAvailable||ui.pending||routeBusy||['generating','reviewing','repairing'].includes(rewriteState.phase)||request.draft.length>4000}>{ui.pending?'正在分析…':'分析提示词'}</button>{ui.pending&&<button type="button" className="pc-button" onClick={()=>{b.cancel();message('已取消采用结果；已开始的调用可能产生费用。');}}>取消分析</button>}</div>}
     {decision?.kind==='needs_context'&&<div className="pc-question" role="status"><strong>{decision.question}</strong><p>{decision.note}</p><button type="button" className="pc-button" onClick={()=>b.set({tab:'library',decisionSource:'local',decision:{kind:'no_suggestion',suggestions:[],note:'已跳过补充；可直接发送原稿或挑选方法。'}})}>跳过，直接选方法</button></div>}
     {decision?.kind!=='needs_context'&&decision?.note&&<p className="pc-reason" role="status">{decision.note}</p>}
-    {!suggestions.length&&!decision?.note&&<p className="pc-empty">{input.draft.trim().length<10?'先照常写需求，也可以去方法库挑选。':'本地未找到相关方法；不代表原稿已经充分。'}</p>}
+    {ignoredLastCard&&<p className="pc-empty">本次已忽略卡片，当前没有其他建议可显示。</p>}
+    {!ui.pending&&!suggestions.length&&!ignoredLastCard&&!decision&&<p className="pc-empty">{input.draft.trim().length<10?'先照常写需求，也可以去方法库挑选。':'本地未找到相关方法；不代表原稿已经充分。'}</p>}
     {suggestions.map(s=>{const m=methods.find(m=>m.id===s.methodId);return m?<MethodCard compact key={ui.resetGeneration+':'+m.id} {...cardProps} m={m} suggestion={s} bodyDisclosure={disclosure('methodBody',m.id)}/>:null;})}
     {ui.methodChoices.length>0&&<section ref={selectedSectionRef} tabIndex={-1} className="pc-method-selection" aria-label="本次改写的方法"><strong>本次改写 · 已选{ui.methodChoices.length}项</strong><div className="pc-actions">{ui.methodChoices.map(x=><button key={x.id} type="button" className="pc-button" disabled={methodBusy} aria-label={'取消用于改写：'+x.label} onClick={()=>b.set({methodChoices:ui.methodChoices.filter(c=>c.id!==x.id)})}>{x.label} ×</button>)}</div><details {...disclosure('effectiveRequirements')}><summary>本次补充要求预览</summary><pre className="pc-effective-requirements">{compositionResult.text}</pre></details><p className="pc-reason">所选方法将在下次改写时使用。</p>{compositionResult.redundant.length>0&&<p className="pc-reason">其中{compositionResult.redundant.length}项当前文字已体现，仅作核对依据，不机械追加。</p>}</section>}
     {compositionResult.issues.length>0&&<p className="pc-warning" role="status">{compositionResult.issues.join(' ')}</p>}

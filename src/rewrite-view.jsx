@@ -1,9 +1,10 @@
 import {rewriteBadge} from '../client/presentation.mjs';
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useId,useState} from 'react';
 import {MAX_REWRITE} from '../shared/rewrite-contract.mjs';
 import {textDifference} from '../shared/text-diff.mjs';
 export function RewriteView({controller,snapshot,current,onGenerate,onReview,onRepair,getCurrent,onApply,onUndo,isCurrentWork=()=>true,disclosure=()=>({}),generateReason=''}){
  const s=snapshot,source=controller.source,relationship=controller.comparisonStatus?.(current)||'current',old=relationship==='outdated'||relationship==='archived';
+ const reasonId=useId();
  const [oldOpen,setOldOpen]=useState(false);
  useEffect(()=>{setOldOpen(false);},[controller.source,old]);
  if(s.phase==='idle')return null;
@@ -29,16 +30,16 @@ export function RewriteView({controller,snapshot,current,onGenerate,onReview,onR
    {!old&&s.phase==='preview'&&s.review?.state==='blocked'&&<div className="pc-warning"><ul>{controller.issues().filter(x=>!quotes.some(q=>x.includes(q.message.slice(0,80)))).map((x,i)=><li key={i}>{x}</li>)}</ul><p>请手改候选，或按意见修正后再检查；不会自动放行。</p></div>}
    {quotes.length>0&&<div className="pc-warning"><strong>请核对引文</strong><ul>{quotes.map((q,i)=><li key={i}>{q.message}{q.restore&&<button type="button" className="pc-button" onClick={()=>isCurrentWork()&&controller.restoreQuote(getCurrent?getCurrent():current,source,s.candidate,q.restore.start)}>恢复这处原话</button>}</li>)}</ul></div>}
    {!old&&s.phase==='preview'&&missing.length>0&&<div className="pc-warning"><p>候选缺少受保护原文，不能通过开关或确认绕过：</p><ul>{missing.map((x,i)=><li key={i}>{x}</li>)}</ul></div>}
-   {!old&&s.phase==='preview'&&applyReason&&<p className="pc-reason" role="status">{applyReason}</p>}
-   {!old&&s.phase==='applied'&&undoReason&&<p className="pc-reason" role="status">{undoReason}</p>}
+   {!old&&s.phase==='preview'&&applyReason&&<p id={reasonId} className="pc-reason" role="status">{applyReason}</p>}
+   {!old&&s.phase==='applied'&&undoReason&&<p id={reasonId} className="pc-reason" role="status">{undoReason}</p>}
    <div className="pc-rewrite-actions pc-actions">
-    {!old&&s.phase==='preview'&&<button type="button" className="pc-button pc-primary" disabled={!!applyReason} onClick={onApply||(()=>controller.apply(getCurrent?getCurrent():current))}>采用到输入框</button>}
-    {!old&&s.phase==='applied'&&<button type="button" className="pc-button pc-primary" disabled={!!undoReason} onClick={onUndo||(()=>controller.undo(getCurrent?getCurrent():current))}>撤回本次替换</button>}
+    {!old&&s.phase==='preview'&&<button type="button" className="pc-button pc-primary" disabled={!!applyReason} aria-describedby={applyReason?reasonId:undefined} onClick={onApply||(()=>controller.apply(getCurrent?getCurrent():current))}>采用到输入框</button>}
+    {!old&&s.phase==='applied'&&<button type="button" className="pc-button pc-primary" disabled={!!undoReason} aria-describedby={undoReason?reasonId:undefined} onClick={onUndo||(()=>controller.undo(getCurrent?getCurrent():current))}>撤回本次替换</button>}
     {!old&&s.phase==='preview'&&!controller.repairReason?.(current)&&controller.repairCurrent&&<button type="button" className="pc-button" onClick={onRepair||(()=>controller.repairCurrent(getCurrent?getCurrent():current))}>按意见修正并审校（可能计费）</button>}
     {!old&&s.phase==='preview'&&s.review?.state!=='blocked'&&(s.candidate!==s.original||s.methodCount>0)&&<button type="button" className="pc-button" disabled={!!reviewReason} title={reviewReason||undefined} onClick={onReview||(()=>controller.reviewCurrent(getCurrent?getCurrent():current))}>审校当前稿（可能计费）</button>}
     <button type="button" className="pc-button pc-quiet" disabled={!s.candidate} onClick={()=>copying(s.candidate)}>复制候选稿</button>
     <button type="button" className="pc-button pc-quiet" onClick={()=>copying(s.original)}>复制原稿</button>
-    <button type="button" className="pc-button pc-quiet" onClick={()=>controller.dismiss()}>{old?'清除上次对比':s.phase==='preview'?'不采用':'收起对比'}</button>
+    <button type="button" className="pc-button pc-quiet" onClick={()=>controller.dismiss()}>{old?'清除上次对比':s.phase==='applied'?'清除对比和撤回入口':s.phase==='preview'?'不采用':'放弃候选'}</button>
    </div>
   </Comparison>}
   {old&&hasCandidate&&<div className="pc-actions"><button type="button" className="pc-button" disabled={!!generateReason} onClick={onGenerate}>按当前草稿重新生成</button>{generateReason&&<p className="pc-reason" role="status">{generateReason}</p>}</div>}
