@@ -12,7 +12,7 @@ const strings=r=>[r.draft||'',r.explicitRequirements??r.context??''];
 const methodTexts=r=>(r.selectedMethods||[]).map(x=>x.text);
 const hardMethodConstraint=text=>{const h=instructionHead(policyText(text)),m=modalParts(h);return !descriptiveHead(h)&&(negativeHead.test(h)||['deny','avoid','unnecessary'].includes(m?.mode)||explicitFacts(h).bounds.size>0||explicitFacts(h).formats.size>0||permissionFacts(h).some(f=>!f.descriptive)||gateHead(h)&&/^(?:未经|未获|只有|除非|在|如果|若|if\b|only after\b)/iu.test(h));};
 export function sourceBlocks(request,candidate){return [...strings(request).map((text,i)=>({id:i?'requirements':'draft',kind:'user',text})),...(request.selectedEvidence||[]).map((e,i)=>({id:'evidence-'+i,kind:e.source,text:e.text,coverage:e.coverage})),...(request.selectedMethods||[]).map((m,i)=>({id:'method-'+i,kind:'user-method',methodId:m.id,variant:m.variant,label:m.label,text:m.text})),...(candidate===undefined?[]:[{id:'candidate',kind:'candidate',text:candidate}])];}
-const QUOTED=/```[\s\S]*?```|`[^`\n]+`|[“「][\s\S]*?[”」]|"[^"\n]*"|(?<![A-Za-z0-9])'[^'\n]+'(?![A-Za-z0-9])/gu;
+const QUOTED=/```[\s\S]*?```|`[^`\n]+`|‘[^’]*’|『[^』]*』|[“「][\s\S]*?[”」]|"[^"\n]*"|(?<![A-Za-z0-9])'[^'\n]+'(?![A-Za-z0-9])/gu;
 const maskLiteral=text=>text.replace(QUOTED,s=>s.replace(/[^\n]/gu,' '));
 // A single quoted format name is a value, while quoted instructions stay data.
 const factText=text=>text.replace(QUOTED,s=>/^[`“「"'](?:Markdown|JSON|YAML|HTML|表格|中文|英文|Chinese|English)[`”」"']$/iu.test(s)?s.slice(1,-1):s.replace(/[^\n]/gu,' '));
@@ -121,26 +121,57 @@ function literalAtoms(text,withCode=true){
  }).filter(x=>x.value);
 }
 function sourceAtoms(request){return [...strings(request),...methodTexts(request)].flatMap(t=>literalAtoms(t));}
-// The downstream task may transform its material. Preserve that material in the prompt.
+// Compare quoted source material, not every pair of quotation marks in a prompt.
 function sourceQuotes(text){
- const quotes=[];
- const pattern=/(?:\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60\n]*\x60)|([“「"])/gu;
- for(const match of text.matchAll(pattern)){
-  if(!match[1]||quotes.some(q=>match.index<q.end))continue;
-  const open=match[1],close=open==='“'?'”':open==='「'?'」':'"';
-  let i=match.index+1,depth=1;
-  for(;i<text.length;i++){
-   if(text[i]==='\\'){i++;continue;}
-   if(open!==close&&text[i]===open)depth++;
-   if(text[i]===close&&!--depth)break;
-  }
-  if(i===text.length)continue;
-  const prefix=text.slice(Math.max(0,match.index-48),match.index);
-  const material=/(?:原话|原文|素材|报错|错误信息|这句话|这段话|润色|转述|翻译|回复|写道|说|内容为|said|quote|translate|rewrite|error message)\s*[:：,，]?\s*$/iu.exec(prefix);
-  const owner=/(?:^|[：:，,\n;；。])\s*([^：:，,\n;；。]{1,24}(?:说|写道|原话|said))\s*[:：]?\s*$/iu.exec(prefix)?.[1]?.trim()||'';
-  quotes.push({end:i+1,raw:text.slice(match.index,i+1),owner,material:!!material});
+ // Pair delimiters once, so a long paste with unclosed quotes stays linear.
+ const ends=new Map(),stacks=new Map(),pairs={'“':'”','「':'」','‘':'’','『':'』'};
+ const tokens=[...text.matchAll(/\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60\n]*\x60|\\[\s\S]|[“”「」"‘’『』]/gu)];
+ let nextDouble=-1;
+ for(let i=tokens.length-1;i>=0;i--){
+  const t=tokens[i],ch=t[0];if(ch.length!==1)continue;
+  if(ch==='"'){if(nextDouble>=0)ends.set(t.index,nextDouble);nextDouble=t.index;continue;}
+  if(Object.hasOwn(pairs,ch)){const end=stacks.get(pairs[ch])?.pop();if(end!==undefined)ends.set(t.index,end);}
+  else{if(!stacks.has(ch))stacks.set(ch,[]);stacks.get(ch).push(t.index);}
  }
- return quotes.filter(q=>q.material);
+ const quotes=[];let consumed=0;
+ for(const m of tokens){
+  const end=ends.get(m.index);if(m.index<consumed||end===undefined)continue;
+  const prefix=text.slice(Math.max(0,m.index-90),m.index);
+  const mark=/(原话|原文|素材|报错|错误信息|这句话|这段话|润色|转述|翻译|回复|写道|说|反馈|表示|内容为|\bsaid|\bwrote|\bquote|\btranslate|\brewrite|\berror message)\s*[:：,，]?\s*$/iu.exec(prefix);
+  if(!mark)continue;
+  const words=prefix.slice(0,mark.index).split(/[：:，,。！？!?；;\n]/u).pop().trim().replace(/^(?:以下是|以下为|下面是来自|下面是|以下引自)\s*/u,'');
+  const attribution=/^(?:原话|反馈|说|表示|写道|said|wrote)$/iu.test(mark[1]);
+  const owner=attribution&&words.length<=32?words.replace(/的$/u,'').trim():'';
+  quotes.push({start:m.index,end:end+1,raw:text.slice(m.index,end+1),body:text.slice(m.index+1,end),owner,marker:mark[1],example:/^(?:示例|虚构示例|虚构对话|假设示例|Example)[:：]\s*[^：:，,。！？!?；;\n]{0,32}$/iu.test(prefix.trim().replace(/[:：]$/u,'')),attributed:attribution});
+  consumed=end+1;
+ }
+ return quotes;
+}
+export function quoteDifferences(request,text){
+ const original=strings(request).flatMap(sourceQuotes),current=sourceQuotes(text);
+ const strict=strings(request).some(s=>/(?:保留|保持|照抄|不得更改|不要改动)(?:原有|原文|原来的|所有|外层)?(?:引号|标点)|(?:引号|标点)(?:也|都)?(?:须|需|要)?(?:原样|保留|不变)/u.test(s));
+ const same=(a,b)=>a.owner===b.owner&&(strict?a.raw===b.raw:a.body===b.body);
+ const left=[...original],right=[];
+ for(const now of current){const i=left.findIndex(was=>same(was,now));if(i<0)right.push(now);else left.splice(i,1);}
+ const details=[],used=new Set();
+ for(const was of left){
+  const matches=right.filter(q=>q.owner===was.owner&&!used.has(q));
+  const unique=(was.owner||!was.attributed&&matches[0]?.marker===was.marker)&&matches.length===1&&original.filter(q=>q.owner===was.owner).length===1&&current.filter(q=>q.owner===was.owner).length===1;
+  const q=unique?matches[0]:null;
+  // A swapped speaker is not an edit to a single piece of source text.
+  const safe=q&&!original.some(x=>x.owner!==q.owner&&x.body===q.body)&&!current.some(x=>x.owner!==was.owner&&x.body===was.body);
+  if(safe)used.add(q);
+  details.push({message:(was.owner?was.owner+'：':'')+was.raw+(safe?' → '+q.raw:'（缺失、变动或归属不同）'),restore:safe?{start:q.start,end:q.end,raw:was.raw}:null});
+ }
+ const evidence=(request.selectedEvidence||[]).flatMap(e=>sourceQuotes(e.text));
+ for(const q of right){
+  if(used.has(q)||!q.attributed||evidence.some(x=>same(x,q)))continue;
+  if(original.some(x=>same(x,q))){details.push({message:'这处原话在候选中重复出现：'+q.raw,notice:true,restore:null});continue;}
+  if(q.example&&strings(request).some(s=>/(?:编写|写出|创作|提供|生成)(?:一个|一段|两段)?(?:虚构对话|虚构示例|虚构访谈)/u.test(s)))continue;
+  if(!q.owner){details.push({message:'这处引文的来源需要核对：'+q.raw,notice:true,restore:null});continue;}
+  details.push({message:'新增未注明来源的引文：'+q.owner+'：'+q.raw,restore:null});
+ }
+ return details;
 }
 function literalFragments(request){return [...new Set([...sourceAtoms(request).map(x=>x.raw),...strings(request).flatMap(sourceQuotes).map(q=>q.raw)])];}
 function directiveFragments(request){
@@ -181,13 +212,7 @@ export function missingRequirements(request,text){
  const heads=directiveHeads(text);
  const atoms=literalAtoms(text,false),present=new Set(atoms.map(x=>x.kind+':'+x.value));
  const missing=sourceAtoms(request).filter(a=>a.kind==='code'?!text.includes(a.raw):!present.has(a.kind+':'+a.value)).map(a=>a.raw);
- const expectedQuotes=strings(request).flatMap(sourceQuotes);
- const actualQuotes=sourceQuotes(text);
- for(const quote of expectedQuotes){
-  const index=actualQuotes.findIndex(q=>q.raw===quote.raw&&q.owner===quote.owner);
-  if(index<0)missing.push(quote.owner?quote.owner+'：'+quote.raw:quote.raw);
-  else actualQuotes.splice(index,1);
- }
+ missing.push(...quoteDifferences(request,text).filter(q=>!q.notice).map(q=>q.message));
  return [...new Set([...missing,...directiveFragments(request).filter(s=>!heads.some(h=>h===s||directiveKey(h)===directiveKey(s)))])];
 }
 function permissionFacts(text){

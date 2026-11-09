@@ -12,7 +12,7 @@
 从开工、设计、实施到审查、验收与收尾，方法涵盖代码工程、研究资料、写作表达、数据分析等领域。按阶段、领域或关键词查找，查看适用说明与示例。内置方法库提供起点；你可以在 **我的补句** 中新建、编辑和保存个人要求，下次直接使用。是否采用、何时发送，都由你决定。
 
 <!-- prelude-current:start -->
-当前 **0.4.27 预览版** · [下载安装包](https://github.com/dbcaskml183-dotcom/dsh-prelude/releases/download/v0.4.27/dsh-prompt-coach-0.4.27.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
+当前 **0.4.28 预览版** · [本地候选包](release/dsh-prompt-coach-0.4.28.tgz) · [安装说明](docs/installation.md) · [English](README.en.md)
 <!-- prelude-current:end -->
 
 ## 先看看方法卡

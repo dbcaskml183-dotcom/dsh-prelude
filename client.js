@@ -481,8 +481,8 @@ function decisionPresentation({ pending = false, source, kind, count = 0 } = {})
   if (source === "model") return { label: { no_suggestion: "\u672A\u53D1\u73B0\u5FC5\u8981\u8865\u5145", suggestions: "\u53EF\u8003\u8651\u8865\u5145", needs_context: "\u76EE\u6807\u5F85\u660E\u786E", uncertain: "\u4F9D\u636E\u6709\u9650", unavailable: "\u5206\u6790\u4E0D\u53EF\u7528" }[kind] || "\u6A21\u578B\u5206\u6790", hint: "\u6A21\u578B\u5206\u6790 \xB7 \u4EC5\u4F9D\u636E\u672C\u6B21\u6240\u9009\u5185\u5BB9" };
   if (kind === "needs_context") return { label: "\u76EE\u6807\u5F85\u8865", hint: "\u53EF\u8865\u5145\uFF0C\u4E5F\u53EF\u4EE5\u8DF3\u8FC7" };
   if (kind === "uncertain") return { label: "\u4F9D\u636E\u6709\u9650", hint: "\u53EF\u8865\u5145\u76F8\u5173\u8D44\u6599\uFF0C\u4E5F\u53EF\u7EE7\u7EED\u4F7F\u7528\u65B9\u6CD5\u5E93" };
-  if (kind === "no_suggestion") return { label: "\u672C\u5730\u9884\u68C0\u67E5", hint: "\u672A\u8C03\u7528\u6A21\u578B\uFF0C\u4E0D\u4EE3\u8868\u5B8C\u6574\u8D28\u91CF\u5224\u65AD" };
-  return { label: "\u672C\u5730\u53C2\u8003 \xB7 \u672A\u8C03\u7528\u6A21\u578B", hint: count ? "\u76F8\u5173\u65B9\u6CD5\u5019\u9009\uFF0C\u4E0D\u7B49\u4E8E\u53D1\u73B0\u7F3A\u9677" : "\u7167\u5E38\u5199\u9700\u6C42\uFF0C\u6216\u53BB\u65B9\u6CD5\u5E93\u6311\u9009" };
+  if (kind === "no_suggestion") return { label: "\u672C\u5730\u9884\u68C0\u67E5", hint: "\u4EC5\u6839\u636E\u5F53\u524D\u8349\u7A3F\uFF0C\u4E0D\u4EE3\u8868\u5B8C\u6574\u8D28\u91CF\u5224\u65AD" };
+  return { label: "\u672C\u5730\u53C2\u8003", hint: count ? "\u76F8\u5173\u65B9\u6CD5\u5019\u9009\uFF0C\u4E0D\u7B49\u4E8E\u53D1\u73B0\u7F3A\u9677" : "\u7167\u5E38\u5199\u9700\u6C42\uFF0C\u6216\u53BB\u65B9\u6CD5\u5E93\u6311\u9009" };
 }
 function rewriteBadge(snapshot2) {
   if (snapshot2.phase === "generating") return "\u751F\u6210\u4E2D";
@@ -1345,7 +1345,7 @@ var hardMethodConstraint = (text) => {
 function sourceBlocks(request, candidate) {
   return [...strings(request).map((text, i) => ({ id: i ? "requirements" : "draft", kind: "user", text })), ...(request.selectedEvidence || []).map((e, i) => ({ id: "evidence-" + i, kind: e.source, text: e.text, coverage: e.coverage })), ...(request.selectedMethods || []).map((m, i) => ({ id: "method-" + i, kind: "user-method", methodId: m.id, variant: m.variant, label: m.label, text: m.text })), ...candidate === void 0 ? [] : [{ id: "candidate", kind: "candidate", text: candidate }]];
 }
-var QUOTED = /```[\s\S]*?```|`[^`\n]+`|[“「][\s\S]*?[”」]|"[^"\n]*"|(?<![A-Za-z0-9])'[^'\n]+'(?![A-Za-z0-9])/gu;
+var QUOTED = /```[\s\S]*?```|`[^`\n]+`|‘[^’]*’|『[^』]*』|[“「][\s\S]*?[”」]|"[^"\n]*"|(?<![A-Za-z0-9])'[^'\n]+'(?![A-Za-z0-9])/gu;
 var maskLiteral = (text) => text.replace(QUOTED, (s) => s.replace(/[^\n]/gu, " "));
 var factText = (text) => text.replace(QUOTED, (s) => /^[`“「"'](?:Markdown|JSON|YAML|HTML|表格|中文|英文|Chinese|English)[`”」"']$/iu.test(s) ? s.slice(1, -1) : s.replace(/[^\n]/gu, " "));
 function clauses(text, joined = false) {
@@ -1456,27 +1456,75 @@ function sourceAtoms(request) {
   return [...strings(request), ...methodTexts2(request)].flatMap((t) => literalAtoms(t));
 }
 function sourceQuotes(text) {
-  const quotes = [];
-  const pattern = /(?:\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60\n]*\x60)|([“「"])/gu;
-  for (const match of text.matchAll(pattern)) {
-    if (!match[1] || quotes.some((q) => match.index < q.end)) continue;
-    const open = match[1], close = open === "\u201C" ? "\u201D" : open === "\u300C" ? "\u300D" : '"';
-    let i = match.index + 1, depth = 1;
-    for (; i < text.length; i++) {
-      if (text[i] === "\\") {
-        i++;
-        continue;
-      }
-      if (open !== close && text[i] === open) depth++;
-      if (text[i] === close && !--depth) break;
+  const ends = /* @__PURE__ */ new Map(), stacks = /* @__PURE__ */ new Map(), pairs = { "\u201C": "\u201D", "\u300C": "\u300D", "\u2018": "\u2019", "\u300E": "\u300F" };
+  const tokens = [...text.matchAll(/\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60\n]*\x60|\\[\s\S]|[“”「」"‘’『』]/gu)];
+  let nextDouble = -1;
+  for (let i = tokens.length - 1; i >= 0; i--) {
+    const t = tokens[i], ch = t[0];
+    if (ch.length !== 1) continue;
+    if (ch === '"') {
+      if (nextDouble >= 0) ends.set(t.index, nextDouble);
+      nextDouble = t.index;
+      continue;
     }
-    if (i === text.length) continue;
-    const prefix = text.slice(Math.max(0, match.index - 48), match.index);
-    const material = /(?:原话|原文|素材|报错|错误信息|这句话|这段话|润色|转述|翻译|回复|写道|说|内容为|said|quote|translate|rewrite|error message)\s*[:：,，]?\s*$/iu.exec(prefix);
-    const owner = /(?:^|[：:，,\n;；。])\s*([^：:，,\n;；。]{1,24}(?:说|写道|原话|said))\s*[:：]?\s*$/iu.exec(prefix)?.[1]?.trim() || "";
-    quotes.push({ end: i + 1, raw: text.slice(match.index, i + 1), owner, material: !!material });
+    if (Object.hasOwn(pairs, ch)) {
+      const end = stacks.get(pairs[ch])?.pop();
+      if (end !== void 0) ends.set(t.index, end);
+    } else {
+      if (!stacks.has(ch)) stacks.set(ch, []);
+      stacks.get(ch).push(t.index);
+    }
   }
-  return quotes.filter((q) => q.material);
+  const quotes = [];
+  let consumed = 0;
+  for (const m of tokens) {
+    const end = ends.get(m.index);
+    if (m.index < consumed || end === void 0) continue;
+    const prefix = text.slice(Math.max(0, m.index - 90), m.index);
+    const mark = /(原话|原文|素材|报错|错误信息|这句话|这段话|润色|转述|翻译|回复|写道|说|反馈|表示|内容为|\bsaid|\bwrote|\bquote|\btranslate|\brewrite|\berror message)\s*[:：,，]?\s*$/iu.exec(prefix);
+    if (!mark) continue;
+    const words = prefix.slice(0, mark.index).split(/[：:，,。！？!?；;\n]/u).pop().trim().replace(/^(?:以下是|以下为|下面是来自|下面是|以下引自)\s*/u, "");
+    const attribution = /^(?:原话|反馈|说|表示|写道|said|wrote)$/iu.test(mark[1]);
+    const owner = attribution && words.length <= 32 ? words.replace(/的$/u, "").trim() : "";
+    quotes.push({ start: m.index, end: end + 1, raw: text.slice(m.index, end + 1), body: text.slice(m.index + 1, end), owner, marker: mark[1], example: /^(?:示例|虚构示例|虚构对话|假设示例|Example)[:：]\s*[^：:，,。！？!?；;\n]{0,32}$/iu.test(prefix.trim().replace(/[:：]$/u, "")), attributed: attribution });
+    consumed = end + 1;
+  }
+  return quotes;
+}
+function quoteDifferences(request, text) {
+  const original = strings(request).flatMap(sourceQuotes), current = sourceQuotes(text);
+  const strict = strings(request).some((s) => /(?:保留|保持|照抄|不得更改|不要改动)(?:原有|原文|原来的|所有|外层)?(?:引号|标点)|(?:引号|标点)(?:也|都)?(?:须|需|要)?(?:原样|保留|不变)/u.test(s));
+  const same = (a, b) => a.owner === b.owner && (strict ? a.raw === b.raw : a.body === b.body);
+  const left = [...original], right = [];
+  for (const now of current) {
+    const i = left.findIndex((was) => same(was, now));
+    if (i < 0) right.push(now);
+    else left.splice(i, 1);
+  }
+  const details = [], used = /* @__PURE__ */ new Set();
+  for (const was of left) {
+    const matches = right.filter((q2) => q2.owner === was.owner && !used.has(q2));
+    const unique = (was.owner || !was.attributed && matches[0]?.marker === was.marker) && matches.length === 1 && original.filter((q2) => q2.owner === was.owner).length === 1 && current.filter((q2) => q2.owner === was.owner).length === 1;
+    const q = unique ? matches[0] : null;
+    const safe = q && !original.some((x) => x.owner !== q.owner && x.body === q.body) && !current.some((x) => x.owner !== was.owner && x.body === was.body);
+    if (safe) used.add(q);
+    details.push({ message: (was.owner ? was.owner + "\uFF1A" : "") + was.raw + (safe ? " \u2192 " + q.raw : "\uFF08\u7F3A\u5931\u3001\u53D8\u52A8\u6216\u5F52\u5C5E\u4E0D\u540C\uFF09"), restore: safe ? { start: q.start, end: q.end, raw: was.raw } : null });
+  }
+  const evidence = (request.selectedEvidence || []).flatMap((e) => sourceQuotes(e.text));
+  for (const q of right) {
+    if (used.has(q) || !q.attributed || evidence.some((x) => same(x, q))) continue;
+    if (original.some((x) => same(x, q))) {
+      details.push({ message: "\u8FD9\u5904\u539F\u8BDD\u5728\u5019\u9009\u4E2D\u91CD\u590D\u51FA\u73B0\uFF1A" + q.raw, notice: true, restore: null });
+      continue;
+    }
+    if (q.example && strings(request).some((s) => /(?:编写|写出|创作|提供|生成)(?:一个|一段|两段)?(?:虚构对话|虚构示例|虚构访谈)/u.test(s))) continue;
+    if (!q.owner) {
+      details.push({ message: "\u8FD9\u5904\u5F15\u6587\u7684\u6765\u6E90\u9700\u8981\u6838\u5BF9\uFF1A" + q.raw, notice: true, restore: null });
+      continue;
+    }
+    details.push({ message: "\u65B0\u589E\u672A\u6CE8\u660E\u6765\u6E90\u7684\u5F15\u6587\uFF1A" + q.owner + "\uFF1A" + q.raw, restore: null });
+  }
+  return details;
 }
 function directiveFragments(request) {
   const result = [];
@@ -1515,13 +1563,7 @@ function missingRequirements(request, text) {
   const heads = directiveHeads(text);
   const atoms = literalAtoms(text, false), present = new Set(atoms.map((x) => x.kind + ":" + x.value));
   const missing = sourceAtoms(request).filter((a) => a.kind === "code" ? !text.includes(a.raw) : !present.has(a.kind + ":" + a.value)).map((a) => a.raw);
-  const expectedQuotes = strings(request).flatMap(sourceQuotes);
-  const actualQuotes = sourceQuotes(text);
-  for (const quote of expectedQuotes) {
-    const index = actualQuotes.findIndex((q) => q.raw === quote.raw && q.owner === quote.owner);
-    if (index < 0) missing.push(quote.owner ? quote.owner + "\uFF1A" + quote.raw : quote.raw);
-    else actualQuotes.splice(index, 1);
-  }
+  missing.push(...quoteDifferences(request, text).filter((q) => !q.notice).map((q) => q.message));
   return [.../* @__PURE__ */ new Set([...missing, ...directiveFragments(request).filter((s) => !heads.some((h) => h === s || directiveKey(h) === directiveKey(s)))])];
 }
 function permissionFacts(text) {
@@ -1704,7 +1746,7 @@ var CoachError = class extends Error {
 var MODEL_CODES = /* @__PURE__ */ new Set(["TRANSPORT", "TIMEOUT", "RATE_LIMIT", "QUOTA", "ACCOUNT_QUOTA", "MISSING_CREDENTIAL", "INVALID_CREDENTIAL", "AUTH", "PERMISSION", "UNKNOWN_MODEL", "NO_ADAPTER", "REQUEST_EXTENSION", "INVALID_PREPARED_CALL", "CONTEXT_WINDOW_EXCEEDED", "INVALID_ARGS", "UNKNOWN"]);
 function publicError(error) {
   const text = error instanceof CoachError && Object.hasOwn(MESSAGES, error.code) ? MESSAGES[error.code] : MESSAGES.MODEL;
-  return error instanceof CoachError && error.code === "MODEL" && MODEL_CODES.has(error.modelCode) ? text + "\uFF08\u5BBF\u4E3B\u5206\u7C7B\uFF1A" + error.modelCode + "\uFF09" : text;
+  return error instanceof CoachError && error.code === "MODEL" && MODEL_CODES.has(error.modelCode) ? text + (error.modelCode === "AUTH" ? " \u8BF7\u68C0\u67E5\u6240\u9009\u6A21\u578B\u7684\u767B\u5F55\u6216\u51ED\u636E\u3002" : "") + "\uFF08\u5BBF\u4E3B\u5206\u7C7B\uFF1A" + error.modelCode + "\uFF09" : text;
 }
 var object2 = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
 var keys = (v, allowed) => object2(v) && Object.keys(v).every((k) => allowed.includes(k));
@@ -2106,7 +2148,7 @@ function parseRewriteCandidate(raw, request) {
 }
 function rewriteIssues(request, text) {
   const c = contractConflicts(request, text);
-  return [...c.missing.map((x) => "\u539F\u8981\u6C42\u672A\u4FDD\u7559\u6216\u5F3A\u5EA6/\u6761\u4EF6\u6539\u53D8\uFF1A" + x), ...c.added.map((x) => "\u65B0\u589E\u64CD\u4F5C\uFF1A" + x), ...c.permissions.map((x) => "\u6388\u6743\u5BF9\u8C61\u6216\u8303\u56F4\u6539\u53D8\uFF1A" + x), ...c.constraints.map((x) => "\u7EA6\u675F\u6539\u53D8\uFF1A" + x)].slice(0, 6).map((x) => x.slice(0, 240));
+  return [...c.missing.map((x) => x.startsWith("\u65B0\u589E\u672A\u6CE8\u660E\u6765\u6E90\u7684\u5F15\u6587\uFF1A") ? x : "\u539F\u8981\u6C42\u672A\u4FDD\u7559\u6216\u5F3A\u5EA6/\u6761\u4EF6\u6539\u53D8\uFF1A" + x), ...c.added.map((x) => "\u65B0\u589E\u64CD\u4F5C\uFF1A" + x), ...c.permissions.map((x) => "\u6388\u6743\u5BF9\u8C61\u6216\u8303\u56F4\u6539\u53D8\uFF1A" + x), ...c.constraints.map((x) => "\u7EA6\u675F\u6539\u53D8\uFF1A" + x)].slice(0, 6).map((x) => x.slice(0, 240));
 }
 function validateRewrite(raw, request) {
   const v = parseRewriteCandidate(raw, request);
@@ -2292,8 +2334,37 @@ var RewriteController = class {
     if (!["preview", "reviewing"].includes(this.state.phase) || typeof text !== "string" || text.length > MAX_REWRITE) return false;
     if (text === this.state.candidate) return true;
     if (this.state.phase === "reviewing") this.cancel();
-    this.publish({ phase: "preview", candidate: text, edited: true, acknowledged: false, review: reviewFor("stale"), priorFindings: [...this.state.priorFindings, ...this.state.review.findings || []].slice(-6) });
+    const s = this.state, anchor = this.source;
+    if (!anchor) return false;
+    if (!anchor.editBasis) anchor.editBasis = { text: s.candidate, review: s.review };
+    const basis = anchor.editBasis, r = basis.review;
+    const sameTail = text.trim() === basis.text.trim();
+    const retained = (r.findings || []).filter((f) => {
+      if (!f.candidateQuote) return false;
+      const at = basis.text.indexOf(f.candidateQuote);
+      if (at < 0 || basis.text.indexOf(f.candidateQuote, at + 1) >= 0) return false;
+      const before = basis.text.slice(0, at).split(/[。！？!?\n]/u).pop();
+      const after = basis.text.slice(at + f.candidateQuote.length).split(/[。！？!?\n]/u)[0];
+      const clause = before + f.candidateQuote + after;
+      let i = text.indexOf(clause);
+      while (i >= 0) {
+        if ((!i || /[。！？!?\n]/u.test(text[i - 1])) && (i + clause.length === text.length || /[。！？!?\n]/u.test(text[i + clause.length]))) return true;
+        i = text.indexOf(clause, i + 1);
+      }
+      return false;
+    });
+    const hold = ["blocked", "conflict", "uncertain", "failed"].includes(r.state);
+    const review = hold && sameTail ? r : retained.length ? { ...r, findings: retained } : reviewFor("stale");
+    this.publish({ phase: "preview", candidate: text, edited: true, acknowledged: false, review, priorFindings: [.../* @__PURE__ */ new Set([...s.priorFindings, ...r.findings || []])].slice(-6) });
     return true;
+  }
+  quoteIssues() {
+    return this.source ? quoteDifferences(this.source.request, this.state.candidate) : [];
+  }
+  restoreQuote(current, source, snapshot2, start) {
+    if (this.source !== source || snapshot2 !== this.state.candidate || this.state.phase !== "preview" || !this.source || this.comparisonStatus(current) !== "current" || current.composing || inputOf(current).phase !== "plain") return false;
+    const range = this.quoteIssues().map((q) => q.restore).find((q) => q && q.start === start);
+    return !!range && this.edit(snapshot2.slice(0, range.start) + range.raw + snapshot2.slice(range.end));
   }
   acknowledge() {
     return false;
@@ -2333,6 +2404,7 @@ var RewriteController = class {
       const result = parseRewriteCandidate(JSON.stringify({ kind: packet.rewrite?.kind, text: packet.rewrite?.text, changes: packet.rewrite?.changes, uncertainties: packet.rewrite?.uncertainties }), body), receipt = packetReview(packet, body, result.text), issues = rewriteIssues(body, result.text);
       if (issues.length > 0 !== (receipt.state === "blocked")) throw new Error("\u4FEE\u7A3F\u4EE3\u7801\u68C0\u67E5\u56DE\u6267\u4E0D\u7B26\u3002");
       this.source.request = { ...this.source.request, reviewMode: "auto" };
+      this.source.editBasis = null;
       this.publish({ phase: "preview", candidate: result.text, changes: result.changes, uncertainties: result.uncertainties, review: receipt, edited: false, reviewMode: "auto", priorFindings: [...this.state.priorFindings, ...previous.review.findings].slice(-6), message: packet.ledgerError || packet.reviewError || "\u4FEE\u7A3F\u4E0E\u68C0\u67E5\u5DF2\u7ED3\u675F\uFF1B\u8BF7\u6838\u5BF9\u539F\u7A3F\uFF0C\u518D\u51B3\u5B9A\u662F\u5426\u91C7\u7528\u3002", modelUsed: true });
       return packet;
     } catch (e) {
@@ -2368,7 +2440,7 @@ var RewriteController = class {
       this.publish({ message: publicError(e) });
       return false;
     }
-    const candidate = this.state.candidate, body = { ...this.source.request, requestId: crypto.randomUUID(), candidate };
+    const previousReview = this.state.review, candidate = this.state.candidate, body = { ...this.source.request, requestId: crypto.randomUUID(), candidate };
     const seq = ++this.serial, ac = new AbortController();
     this.controller = ac;
     const signal = AbortSignal.any([ac.signal, AbortSignal.timeout(this.timeoutMs)]);
@@ -2377,10 +2449,13 @@ var RewriteController = class {
       const packet = await this.request("/api/prompt-coach/v8/review", body, signal);
       if (seq !== this.serial || signal.aborted || this.disposed) return false;
       if (packet.candidate !== candidate) throw new Error("\u5BA1\u6821\u5BF9\u5E94\u7684\u5019\u9009\u4E0D\u7B26\u3002");
-      this.publish({ phase: "preview", review: packetReview(packet, body, candidate), message: packet.ledgerError || "\u8F85\u52A9\u5BA1\u6821\u7ED3\u675F\uFF1B\u8BF7\u6838\u5BF9\u540E\u51B3\u5B9A\u662F\u5426\u91C7\u7528\u3002" });
+      const review = packetReview(packet, body, candidate);
+      this.source.editBasis = null;
+      this.publish({ phase: "preview", review, message: packet.ledgerError || "\u8F85\u52A9\u5BA1\u6821\u7ED3\u675F\uFF1B\u8BF7\u6838\u5BF9\u540E\u51B3\u5B9A\u662F\u5426\u91C7\u7528\u3002" });
       return packet;
     } catch (e) {
-      if (seq === this.serial && !this.disposed) this.publish({ phase: "preview", review: reviewFor("failed"), message: signal.aborted ? "\u5BA1\u6821\u53D6\u6D88\u6216\u8D85\u65F6\uFF0C\u5DF2\u5F00\u59CB\u7684\u8C03\u7528\u53EF\u80FD\u8BA1\u8D39\u3002" : e.message });
+      if (seq === this.serial && !this.disposed) this.source.editBasis = { text: candidate, review: { ...reviewFor("failed"), findings: previousReview.findings || [] } };
+      this.publish({ phase: "preview", review: reviewFor("failed"), message: signal.aborted ? "\u5BA1\u6821\u53D6\u6D88\u6216\u8D85\u65F6\uFF0C\u5DF2\u5F00\u59CB\u7684\u8C03\u7528\u53EF\u80FD\u8BA1\u8D39\u3002" : e.message });
       return false;
     } finally {
       if (this.controller === ac) this.controller = null;
@@ -2446,6 +2521,7 @@ var RewriteController = class {
   cancel() {
     if (!["generating", "reviewing", "repairing"].includes(this.state.phase)) return;
     const repairing = this.state.phase === "repairing", reviewing = this.state.phase === "reviewing";
+    if (reviewing && this.source) this.source.editBasis = { text: this.state.candidate, review: { ...reviewFor("failed"), findings: this.state.review.findings || [] } };
     this.serial++;
     this.controller?.abort();
     this.controller = null;
@@ -2510,17 +2586,17 @@ function textDifference(original, candidate) {
 
 // src/rewrite-view.jsx
 function RewriteView({ controller, snapshot: snapshot2, current, onGenerate, onReview, onRepair, getCurrent, onApply, onUndo, isCurrentWork = () => true, disclosure = () => ({}), generateReason = "" }) {
-  const s = snapshot2, relationship = controller.comparisonStatus?.(current) || "current", old = relationship === "outdated" || relationship === "archived";
+  const s = snapshot2, source = controller.source, relationship = controller.comparisonStatus?.(current) || "current", old = relationship === "outdated" || relationship === "archived";
   const [oldOpen, setOldOpen] = (0, import_react4.useState)(false);
   (0, import_react4.useEffect)(() => {
     setOldOpen(false);
   }, [controller.source, old]);
   if (s.phase === "idle") return null;
   const Comparison = old ? "details" : "div", reviewReason = controller.reviewReason?.(current) || "";
-  const applyReason = controller.applyReason(current), undoReason = controller.undoReason(current), missing = s.edited ? controller.missing() : [];
+  const applyReason = controller.applyReason(current), undoReason = controller.undoReason(current), quotes = !old && s.phase === "preview" ? controller.quoteIssues?.() || [] : [], quoteMessages = new Set(quotes.map((q) => q.message)), missing = s.edited ? controller.missing().filter((x) => !quoteMessages.has(x)) : [];
   const copying = async (text) => {
     if (!isCurrentWork()) return;
-    const source = controller.source, valid = () => isCurrentWork() && controller.source === source;
+    const source2 = controller.source, valid = () => isCurrentWork() && controller.source === source2;
     try {
       if (!navigator.clipboard?.writeText) throw 0;
       await navigator.clipboard.writeText(text);
@@ -2532,7 +2608,7 @@ function RewriteView({ controller, snapshot: snapshot2, current, onGenerate, onR
     }
   };
   const hasCandidate = ["preview", "reviewing", "repairing", "applied", "reverted"].includes(s.phase);
-  return /* @__PURE__ */ import_react4.default.createElement("section", { className: "pc-rewrite", "data-pc-geometry-mode": "rewrite", "aria-label": "\u6574\u7A3F\u6539\u5199\u4E0E\u5BF9\u6BD4" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-rewrite-heading" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u6574\u7A3F\u6539\u5199"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "pc-badge" }, old ? "\u4E0A\u6B21\u7ED3\u679C \xB7 \u4EC5\u4F9B\u67E5\u770B" : rewriteBadge(s))), old ? /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-message", role: "status" }, relationship === "archived" ? "\u672C\u6B21\u66FF\u6362\u5DF2\u64A4\u56DE\uFF1B\u5BF9\u6BD4\u7559\u4F5C\u53C2\u8003\u3002" : "\u8349\u7A3F\u6216\u4F9D\u636E\u5DF2\u53D8\u5316\uFF1B\u4E0A\u6B21\u7ED3\u679C\u4E0D\u80FD\u7528\u4E8E\u5F53\u524D\u7A3F\u3002") : s.message && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-message", role: "status" }, s.message), !old && ["generating", "reviewing", "repairing"].includes(s.phase) && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: () => controller.cancel() }, s.phase === "repairing" ? "\u53D6\u6D88\u4FEE\u7A3F" : s.phase === "reviewing" ? "\u53D6\u6D88\u5BA1\u6821" : "\u53D6\u6D88\u6574\u7A3F\u751F\u6210")), hasCandidate && /* @__PURE__ */ import_react4.default.createElement(Comparison, { className: old ? "pc-old-comparison" : void 0, ...old ? { open: oldOpen, onToggle: (e) => setOldOpen(e.currentTarget.open) } : {} }, old && /* @__PURE__ */ import_react4.default.createElement("summary", null, relationship === "archived" ? "\u5DF2\u64A4\u56DE\u7684\u5BF9\u6BD4" : "\u4E0A\u6B21\u6539\u5199 \xB7 \u5DF2\u8FC7\u671F", "\uFF08\u4EC5\u67E5\u770B/\u590D\u5236\uFF09"), old && s.message && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, "\u4E0A\u6B21\u64CD\u4F5C\u63D0\u793A\uFF1A", s.message), /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-rewrite-columns" }, /* @__PURE__ */ import_react4.default.createElement("label", { className: "pc-rewrite-column" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u539F\u7A3F\uFF08\u672C\u6B21\u751F\u6210\u65F6\uFF09"), /* @__PURE__ */ import_react4.default.createElement("textarea", { className: "pc-input pc-rewrite-text", "aria-label": "\u6539\u5199\u539F\u7A3F", readOnly: true, value: s.original })), /* @__PURE__ */ import_react4.default.createElement("label", { className: "pc-rewrite-column" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u6539\u5199\u5019\u9009", s.edited ? " \xB7 \u4F60\u5DF2\u624B\u6539" : ""), /* @__PURE__ */ import_react4.default.createElement("textarea", { className: "pc-input pc-rewrite-text", "aria-label": "\u6539\u5199\u5019\u9009\u7A3F", maxLength: MAX_REWRITE, readOnly: old || s.phase !== "preview", value: s.candidate, onChange: (e) => controller.edit(e.target.value) }))), /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, !old && ["preview", "reviewing"].includes(s.phase) ? "\u8BF7\u6838\u5BF9\u539F\u610F\u4E0E\u7EA6\u675F\uFF1B\u5019\u9009\u53EF\u624B\u6539\uFF0C\u91C7\u7528\u53EA\u66FF\u6362\u8F93\u5165\u6846\uFF0C\u4E0D\u81EA\u52A8\u53D1\u9001\u3002" : "\u5F53\u524D\u5BF9\u6BD4\u53EA\u8BFB\uFF0C\u53EF\u590D\u5236\uFF1B\u7EE7\u7EED\u7F16\u8F91\u8BF7\u4F7F\u7528DSH\u8F93\u5165\u6846\u3002"), /* @__PURE__ */ import_react4.default.createElement("details", { ...!old ? disclosure("diff") : {}, className: "pc-rewrite-diff" }, /* @__PURE__ */ import_react4.default.createElement("summary", null, "\u67E5\u770B\u6587\u5B57\u5DEE\u5F02"), /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, "\u65B0\u589E\u548C\u5220\u9664\u6309\u6587\u5B57\u6BD4\u8F83\uFF0C\u4E0D\u4EE3\u8868\u8BED\u4E49\u5DF2\u9A8C\u8BC1\u3002"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-diff-text" }, textDifference(s.original, s.candidate).map((part, i) => part.kind === "added" ? /* @__PURE__ */ import_react4.default.createElement("ins", { key: i }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "pc-diff-label" }, "\u65B0\u589E\uFF1A"), part.text) : part.kind === "removed" ? /* @__PURE__ */ import_react4.default.createElement("del", { key: i }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "pc-diff-label" }, "\u5220\u9664\uFF1A"), part.text) : /* @__PURE__ */ import_react4.default.createElement("span", { key: i }, part.text)))), (s.changes.length > 0 || s.uncertainties.length > 0) && /* @__PURE__ */ import_react4.default.createElement("details", { ...!old ? disclosure("editNotes") : {} }, /* @__PURE__ */ import_react4.default.createElement("summary", null, "\u7F16\u8F91\u8BF4\u660E\u4E0E\u5F85\u786E\u8BA4\u9879"), s.changes.length > 0 && /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u6A21\u578B\u8BF4\u660E\uFF08\u6548\u679C\u672A\u9A8C\u8BC1\uFF09"), /* @__PURE__ */ import_react4.default.createElement("ul", null, s.changes.map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x)))), s.uncertainties.length > 0 && /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u4ECD\u5F85\u786E\u8BA4"), /* @__PURE__ */ import_react4.default.createElement("ul", null, s.uncertainties.map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x))))), hasCandidate && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-review-status", role: "status" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, old ? "\u4E0A\u6B21\u5BA1\u6821\uFF08\u4EC5\u9488\u5BF9\u65E7\u539F\u7A3F\uFF09\uFF1A" : "", { blocked: "\u4EE3\u7801\u68C0\u67E5\u53D1\u73B0\u8981\u6C42\u53D8\u5316\uFF0C\u672A\u8C03\u7528\u989D\u5916\u5BA1\u6821", not_requested: "\u672A\u989D\u5916\u5BA1\u6821", no_issue_found: "\u8F85\u52A9\u5BA1\u6821\u672A\u53D1\u73B0\u95EE\u9898", unchanged: "\u5019\u9009\u4E0E\u539F\u7A3F\u76F8\u540C\uFF0C\u672A\u8FD0\u884C\u989D\u5916\u5BA1\u6821", conflict: "\u8F85\u52A9\u5BA1\u6821\u53D1\u73B0\u95EE\u9898", uncertain: "\u8F85\u52A9\u5BA1\u6821\u65E0\u6CD5\u786E\u8BA4", failed: "\u5BA1\u6821\u672A\u5B8C\u6210", stale: "\u4F60\u5DF2\u624B\u6539\uFF0C\u539F\u5BA1\u6821\u4E0D\u518D\u9002\u7528" }[s.review?.state] || "\u5BA1\u6821\u72B6\u6001\u672A\u77E5"), /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, s.review?.state === "unchanged" ? "\u4FDD\u6301\u539F\u6837\u4E0D\u4EE3\u8868\u539F\u7A3F\u6700\u4F18\uFF1B\u4EC5\u4F7F\u7528\u4F60\u660E\u786E\u9009\u62E9\u7684\u65B9\u6CD5\u3002" : "\u8F85\u52A9\u5BA1\u6821\u53EA\u6838\u5BF9\u539F\u610F\uFF0C\u4E0D\u4FDD\u8BC1\u4EFB\u52A1\u6548\u679C\u3002"), (s.review?.findings || []).map((f, i) => /* @__PURE__ */ import_react4.default.createElement("p", { key: i }, f.explanation, " \u539F\u6587\uFF1A", f.sourceQuote, f.candidateQuote ? "\uFF1B\u5019\u9009\uFF1A" + f.candidateQuote : "")), (s.review?.uncertainties || []).map((x, i) => /* @__PURE__ */ import_react4.default.createElement("p", { key: i }, x)), s.priorFindings?.length > 0 && /* @__PURE__ */ import_react4.default.createElement("details", null, /* @__PURE__ */ import_react4.default.createElement("summary", null, "\u65E7\u7A3F\u7684\u95EE\u9898\uFF08\u4E0D\u4EE3\u8868\u5DF2\u89E3\u51B3\uFF09"), s.priorFindings.map((f, i) => /* @__PURE__ */ import_react4.default.createElement("p", { key: i }, f.explanation)))), !old && s.phase === "preview" && s.review?.state === "blocked" && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-warning" }, /* @__PURE__ */ import_react4.default.createElement("ul", null, controller.issues().map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x))), /* @__PURE__ */ import_react4.default.createElement("p", null, "\u8BF7\u624B\u6539\u5019\u9009\uFF0C\u6216\u6309\u610F\u89C1\u4FEE\u6B63\u540E\u518D\u68C0\u67E5\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u653E\u884C\u3002")), !old && s.phase === "preview" && missing.length > 0 && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-warning" }, /* @__PURE__ */ import_react4.default.createElement("p", null, "\u5019\u9009\u7F3A\u5C11\u53D7\u4FDD\u62A4\u539F\u6587\uFF0C\u4E0D\u80FD\u901A\u8FC7\u5F00\u5173\u6216\u786E\u8BA4\u7ED5\u8FC7\uFF1A"), /* @__PURE__ */ import_react4.default.createElement("ul", null, missing.map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x)))), !old && s.phase === "preview" && applyReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, applyReason), !old && s.phase === "applied" && undoReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, undoReason), /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-rewrite-actions pc-actions" }, !old && s.phase === "preview" && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-primary", disabled: !!applyReason, onClick: onApply || (() => controller.apply(getCurrent ? getCurrent() : current)) }, "\u91C7\u7528\u5230\u8F93\u5165\u6846"), !old && s.phase === "applied" && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-primary", disabled: !!undoReason, onClick: onUndo || (() => controller.undo(getCurrent ? getCurrent() : current)) }, "\u64A4\u56DE\u672C\u6B21\u66FF\u6362"), !old && s.phase === "preview" && !controller.repairReason?.(current) && controller.repairCurrent && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: onRepair || (() => controller.repairCurrent(getCurrent ? getCurrent() : current)) }, "\u6309\u610F\u89C1\u4FEE\u6B63\u5E76\u5BA1\u6821\uFF08\u53EF\u80FD\u8BA1\u8D39\uFF09"), !old && s.phase === "preview" && s.review?.state !== "blocked" && (s.candidate !== s.original || s.methodCount > 0) && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", disabled: !!reviewReason, title: reviewReason || void 0, onClick: onReview || (() => controller.reviewCurrent(getCurrent ? getCurrent() : current)) }, "\u5BA1\u6821\u5F53\u524D\u7A3F\uFF08\u53EF\u80FD\u8BA1\u8D39\uFF09"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-quiet", disabled: !s.candidate, onClick: () => copying(s.candidate) }, "\u590D\u5236\u5019\u9009\u7A3F"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-quiet", onClick: () => copying(s.original) }, "\u590D\u5236\u539F\u7A3F"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-quiet", onClick: () => controller.dismiss() }, old ? "\u6E05\u9664\u4E0A\u6B21\u5BF9\u6BD4" : s.phase === "preview" ? "\u4E0D\u91C7\u7528" : "\u6536\u8D77\u5BF9\u6BD4"))), old && hasCandidate && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", disabled: !!generateReason, onClick: onGenerate }, "\u6309\u5F53\u524D\u8349\u7A3F\u91CD\u65B0\u751F\u6210"), generateReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, generateReason)), ["error", "cancelled", "needs_context"].includes(s.phase) && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", disabled: !!generateReason, onClick: onGenerate }, "\u91CD\u65B0\u68C0\u67E5\u5E76\u751F\u6210"), generateReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, generateReason), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: () => controller.dismiss() }, "\u6536\u8D77\u6539\u5199")));
+  return /* @__PURE__ */ import_react4.default.createElement("section", { className: "pc-rewrite", "data-pc-geometry-mode": "rewrite", "aria-label": "\u6574\u7A3F\u6539\u5199\u4E0E\u5BF9\u6BD4" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-rewrite-heading" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u6574\u7A3F\u6539\u5199"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "pc-badge" }, old ? "\u4E0A\u6B21\u7ED3\u679C \xB7 \u4EC5\u4F9B\u67E5\u770B" : rewriteBadge(s))), old ? /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-message", role: "status" }, relationship === "archived" ? "\u672C\u6B21\u66FF\u6362\u5DF2\u64A4\u56DE\uFF1B\u5BF9\u6BD4\u7559\u4F5C\u53C2\u8003\u3002" : "\u8349\u7A3F\u6216\u4F9D\u636E\u5DF2\u53D8\u5316\uFF1B\u4E0A\u6B21\u7ED3\u679C\u4E0D\u80FD\u7528\u4E8E\u5F53\u524D\u7A3F\u3002") : s.message && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-message", role: "status" }, s.message), !old && ["generating", "reviewing", "repairing"].includes(s.phase) && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: () => controller.cancel() }, s.phase === "repairing" ? "\u53D6\u6D88\u4FEE\u7A3F" : s.phase === "reviewing" ? "\u53D6\u6D88\u5BA1\u6821" : "\u53D6\u6D88\u6574\u7A3F\u751F\u6210")), hasCandidate && /* @__PURE__ */ import_react4.default.createElement(Comparison, { className: old ? "pc-old-comparison" : void 0, ...old ? { open: oldOpen, onToggle: (e) => setOldOpen(e.currentTarget.open) } : {} }, old && /* @__PURE__ */ import_react4.default.createElement("summary", null, relationship === "archived" ? "\u5DF2\u64A4\u56DE\u7684\u5BF9\u6BD4" : "\u4E0A\u6B21\u6539\u5199 \xB7 \u5DF2\u8FC7\u671F", "\uFF08\u4EC5\u67E5\u770B/\u590D\u5236\uFF09"), old && s.message && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, "\u4E0A\u6B21\u64CD\u4F5C\u63D0\u793A\uFF1A", s.message), /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-rewrite-columns" }, /* @__PURE__ */ import_react4.default.createElement("label", { className: "pc-rewrite-column" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u539F\u7A3F\uFF08\u672C\u6B21\u751F\u6210\u65F6\uFF09"), /* @__PURE__ */ import_react4.default.createElement("textarea", { className: "pc-input pc-rewrite-text", "aria-label": "\u6539\u5199\u539F\u7A3F", readOnly: true, value: s.original })), /* @__PURE__ */ import_react4.default.createElement("label", { className: "pc-rewrite-column" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u6539\u5199\u5019\u9009", s.edited ? " \xB7 \u4F60\u5DF2\u624B\u6539" : ""), /* @__PURE__ */ import_react4.default.createElement("textarea", { className: "pc-input pc-rewrite-text", "aria-label": "\u6539\u5199\u5019\u9009\u7A3F", maxLength: MAX_REWRITE, readOnly: old || s.phase !== "preview", value: s.candidate, onChange: (e) => controller.edit(e.target.value) }))), /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, !old && ["preview", "reviewing"].includes(s.phase) ? "\u8BF7\u6838\u5BF9\u539F\u610F\u4E0E\u7EA6\u675F\uFF1B\u5019\u9009\u53EF\u624B\u6539\uFF0C\u91C7\u7528\u53EA\u66FF\u6362\u8F93\u5165\u6846\uFF0C\u4E0D\u81EA\u52A8\u53D1\u9001\u3002" : "\u5F53\u524D\u5BF9\u6BD4\u53EA\u8BFB\uFF0C\u53EF\u590D\u5236\uFF1B\u7EE7\u7EED\u7F16\u8F91\u8BF7\u4F7F\u7528DSH\u8F93\u5165\u6846\u3002"), /* @__PURE__ */ import_react4.default.createElement("details", { ...!old ? disclosure("diff") : {}, className: "pc-rewrite-diff" }, /* @__PURE__ */ import_react4.default.createElement("summary", null, "\u67E5\u770B\u6587\u5B57\u5DEE\u5F02"), /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, "\u65B0\u589E\u548C\u5220\u9664\u6309\u6587\u5B57\u6BD4\u8F83\uFF0C\u4E0D\u4EE3\u8868\u8BED\u4E49\u5DF2\u9A8C\u8BC1\u3002"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-diff-text" }, textDifference(s.original, s.candidate).map((part, i) => part.kind === "added" ? /* @__PURE__ */ import_react4.default.createElement("ins", { key: i }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "pc-diff-label" }, "\u65B0\u589E\uFF1A"), part.text) : part.kind === "removed" ? /* @__PURE__ */ import_react4.default.createElement("del", { key: i }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "pc-diff-label" }, "\u5220\u9664\uFF1A"), part.text) : /* @__PURE__ */ import_react4.default.createElement("span", { key: i }, part.text)))), (s.changes.length > 0 || s.uncertainties.length > 0) && /* @__PURE__ */ import_react4.default.createElement("details", { ...!old ? disclosure("editNotes") : {} }, /* @__PURE__ */ import_react4.default.createElement("summary", null, "\u7F16\u8F91\u8BF4\u660E\u4E0E\u5F85\u786E\u8BA4\u9879"), s.changes.length > 0 && /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u6A21\u578B\u8BF4\u660E\uFF08\u6548\u679C\u672A\u9A8C\u8BC1\uFF09"), /* @__PURE__ */ import_react4.default.createElement("ul", null, s.changes.map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x)))), s.uncertainties.length > 0 && /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u4ECD\u5F85\u786E\u8BA4"), /* @__PURE__ */ import_react4.default.createElement("ul", null, s.uncertainties.map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x))))), hasCandidate && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-review-status", role: "status" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, old ? "\u4E0A\u6B21\u5BA1\u6821\uFF08\u4EC5\u9488\u5BF9\u65E7\u539F\u7A3F\uFF09\uFF1A" : "", { blocked: "\u4EE3\u7801\u68C0\u67E5\u53D1\u73B0\u8981\u6C42\u53D8\u5316\uFF0C\u672A\u8C03\u7528\u989D\u5916\u5BA1\u6821", not_requested: "\u672A\u989D\u5916\u5BA1\u6821", no_issue_found: "\u8F85\u52A9\u5BA1\u6821\u672A\u53D1\u73B0\u95EE\u9898", unchanged: "\u5019\u9009\u4E0E\u539F\u7A3F\u76F8\u540C\uFF0C\u672A\u8FD0\u884C\u989D\u5916\u5BA1\u6821", conflict: "\u8F85\u52A9\u5BA1\u6821\u53D1\u73B0\u95EE\u9898", uncertain: "\u8F85\u52A9\u5BA1\u6821\u65E0\u6CD5\u786E\u8BA4", failed: "\u5BA1\u6821\u672A\u5B8C\u6210", stale: "\u4F60\u5DF2\u624B\u6539\uFF0C\u539F\u5BA1\u6821\u4E0D\u518D\u9002\u7528" }[s.review?.state] || "\u5BA1\u6821\u72B6\u6001\u672A\u77E5"), /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason" }, s.review?.state === "unchanged" ? "\u4FDD\u6301\u539F\u6837\u4E0D\u4EE3\u8868\u539F\u7A3F\u6700\u4F18\uFF1B\u4EC5\u4F7F\u7528\u4F60\u660E\u786E\u9009\u62E9\u7684\u65B9\u6CD5\u3002" : "\u8F85\u52A9\u5BA1\u6821\u53EA\u6838\u5BF9\u539F\u610F\uFF0C\u4E0D\u4FDD\u8BC1\u4EFB\u52A1\u6548\u679C\u3002"), (s.review?.findings || []).map((f, i) => /* @__PURE__ */ import_react4.default.createElement("p", { key: i }, f.explanation, " \u539F\u6587\uFF1A", f.sourceQuote, f.candidateQuote ? "\uFF1B\u5019\u9009\uFF1A" + f.candidateQuote : "")), (s.review?.uncertainties || []).map((x, i) => /* @__PURE__ */ import_react4.default.createElement("p", { key: i }, x)), s.priorFindings?.length > 0 && /* @__PURE__ */ import_react4.default.createElement("details", null, /* @__PURE__ */ import_react4.default.createElement("summary", null, "\u65E7\u7A3F\u7684\u95EE\u9898\uFF08\u4E0D\u4EE3\u8868\u5DF2\u89E3\u51B3\uFF09"), s.priorFindings.map((f, i) => /* @__PURE__ */ import_react4.default.createElement("p", { key: i }, f.explanation)))), !old && s.phase === "preview" && s.review?.state === "blocked" && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-warning" }, /* @__PURE__ */ import_react4.default.createElement("ul", null, controller.issues().filter((x) => !quotes.some((q) => x.includes(q.message.slice(0, 80)))).map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x))), /* @__PURE__ */ import_react4.default.createElement("p", null, "\u8BF7\u624B\u6539\u5019\u9009\uFF0C\u6216\u6309\u610F\u89C1\u4FEE\u6B63\u540E\u518D\u68C0\u67E5\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u653E\u884C\u3002")), quotes.length > 0 && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-warning" }, /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u8BF7\u6838\u5BF9\u5F15\u6587"), /* @__PURE__ */ import_react4.default.createElement("ul", null, quotes.map((q, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, q.message, q.restore && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: () => isCurrentWork() && controller.restoreQuote(getCurrent ? getCurrent() : current, source, s.candidate, q.restore.start) }, "\u6062\u590D\u8FD9\u5904\u539F\u8BDD"))))), !old && s.phase === "preview" && missing.length > 0 && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-warning" }, /* @__PURE__ */ import_react4.default.createElement("p", null, "\u5019\u9009\u7F3A\u5C11\u53D7\u4FDD\u62A4\u539F\u6587\uFF0C\u4E0D\u80FD\u901A\u8FC7\u5F00\u5173\u6216\u786E\u8BA4\u7ED5\u8FC7\uFF1A"), /* @__PURE__ */ import_react4.default.createElement("ul", null, missing.map((x, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i }, x)))), !old && s.phase === "preview" && applyReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, applyReason), !old && s.phase === "applied" && undoReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, undoReason), /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-rewrite-actions pc-actions" }, !old && s.phase === "preview" && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-primary", disabled: !!applyReason, onClick: onApply || (() => controller.apply(getCurrent ? getCurrent() : current)) }, "\u91C7\u7528\u5230\u8F93\u5165\u6846"), !old && s.phase === "applied" && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-primary", disabled: !!undoReason, onClick: onUndo || (() => controller.undo(getCurrent ? getCurrent() : current)) }, "\u64A4\u56DE\u672C\u6B21\u66FF\u6362"), !old && s.phase === "preview" && !controller.repairReason?.(current) && controller.repairCurrent && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: onRepair || (() => controller.repairCurrent(getCurrent ? getCurrent() : current)) }, "\u6309\u610F\u89C1\u4FEE\u6B63\u5E76\u5BA1\u6821\uFF08\u53EF\u80FD\u8BA1\u8D39\uFF09"), !old && s.phase === "preview" && s.review?.state !== "blocked" && (s.candidate !== s.original || s.methodCount > 0) && /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", disabled: !!reviewReason, title: reviewReason || void 0, onClick: onReview || (() => controller.reviewCurrent(getCurrent ? getCurrent() : current)) }, "\u5BA1\u6821\u5F53\u524D\u7A3F\uFF08\u53EF\u80FD\u8BA1\u8D39\uFF09"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-quiet", disabled: !s.candidate, onClick: () => copying(s.candidate) }, "\u590D\u5236\u5019\u9009\u7A3F"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-quiet", onClick: () => copying(s.original) }, "\u590D\u5236\u539F\u7A3F"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button pc-quiet", onClick: () => controller.dismiss() }, old ? "\u6E05\u9664\u4E0A\u6B21\u5BF9\u6BD4" : s.phase === "preview" ? "\u4E0D\u91C7\u7528" : "\u6536\u8D77\u5BF9\u6BD4"))), old && hasCandidate && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", disabled: !!generateReason, onClick: onGenerate }, "\u6309\u5F53\u524D\u8349\u7A3F\u91CD\u65B0\u751F\u6210"), generateReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, generateReason)), ["error", "cancelled", "needs_context"].includes(s.phase) && /* @__PURE__ */ import_react4.default.createElement("div", { className: "pc-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", disabled: !!generateReason, onClick: onGenerate }, "\u91CD\u65B0\u68C0\u67E5\u5E76\u751F\u6210"), generateReason && /* @__PURE__ */ import_react4.default.createElement("p", { className: "pc-reason", role: "status" }, generateReason), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "pc-button", onClick: () => controller.dismiss() }, "\u6536\u8D77\u6539\u5199")));
 }
 
 // src/bundles.jsx
@@ -2702,7 +2778,7 @@ var import_react7 = __toESM(require("react"), 1);
 // package.json
 var package_default = {
   name: "dsh-prompt-coach",
-  version: "0.4.27",
+  version: "0.4.28",
   description: "Prelude \u2014 DeepSeek Harness (DSH) \u63D0\u793A\u8BCD\u4F18\u5316\u4E0E\u6539\u5199\u52A9\u624B\uFF0C\u63D0\u4F9B\u65B9\u6CD5\u5361\u3001\u5C40\u90E8\u8865\u53E5\u548C\u539F\u7A3F\u5BF9\u7167\u3002",
   type: "module",
   main: "./index.mjs",

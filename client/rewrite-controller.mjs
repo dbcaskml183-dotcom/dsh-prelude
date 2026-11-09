@@ -1,3 +1,4 @@
+import {quoteDifferences} from '../shared/prompt-contract.mjs';
 import {abortable,deadlineFetch} from '../shared/async.mjs';
 import {publicError} from '../shared/contracts.mjs';
 import {parseAnalysis,ANALYSIS_PROTOCOL} from '../shared/analysis-contracts.mjs';
@@ -53,7 +54,40 @@ export class RewriteController{
   }catch(e){if(seq===this.serial&&!this.disposed)this.publish({phase:'error',message:signal.aborted?'生成已取消或超时；已开始的调用可能计费，原稿未改动。':e.message||'整稿生成失败；原稿未改动。'});return false;}
   finally{if(this.controller===ac)this.controller=null;}
  }
- edit(text){if(!['preview','reviewing'].includes(this.state.phase)||typeof text!=='string'||text.length>MAX_REWRITE)return false;if(text===this.state.candidate)return true;if(this.state.phase==='reviewing')this.cancel();this.publish({phase:'preview',candidate:text,edited:true,acknowledged:false,review:reviewFor('stale'),priorFindings:[...this.state.priorFindings,...(this.state.review.findings||[])].slice(-6)});return true;}
+ edit(text){
+  if(!['preview','reviewing'].includes(this.state.phase)||typeof text!=='string'||text.length>MAX_REWRITE)return false;
+  if(text===this.state.candidate)return true;
+  if(this.state.phase==='reviewing')this.cancel();
+  const s=this.state,anchor=this.source;
+  if(!anchor)return false;
+  if(!anchor.editBasis)anchor.editBasis={text:s.candidate,review:s.review};
+  const basis=anchor.editBasis,r=basis.review;
+  // Ignore outer whitespace only to KEEP an existing adverse verdict, never to approve content.
+  const sameTail=text.trim()===basis.text.trim();
+  const retained=(r.findings||[]).filter(f=>{
+   if(!f.candidateQuote)return false;
+   const at=basis.text.indexOf(f.candidateQuote);
+   if(at<0||basis.text.indexOf(f.candidateQuote,at+1)>=0)return false;
+   const before=basis.text.slice(0,at).split(/[。！？!?\n]/u).pop();
+   const after=basis.text.slice(at+f.candidateQuote.length).split(/[。！？!?\n]/u)[0];
+   const clause=before+f.candidateQuote+after;
+   // Keep a grounded finding while its entire local context still exists,
+   // including punctuation inside the reported span.
+   let i=text.indexOf(clause);
+   while(i>=0){if((!i||/[。！？!?\n]/u.test(text[i-1]))&&(i+clause.length===text.length||/[。！？!?\n]/u.test(text[i+clause.length])))return true;i=text.indexOf(clause,i+1);}
+   return false;
+  });
+  const hold=['blocked','conflict','uncertain','failed'].includes(r.state);
+  const review=hold&&sameTail?r:retained.length?{...r,findings:retained}:reviewFor('stale');
+  this.publish({phase:'preview',candidate:text,edited:true,acknowledged:false,review,priorFindings:[...new Set([...s.priorFindings,...(r.findings||[])])].slice(-6)});
+  return true;
+ }
+ quoteIssues(){return this.source?quoteDifferences(this.source.request,this.state.candidate):[];}
+ restoreQuote(current,source,snapshot,start){
+  if(this.source!==source||snapshot!==this.state.candidate||this.state.phase!=='preview'||!this.source||this.comparisonStatus(current)!=='current'||current.composing||inputOf(current).phase!=='plain')return false;
+  const range=this.quoteIssues().map(q=>q.restore).find(q=>q&&q.start===start);
+  return !!range&&this.edit(snapshot.slice(0,range.start)+range.raw+snapshot.slice(range.end));
+ }
  acknowledge(){return false;}
  missing(){return this.source?missingProtected(this.source.request,this.state.candidate):[];}
  issues(){return this.source?rewriteIssues(this.source.request,this.state.candidate):[];}
@@ -77,7 +111,7 @@ export class RewriteController{
    if(packet.repairedFrom!==previous.candidate)throw new Error('修稿来源不符，保留上次候选。');
    const result=parseRewriteCandidate(JSON.stringify({kind:packet.rewrite?.kind,text:packet.rewrite?.text,changes:packet.rewrite?.changes,uncertainties:packet.rewrite?.uncertainties}),body),receipt=packetReview(packet,body,result.text),issues=rewriteIssues(body,result.text);
    if((issues.length>0)!==(receipt.state==='blocked'))throw new Error('修稿代码检查回执不符。');
-   this.source.request={...this.source.request,reviewMode:'auto'};
+   this.source.request={...this.source.request,reviewMode:'auto'};this.source.editBasis=null;
    this.publish({phase:'preview',candidate:result.text,changes:result.changes,uncertainties:result.uncertainties,review:receipt,edited:false,reviewMode:'auto',priorFindings:[...this.state.priorFindings,...previous.review.findings].slice(-6),message:packet.ledgerError||packet.reviewError||'修稿与检查已结束；请核对原稿，再决定是否采用。',modelUsed:true});return packet;
   }catch(e){if(seq===this.serial&&!this.disposed)this.publish({phase:'preview',message:(signal.aborted?'修稿取消或超时':e.message)+'；保留上次候选和审校问题，不自动重试。'});return false;}
   finally{if(this.controller===ac)this.controller=null;}
@@ -99,11 +133,11 @@ export class RewriteController{
  async reviewCurrent(current){
   const reason=this.reviewReason(current);if(reason){this.publish({message:reason});return false;}
   try{validateRewrite(JSON.stringify({kind:this.state.candidate===this.state.original?'unchanged':'rewrite',text:this.state.candidate,changes:[],uncertainties:[]}),this.source.request);}catch(e){this.publish({message:publicError(e)});return false;}
-  const candidate=this.state.candidate,body={...this.source.request,requestId:crypto.randomUUID(),candidate};
+  const previousReview=this.state.review,candidate=this.state.candidate,body={...this.source.request,requestId:crypto.randomUUID(),candidate};
   const seq=++this.serial,ac=new AbortController();this.controller=ac;const signal=AbortSignal.any([ac.signal,AbortSignal.timeout(this.timeoutMs)]);
   this.publish({phase:'reviewing',message:'正在审校当前稿；这次可能计费，不会自动采用。'});
-  try{const packet=await this.request('/api/prompt-coach/v8/review',body,signal);if(seq!==this.serial||signal.aborted||this.disposed)return false;if(packet.candidate!==candidate)throw new Error('审校对应的候选不符。');this.publish({phase:'preview',review:packetReview(packet,body,candidate),message:packet.ledgerError||'辅助审校结束；请核对后决定是否采用。'});return packet;}
-  catch(e){if(seq===this.serial&&!this.disposed)this.publish({phase:'preview',review:reviewFor('failed'),message:signal.aborted?'审校取消或超时，已开始的调用可能计费。':e.message});return false;}
+  try{const packet=await this.request('/api/prompt-coach/v8/review',body,signal);if(seq!==this.serial||signal.aborted||this.disposed)return false;if(packet.candidate!==candidate)throw new Error('审校对应的候选不符。');const review=packetReview(packet,body,candidate);this.source.editBasis=null;this.publish({phase:'preview',review,message:packet.ledgerError||'辅助审校结束；请核对后决定是否采用。'});return packet;}
+  catch(e){if(seq===this.serial&&!this.disposed)this.source.editBasis={text:candidate,review:{...reviewFor('failed'),findings:previousReview.findings||[]}};this.publish({phase:'preview',review:reviewFor('failed'),message:signal.aborted?'审校取消或超时，已开始的调用可能计费。':e.message});return false;}
   finally{if(this.controller===ac)this.controller=null;}
  }
  applyReason(current){
@@ -134,7 +168,7 @@ export class RewriteController{
   if(current.actions.insertText(this.state.original,{start:0,end:i.draft.length,draftRev:i.draftRev})!==true){this.publish({message:'宿主拒绝了过期的撤回，未自动重试；原稿仍可复制。'});return false;}
   this.receipt=null;this.publish({phase:'reverted',message:'已撤回本次替换，恢复采用前原稿；没有发送。'});return true;
  }
- cancel(){if(!['generating','reviewing','repairing'].includes(this.state.phase))return;const repairing=this.state.phase==='repairing',reviewing=this.state.phase==='reviewing';this.serial++;this.controller?.abort();this.controller=null;this.publish({phase:reviewing||repairing?'preview':'cancelled',...(reviewing?{review:reviewFor('failed')}:{ }),message:'已取消，原稿未改动；已开始的调用可能计费。'});}
+ cancel(){if(!['generating','reviewing','repairing'].includes(this.state.phase))return;const repairing=this.state.phase==='repairing',reviewing=this.state.phase==='reviewing';if(reviewing&&this.source)this.source.editBasis={text:this.state.candidate,review:{...reviewFor('failed'),findings:this.state.review.findings||[]}};this.serial++;this.controller?.abort();this.controller=null;this.publish({phase:reviewing||repairing?'preview':'cancelled',...(reviewing?{review:reviewFor('failed')}:{ }),message:'已取消，原稿未改动；已开始的调用可能计费。'});}
  invalidate(current){if(this.source&&(signature(current)!==this.source.key||current.actions!==this.source.actions))this.cancel();}
  dismiss(){this.serial++;this.controller?.abort();this.controller=null;this.source=null;this.receipt=null;this.publish(initialState());}
  dispose(){if(this.disposed)return;this.serial++;this.disposed=true;this.controller?.abort();this.controller=null;this.listeners.clear();this.source=null;this.receipt=null;this.state=initialState();}

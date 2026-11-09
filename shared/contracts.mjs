@@ -9,7 +9,7 @@ export class CoachError extends Error{constructor(code){super(Object.hasOwn(MESS
 // Display only a finite SDK failure category, never provider messages or causes.
 const MODEL_CODES=new Set(['TRANSPORT','TIMEOUT','RATE_LIMIT','QUOTA','ACCOUNT_QUOTA','MISSING_CREDENTIAL','INVALID_CREDENTIAL','AUTH','PERMISSION','UNKNOWN_MODEL','NO_ADAPTER','REQUEST_EXTENSION','INVALID_PREPARED_CALL','CONTEXT_WINDOW_EXCEEDED','INVALID_ARGS','UNKNOWN']);
 export function modelFailure(failure){const e=new CoachError('MODEL');if(MODEL_CODES.has(failure?.code))e.modelCode=failure.code;return e;}
-export function publicError(error){const text=error instanceof CoachError&&Object.hasOwn(MESSAGES,error.code)?MESSAGES[error.code]:MESSAGES.MODEL;return error instanceof CoachError&&error.code==='MODEL'&&MODEL_CODES.has(error.modelCode)?text+'（宿主分类：'+error.modelCode+'）':text;}
+export function publicError(error){const text=error instanceof CoachError&&Object.hasOwn(MESSAGES,error.code)?MESSAGES[error.code]:MESSAGES.MODEL;return error instanceof CoachError&&error.code==='MODEL'&&MODEL_CODES.has(error.modelCode)?text+(error.modelCode==='AUTH'?' 请检查所选模型的登录或凭据。':'')+'（宿主分类：'+error.modelCode+'）':text;}
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const keys=(v,allowed)=>object(v)&&Object.keys(v).every(k=>allowed.includes(k));
 export function parseRequest(v){
